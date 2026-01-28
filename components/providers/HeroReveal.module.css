@@ -95,6 +95,32 @@
     object-fit: cover;
 }
 
+.characterLeft,
+.characterRight {
+    position: absolute;
+    bottom: -2rem;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    width: clamp(120px, 16vw, 200px);
+    height: auto;
+}
+
+.characterLeft {
+    left: -1rem;
+}
+
+.characterRight {
+    right: -1rem;
+}
+
+.characterLeft img,
+.characterRight img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 .header {
     position: absolute;
     bottom: 4rem;

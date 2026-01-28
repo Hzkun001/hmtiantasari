@@ -99,6 +99,32 @@
     object-fit: cover;
 }
 
+.HeroReveal_characterLeft__9rIVP,
+.HeroReveal_characterRight__lecY1 {
+    position: absolute;
+    bottom: -2rem;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    width: clamp(120px, 16vw, 200px);
+    height: auto;
+}
+
+.HeroReveal_characterLeft__9rIVP {
+    left: -1rem;
+}
+
+.HeroReveal_characterRight__lecY1 {
+    right: -1rem;
+}
+
+.HeroReveal_characterLeft__9rIVP img,
+.HeroReveal_characterRight__lecY1 img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
 .HeroReveal_header__enapS {
     position: absolute;
     bottom: 4rem;

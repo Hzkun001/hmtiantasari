@@ -15,6 +15,8 @@ export default function HeroReveal() {
     const footerRef = useRef<HTMLDivElement>(null);
     const progressBarRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
+    const characterLeftRef = useRef<HTMLDivElement>(null);
+    const characterRightRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         gsap.registerPlugin(CustomEase, SplitText, ScrollTrigger);
@@ -101,6 +103,31 @@ export default function HeroReveal() {
             stagger: 0.08
         }, 0.7);
 
+        // Character animations
+        if (characterLeftRef.current) {
+            tl.fromTo(characterLeftRef.current, {
+                opacity: 0,
+                x: -100,
+            }, {
+                opacity: 1,
+                x: 0,
+                duration: 1.2,
+                ease: "power3.out",
+            }, 0.8);
+        }
+
+        if (characterRightRef.current) {
+            tl.fromTo(characterRightRef.current, {
+                opacity: 0,
+                x: 100,
+            }, {
+                opacity: 1,
+                x: 0,
+                duration: 1.2,
+                ease: "power3.out",
+            }, 0.8);
+        }
+
         // Cleanup
         return () => {
             tl.kill();
@@ -139,6 +166,16 @@ export default function HeroReveal() {
                     >
                         <source src="/hero-vid.webm" type="video/webm" />
                     </video>
+                </div>
+
+                {/* Character Left */}
+                <div className={styles.characterLeft} ref={characterLeftRef}>
+                    <img src="/Ykiri.svg" alt="Character Left" />
+                </div>
+
+                {/* Character Right */}
+                <div className={styles.characterRight} ref={characterRightRef}>
+                    <img src="/Ykanan.svg" alt="Character Right" />
                 </div>
 
                 <div className={styles.header} ref={headerRef}>
