@@ -1,1 +1,0 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/home/hzsan/Documents/hmtilandingpage/app/layout\":[\"static/media/b87dde7c59e3ba74-s.p.woff2\",\"static/media/0f3a385557f1712f-s.p.woff2\",\"static/media/47cbc4e2adbc5db9-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
