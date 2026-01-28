@@ -1,4 +1,4 @@
-// File: /Users/akhmadhafidzardianto/Documents/ngoding/MNTN-Landing-Page-UI/app/layout.tsx
+// File: /home/hzsan/Documents/hmtilandingpage/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

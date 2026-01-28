@@ -473,13 +473,6 @@ h6 {
   gap: 16px;
 }
 
-.hero-subtitle::before {
-  content: "";
-  height: 2px;
-  width: 30px;
-  background-color: #fbd784;
-  display: inline-block;
-}
 
 .hero-title {
   font-size: 28px;

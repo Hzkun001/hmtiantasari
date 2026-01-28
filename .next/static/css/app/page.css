@@ -55,11 +55,13 @@
     text-decoration: none;
     color: #fff;
     font-family: "DM Sans", sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     font-weight: 400;
     letter-spacing: 0.05em;
-    line-height: 1;
+    line-height: 2;
     transition: opacity 0.3s ease;
+    overflow: hidden;
+    display: inline-block;
 }
 
 .HeroReveal_nav__Gxj4u a:hover {
@@ -86,7 +88,7 @@
     z-index: 0;
 }
 
-.HeroReveal_heroBg__SUoJC img {
+.HeroReveal_heroBg__SUoJC video {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -113,6 +115,11 @@
     font-family: "Italiana", sans-serif;
     line-height: 1;
     color: #fff;
+    overflow: hidden;
+}
+
+.HeroReveal_header__enapS h1 .char {
+    display: inline-block;
 }
 
 .HeroReveal_heroFooter__xvldC {
@@ -157,6 +164,7 @@
 .HeroReveal_digit__yhXLo {
     position: relative;
     will-change: transform;
+    display: inline-block;
 }
 
 .HeroReveal_header__enapS h1 .char {
@@ -166,6 +174,7 @@
 .HeroReveal_nav__Gxj4u a .word,
 .HeroReveal_heroFooter__xvldC p .word {
     transform: translateY(100%);
+    display: inline-block;
 }
 
 @media (max-width: 1000px) {

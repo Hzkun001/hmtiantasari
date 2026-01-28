@@ -20,7 +20,7 @@ export default function HeroReveal() {
         gsap.registerPlugin(CustomEase, SplitText, ScrollTrigger);
         CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
-        const splitText = (selector: string | Element, type: string, className: string) => {
+        const splitText = (selector: string | Element | Element[], type: string, className: string) => {
             return new SplitText(selector, {
                 type: type,
                 [type + "Class"]: className,
@@ -30,8 +30,8 @@ export default function HeroReveal() {
         if (!headerRef.current) return;
 
         const headerSplit = splitText(headerRef.current.querySelector('h1')!, "chars", "char");
-        const navSplit = splitText(".nav a", "words", "word");
-        const footerSplit = splitText(".hero-footer p", "words", "word");
+        const navSplit = splitText(Array.from(navRef.current!.querySelectorAll('a')), "words", "word");
+        const footerSplit = splitText(Array.from(footerRef.current!.querySelectorAll('p')), "words", "word");
 
         const tl = gsap.timeline({
             scrollTrigger: {
@@ -51,7 +51,7 @@ export default function HeroReveal() {
                 ease: "hop",
             });
 
-            tl.fromTo(heroBgRef.current.querySelector('img'), {
+            tl.fromTo(heroBgRef.current.querySelector('video'), {
                 scale: 1.5,
             }, {
                 scale: 1,
@@ -80,21 +80,21 @@ export default function HeroReveal() {
             duration: 0.5,
         }, 0.2);
 
-        tl.to(".header h1 .char", {
+        tl.to(headerRef.current.querySelectorAll('.char'), {
             x: "0%",
             duration: 1.5,
             ease: "power4.out",
             stagger: 0.05,
         }, 0.5);
 
-        tl.to(".nav a .word", {
+        tl.to(navRef.current!.querySelectorAll('.word'), {
             y: "0%",
             duration: 1.5,
             ease: "power4.out",
             stagger: 0.08
         }, 0.7);
 
-        tl.to(".hero-footer p .word", {
+        tl.to(footerRef.current!.querySelectorAll('.word'), {
             y: "0%",
             duration: 1.5,
             ease: "power4.out",
@@ -127,17 +127,28 @@ export default function HeroReveal() {
             {/* Hero */}
             <section className={styles.hero} ref={sectionRef}>
                 <div className={styles.heroBg} ref={heroBgRef}>
-                    <img src="/hero-image.png" alt="Hero Image" />
+                    <video 
+                        autoPlay 
+                        loop 
+                        muted 
+                        playsInline
+                        onLoadedMetadata={(e) => {
+                            const video = e.currentTarget;
+                            video.currentTime = 3; // Mulai dari detik ke-5
+                        }}
+                    >
+                        <source src="/hero-vid.webm" type="video/webm" />
+                    </video>
                 </div>
 
                 <div className={styles.header} ref={headerRef}>
-                    <h1>HMTI</h1>
+                    <h1>WELCOME</h1>
                 </div>
 
                 <div className={styles.heroFooter} ref={footerRef}>
-                    <p>Permanence</p>
-                    <p>Craftsmanship</p>
-                    <p>Expression</p>
+                    <p>Religion</p>
+                    <p>Science</p>
+                    <p>Technology</p>
                 </div>
 
                 <div className={styles.progressBar} ref={progressBarRef}>

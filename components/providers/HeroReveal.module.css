@@ -52,11 +52,13 @@
     text-decoration: none;
     color: #fff;
     font-family: "DM Sans", sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     font-weight: 400;
     letter-spacing: 0.05em;
-    line-height: 1;
+    line-height: 2;
     transition: opacity 0.3s ease;
+    overflow: hidden;
+    display: inline-block;
 }
 
 .nav a:hover {
@@ -82,7 +84,7 @@
     z-index: 0;
 }
 
-.heroBg img {
+.heroBg video {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -109,6 +111,11 @@
     font-family: "Italiana", sans-serif;
     line-height: 1;
     color: #fff;
+    overflow: hidden;
+}
+
+.header h1 :global(.char) {
+    display: inline-block;
 }
 
 .heroFooter {
@@ -153,6 +160,7 @@
 .digit {
     position: relative;
     will-change: transform;
+    display: inline-block;
 }
 
 .header h1 :global(.char) {
@@ -162,6 +170,7 @@
 .nav a :global(.word),
 .heroFooter p :global(.word) {
     transform: translateY(100%);
+    display: inline-block;
 }
 
 @media (max-width: 1000px) {

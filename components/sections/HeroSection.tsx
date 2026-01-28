@@ -104,18 +104,16 @@ export default function HeroSection() {
             </div>
 
             <div ref={contentRef} className="hero-content">
-                <h5 ref={subtitleRef} className="hero-subtitle">A Hiking guide</h5>
+                <h5 ref={subtitleRef} className="hero-subtitle">- HMTI ANTASARI -</h5>
                 <h1 className="hero-title">
                     <span ref={(el) => {
                         if (el) titleSpansRef.current[0] = el;
-                    }}>
-                        Be prepared for the
+                    }}> Api Kecil
                     </span>{' '}
                     <br />
                     <span ref={(el) => {
                         if (el) titleSpansRef.current[1] = el;
-                    }}>
-                        Mountains and beyond!
+                    }}> Melahirkan Terang
                     </span>
                 </h1>
                 <a ref={actionRef} href="#section-01" className="hero-action">
