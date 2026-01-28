@@ -1,0 +1,185 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Italiana&display=swap');
+
+.preloaderCounter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 2rem;
+    z-index: 1000;
+}
+
+.preloaderCounter h1 {
+    font-family: "Italiana", sans-serif;
+    font-size: clamp(8rem, 20vw, 25rem);
+    letter-spacing: 0.05em;
+    transform: scale(0.25);
+    transform-origin: left bottom;
+    color: #fff;
+    line-height: 1;
+}
+
+.nav {
+    position: fixed;
+    width: 100%;
+    padding: 1.25rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+}
+
+.navLogo {
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+
+.navLinks {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav a,
+.heroFooter p {
+    text-decoration: none;
+    color: #fff;
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    transition: opacity 0.3s ease;
+}
+
+.nav a:hover {
+    opacity: 0.7;
+}
+
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    overflow: hidden;
+    margin-top: 0;
+}
+
+.heroBg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
+    will-change: clip-path;
+    z-index: 0;
+}
+
+.heroBg img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(2);
+    will-change: transform;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.header {
+    position: absolute;
+    bottom: 4rem;
+    width: 100%;
+    padding: 2rem;
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.header h1 {
+    font-size: clamp(5rem, 20.5vw, 20rem);
+    mix-blend-mode: difference;
+    font-family: "Italiana", sans-serif;
+    line-height: 1;
+    color: #fff;
+}
+
+.heroFooter {
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    opacity: 0;
+    z-index: 2;
+}
+
+.progressBar {
+    position: absolute;
+    left: 2rem;
+    bottom: 6rem;
+    width: calc(100% - 4rem);
+    height: 1.5px;
+    background-color: #3a3a3a;
+    transform-origin: left;
+    transform: scaleX(0);
+    will-change: transform;
+    overflow: hidden;
+    opacity: 0;
+    z-index: 2;
+}
+
+.progress {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    transform-origin: left;
+    transform: scaleX(0);
+    will-change: transform;
+}
+
+.word,
+.char,
+.digit {
+    position: relative;
+    will-change: transform;
+}
+
+.header h1 :global(.char) {
+    transform: translateX(100%);
+}
+
+.nav a :global(.word),
+.heroFooter p :global(.word) {
+    transform: translateY(100%);
+}
+
+@media (max-width: 1000px) {
+    .navLinks {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.5rem;
+    }
+
+    .header {
+        bottom: unset;
+        top: 50svh;
+        display: flex;
+        justify-content: center;
+        transform: translateY(-50%);
+    }
+
+    .header h1 {
+        font-size: 4rem;
+    }
+}
