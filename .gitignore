@@ -79,3 +79,4 @@ yarn-error.log*
 # Macbook
 .AppleDouble
 .LSOverride
+.next/

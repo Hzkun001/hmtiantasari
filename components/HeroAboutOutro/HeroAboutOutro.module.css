@@ -1,0 +1,122 @@
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.heroImg {
+    position: relative;
+    width: 500px;
+    aspect-ratio: 500/374;
+    overflow: hidden;
+}
+
+.about {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    padding: 1rem 0 2rem 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.animateText {
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -0.15rem;
+    line-height: 1.125;
+    text-align: center;
+    color: #d0d0d0;
+    --clip-value: 100%;
+}
+
+.animateText::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #1a1a1a;
+    clip-path: inset(0 0 var(--clip-value) 0);
+    will-change: clip-path;
+}
+
+.outro {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.outroImgContainer {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.outroWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.outroImg {
+    position: relative;
+    width: 300px;
+    aspect-ratio: 5/7;
+    overflow: hidden;
+}
+
+.outroCaption {
+    font-family: "Manrope", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #2a2a2a;
+    text-align: center;
+}
+
+@media (max-width: 1000px) {
+    .heroImg {
+        width: 90%;
+        max-width: 400px;
+    }
+
+    .animateText {
+        width: 100%;
+        font-size: 2rem;
+        letter-spacing: -0.05rem;
+    }
+
+    .outroImgContainer {
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .outroImg {
+        width: 200px;
+    }
+
+    .outroCaption {
+        font-size: 0.75rem;
+    }
+}

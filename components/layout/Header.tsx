@@ -65,7 +65,7 @@ export default function Header() {
                     <a href="#" className="brand">
                         <Image
                             src="/kabinet.png"
-                            alt="MNTN Logo"
+                            alt="HMTI Logo"
                             width={108}
                             height={24}
                             priority
@@ -123,19 +123,19 @@ export default function Header() {
                         </div>
 
                         <ul className="menu-inner">
-                            <li className="menu-itme">
-                                <a href="#" className="menu-link" onClick={closeMenu}>Sejarah Kami</a>
+                            <li className="menu-item">
+                                <a href="/sejarah-kami" className="menu-link" onClick={closeMenu}>Sejarah Kami</a>
                             </li>
-                            <li className="menu-itme">
-                                <a href="#" className="menu-link" onClick={closeMenu}>Proyek TI</a>
+                            <li className="menu-item">
+                                <a href="#" className="menu-link" onClick={closeMenu}>Kabinet</a>
                             </li>
-                            <li className="menu-itme">
-                                <a href="#" className="menu-link" onClick={closeMenu}>Blog TI</a>
+                            <li className="menu-item">
+                                <a href="#" className="menu-link" onClick={closeMenu}>Kegiatan</a>
                             </li>
-                            <li className="menu-itme">
-                                <a href="#" className="menu-link" onClick={closeMenu}>Galeri TI</a>
+                            <li className="menu-item">
+                                <a href="#" className="menu-link" onClick={closeMenu}>Validasi Sertif</a>
                             </li>
-                            <li className="menu-itme">
+                            <li className="menu-item">
                                 <a href="#" className="menu-link" onClick={closeMenu}>Kontak Kami</a>
                             </li>
                         </ul>

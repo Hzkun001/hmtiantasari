@@ -1,9 +1,8 @@
 import type { Metadata } from 'next';
-import { Bentham, Roboto } from 'next/font/google';
-import Script from 'next/script';
+import { Bentham, Manrope } from 'next/font/google';
 import './globals.css';
 import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
-import Header from '@/components/layout/Header';
+
 import Footer from '@/components/layout/Footer';
 
 const bentham = Bentham({
@@ -12,16 +11,15 @@ const bentham = Bentham({
     variable: '--font-bentham',
 });
 
-const roboto = Roboto({
-    weight: ['100', '300', '400', '500', '700', '900'],
+const manrope = Manrope({
+    weight: ['200', '300', '400', '500', '600', '700', '800'],
     subsets: ['latin'],
-    style: ['normal', 'italic'],
-    variable: '--font-roboto',
+    variable: '--font-manrope',
 });
 
 export const metadata: Metadata = {
-    title: 'MNTN | Landing Page',
-    description: 'A modern mountain hiking guide landing page',
+    title: 'HMTI | Landing Page',
+    description: 'A modern and sleek landing page for HMTI organization.',
 };
 
 export default function RootLayout({
@@ -41,18 +39,11 @@ export default function RootLayout({
                     href="https://unpkg.com/lenis@1.1.18/dist/lenis.css"
                 />
             </head>
-            <body className={`${bentham.variable} ${roboto.variable}`}>
+            <body className={`${bentham.variable} ${manrope.variable} antialiased`} >
                 <SmoothScrollProvider>
-                    <Header />
                     {children}
                     <Footer />
                 </SmoothScrollProvider>
-
-                {/* Optional: YouTube Floating Button */}
-                <Script
-                    src="https://cdn.jsdelivr.net/gh/YT-PixelPerfectLabs/Youtube-Floating-Button/dist/script.js"
-                    strategy="lazyOnload"
-                />
             </body>
         </html>
     );

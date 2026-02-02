@@ -19,6 +19,7 @@ export default function HeroSection() {
     const subtitleRef = useRef<HTMLHeadingElement>(null);
     const actionRef = useRef<HTMLAnchorElement>(null);
     const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+    const autoScrollTriggeredRef = useRef(false);
 
     useEffect(() => {
         // Check for prefers-reduced-motion
@@ -35,7 +36,8 @@ export default function HeroSection() {
         if (prefersReducedMotion) return;
 
         const ctx = gsap.context(() => {
-            const isDesktop = window.matchMedia('(min-width: 768px)').matches;
+            const checkDevice = () => window.matchMedia('(min-width: 768px)').matches;
+            let isDesktop = checkDevice();
 
             // Hero entrance animations
             const heroElements = [
@@ -59,21 +61,73 @@ export default function HeroSection() {
                 }
             );
 
-            // Parallax scroll animations
+            // Function to get parallax values based on device
+            const getParallaxValues = (desktop: boolean) => desktop
+                ? { sky: 300, mountains: -300, man: -100, content: 450 }
+                : { sky: 80, mountains: -80, man: -30, content: 120 };
+
+            // Parallax scroll animations dengan auto-scroll ke HeroReveal
             if (heroRef.current) {
-                gsap.timeline({
+                const parallaxValues = getParallaxValues(isDesktop);
+
+                const scrollTriggerInstance = gsap.timeline({
                     scrollTrigger: {
                         trigger: heroRef.current,
                         start: 'top top',
                         end: 'bottom top',
-                        scrub: 0.5,
+                        scrub: isDesktop ? 0.5 : 1, // Lebih smooth di mobile
                         invalidateOnRefresh: true,
+                        onUpdate: (self) => {
+                            // Auto-scroll hanya aktif di desktop
+                            if (isDesktop && self.progress >= 0.4 && !autoScrollTriggeredRef.current) {
+                                autoScrollTriggeredRef.current = true;
+
+                                // Cari HeroReveal section
+                                const heroRevealSection = document.querySelector('.hero-reveal-section');
+
+                                if (heroRevealSection && window.lenis) {
+                                    // Lock scroll saat autoscroll berjalan
+                                    window.lenis.stop();
+
+                                    // Gunakan Lenis untuk smooth scroll
+                                    window.lenis.scrollTo(heroRevealSection as HTMLElement, {
+                                        duration: 1,
+                                        easing: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
+                                        offset: 120,
+                                        lock: true,
+                                        force: true,
+                                        onComplete: () => {
+                                            // Unlock scroll setelah autoscroll selesai
+                                            if (window.lenis) {
+                                                window.lenis.start();
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        },
+                        onLeaveBack: () => {
+                            // Reset flag saat scroll kembali ke atas
+                            autoScrollTriggeredRef.current = false;
+                        },
                     },
                 })
-                    .to(skyRef.current, { y: 1000 }, '0')
-                    .to(mountainsRef.current, { y: -300 }, '0')
-                    .to(manRef.current, { y: -100 }, '0')
-                    .to(contentRef.current, { y: 450, autoAlpha: 0 }, '0');
+                    .to(skyRef.current, { y: parallaxValues.sky }, '0')
+                    .to(mountainsRef.current, { y: parallaxValues.mountains }, '0')
+                    .to(manRef.current, { y: parallaxValues.man }, '0')
+                    .to(contentRef.current, { y: parallaxValues.content, autoAlpha: 0 }, '0');
+
+                // Handle resize to update parallax values
+                const handleResize = () => {
+                    const nowDesktop = checkDevice();
+                    if (nowDesktop !== isDesktop) {
+                        isDesktop = nowDesktop;
+                        ScrollTrigger.refresh();
+                    }
+                };
+
+                window.addEventListener('resize', handleResize);
+                return () => window.removeEventListener('resize', handleResize);
             }
         });
 

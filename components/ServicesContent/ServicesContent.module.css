@@ -1,0 +1,285 @@
+.services {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.servicesHeader {
+    position: relative;
+    width: 100%;
+    padding: 0 2rem;
+    will-change: transform;
+}
+
+.servicesHeader img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.header1,
+.header3 {
+    transform: translateX(100%) translateY(0%);
+}
+
+.header2 {
+    transform: translateX(-100%) translateY(0%);
+    z-index: 2;
+}
+
+.servicesCopy {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    margin-top: 155svh;
+    padding: 2rem 2rem 25svh 2rem;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.servicesCopySecond {
+    margin-top: 1svh;
+}
+
+.animateText {
+    position: relative;
+    width: 60%;
+    margin: 0 auto;
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -0.15rem;
+    line-height: 1.125;
+    text-align: center;
+    color: #d0d0d0;
+    --clip-value: 100%;
+}
+
+.animateText::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #1a1a1a;
+    clip-path: inset(0 0 var(--clip-value) 0);
+    will-change: clip-path;
+}
+
+@media (max-width: 1000px) {
+    .animateText {
+        width: 100%;
+        font-size: 2rem;
+        letter-spacing: -0.05rem;
+    }
+}
+
+/* Closing Section */
+.closingSection {
+    position: relative;
+    width: 100%;
+    min-height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #1e1e1e;
+    padding: 4rem 2rem;
+}
+
+.closingContent {
+    text-align: center;
+    padding: 2rem;
+    max-width: 1200px;
+    width: 100%;
+}
+
+.closingTitle {
+    font-family: "Manrope", sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: -0.08em;
+    line-height: 1;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.closingSubtitle {
+    font-family: "Manrope", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: #808080;
+    margin-bottom: 4rem;
+}
+
+.socialGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.socialCard {
+    position: relative;
+    padding: 2.5rem 2rem;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.socialCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+}
+
+.socialCard:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.socialCard:hover::before {
+    opacity: 1;
+}
+
+.socialIcon {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    color: #ffffff;
+    transition: all 0.4s ease;
+    z-index: 1;
+}
+
+.socialCard:hover .socialIcon {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1) rotate(5deg);
+}
+
+.socialName {
+    position: relative;
+    font-family: "Manrope", sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+    z-index: 1;
+}
+
+.socialHandle {
+    position: relative;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #a0a0a0;
+    z-index: 1;
+}
+
+.closingDivider {
+    width: 100px;
+    height: 2px;
+    background-color: #ffffff;
+    margin: 0 auto 3rem;
+}
+
+.closingYear {
+    font-family: "Manrope", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #606060;
+}
+
+.homeButton {
+    margin-top: 0;
+    padding: 1rem 2.5rem;
+    font-family: "Manrope", sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #1a1a1a;
+    background-color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.homeButton:hover {
+    background-color: transparent;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.homeButton:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 1000px) {
+    .closingTitle {
+        font-size: 2.5rem;
+    }
+
+    .closingSubtitle {
+        font-size: 1rem;
+    }
+
+    .socialGrid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .socialCard {
+        padding: 2rem 1.5rem;
+    }
+
+    .contentGrid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .timeline::before {
+        left: 2rem;
+    }
+
+    .timelineItem {
+        text-align: left;
+        padding-left: 4rem;
+    }
+
+    .timelineYear {
+        font-size: 2rem;
+    }
+
+    .closingTitle {
+        font-size: 3rem;
+    }
+
+    .closingSubtitle {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,22 @@
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    padding: 2em;
+    display: flex;
+    justify-content: center;
+    z-index: 2;
+}
+
+.navText {
+    text-transform: uppercase;
+    font-family: "Akkurat Trial TT", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px;
+    background-color: #fed54e;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

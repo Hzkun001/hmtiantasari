@@ -9,6 +9,13 @@ if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
 
+// Expose Lenis instance globally for other components
+declare global {
+    interface Window {
+        lenis?: Lenis;
+    }
+}
+
 export default function SmoothScrollProvider({
     children,
 }: {
@@ -24,6 +31,7 @@ export default function SmoothScrollProvider({
         });
 
         lenisRef.current = lenis;
+        window.lenis = lenis; // Make Lenis accessible globally
 
         // Synchronize Lenis with GSAP ScrollTrigger
         lenis.on('scroll', ScrollTrigger.update);
@@ -39,6 +47,7 @@ export default function SmoothScrollProvider({
         // Cleanup
         return () => {
             lenis.destroy();
+            window.lenis = undefined;
             gsap.ticker.remove((time) => {
                 lenis.raf(time * 1000);
             });
