@@ -1,0 +1,355 @@
+.certificate-checker-page {
+    position: relative;
+    min-height: 100svh;
+    background: radial-gradient(circle at 20% 15%, rgba(255, 213, 108, 0.03), transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(255, 213, 108, 0.02), transparent 38%),
+        #1a1a1a;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.certificate-checker-shell {
+    position: relative;
+    padding: clamp(6rem, 10vw, 7.5rem) 0 clamp(3rem, 7vw, 4.5rem);
+}
+
+.certificate-checker-container {
+    max-width: 980px;
+}
+
+.certificate-checker-head {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.certificate-checker-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(255, 213, 108, 0.92);
+    margin-bottom: 0.75rem;
+}
+
+.certificate-checker-title {
+    font-family: var(--font-bentham);
+    font-weight: 900;
+    font-size: clamp(2rem, 6vw, 3.6rem);
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+    margin-bottom: 0.7rem;
+    color: #ffffff;
+}
+
+.certificate-checker-subtitle {
+    max-width: 70ch;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.6;
+    text-wrap: balance;
+}
+
+.certificate-checker-card {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(11, 29, 38, 0.32);
+    border-radius: 0;
+    padding: clamp(1rem, 3vw, 1.35rem);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transform: translateZ(0);
+    transition: transform 160ms ease, border-color 160ms ease;
+}
+
+.certificate-checker-card:hover {
+    border-color: rgba(255, 213, 108, 0.28);
+    transform: translateY(-1px);
+}
+
+.certificate-checker-form {
+    display: grid;
+    gap: 0.6rem;
+}
+
+.certificate-checker-label {
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.certificate-checker-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.65rem;
+    align-items: center;
+}
+
+.certificate-checker-input {
+    width: 100%;
+    padding: 0.9rem 1rem;
+    border-radius: 0;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(0, 0, 0, 0.28);
+    color: rgba(255, 255, 255, 0.92);
+    outline: none;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.certificate-checker-input::placeholder {
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.42);
+}
+
+.certificate-checker-input:focus-visible {
+    border-color: rgba(255, 213, 108, 0.5);
+    box-shadow: 0 0 0 4px rgba(255, 213, 108, 0.14);
+}
+
+.certificate-checker-help {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.certificate-checker-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding: 0.9rem 1.1rem;
+    border-radius: 0;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.92);
+    transition: transform 140ms ease, background 140ms ease, border-color 140ms ease, opacity 140ms ease;
+    white-space: nowrap;
+}
+
+.certificate-checker-button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.certificate-checker-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    border-color: rgba(255, 213, 108, 0.32);
+    background: rgba(255, 255, 255, 0.09);
+}
+
+.certificate-checker-button--primary {
+    background: rgba(255, 213, 108, 0.95);
+    border-color: rgba(255, 213, 108, 0.65);
+    color: #1a1a1a;
+}
+
+.certificate-checker-button--primary:hover:not(:disabled) {
+    background: rgba(255, 213, 108, 1);
+}
+
+.certificate-checker-button--secondary {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.certificate-checker-button--ghost {
+    background: transparent;
+}
+
+.certificate-checker-button-content {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.certificate-checker-spinner {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid rgba(26, 26, 26, 0.3);
+    border-top-color: rgba(26, 26, 26, 0.92);
+    animation: certificate-checker-spin 700ms linear infinite;
+}
+
+@keyframes certificate-checker-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.certificate-checker-result {
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 1rem;
+    animation: certificate-checker-in 220ms ease-out both;
+}
+
+@keyframes certificate-checker-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.certificate-checker-alert {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.certificate-checker-message {
+    color: rgba(255, 255, 255, 0.78);
+    line-height: 1.55;
+}
+
+.certificate-checker-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    width: fit-content;
+    padding: 0.4rem 0.7rem;
+    border-radius: 0;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.certificate-checker-badge--found {
+    border-color: rgba(255, 213, 108, 0.5);
+    background: rgba(255, 213, 108, 0.14);
+    color: rgba(255, 213, 108, 0.95);
+}
+
+.certificate-checker-badge--not_found {
+    border-color: rgba(255, 132, 132, 0.55);
+    background: rgba(255, 132, 132, 0.12);
+    color: rgba(255, 170, 170, 0.95);
+}
+
+.certificate-checker-badge--error,
+.certificate-checker-badge--idle,
+.certificate-checker-badge--loading {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.82);
+}
+
+.certificate-checker-valid {
+    display: grid;
+    gap: 0.95rem;
+}
+
+.certificate-checker-valid-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+}
+
+.certificate-checker-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.certificate-checker-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.certificate-checker-meta-item {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 0;
+    padding: 0.85rem 0.95rem;
+}
+
+.certificate-checker-meta-item dt {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.62);
+    margin-bottom: 0.35rem;
+}
+
+.certificate-checker-meta-item dd {
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.92);
+    text-wrap: balance;
+}
+
+.certificate-checker-code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing: 0.08em;
+}
+
+.certificate-checker-preview {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.22);
+}
+
+.certificate-checker-preview-image {
+    object-fit: contain;
+}
+
+.certificate-checker-preview-iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+}
+
+@keyframes certificate-checker-shake {
+    0% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(3px); }
+    100% { transform: translateX(0); }
+}
+
+.certificate-checker-card.is-shaking {
+    animation: certificate-checker-shake 520ms ease-in-out;
+}
+
+@media (max-width: 720px) {
+    .certificate-checker-row {
+        grid-template-columns: 1fr;
+    }
+
+    .certificate-checker-button {
+        width: 100%;
+    }
+
+    .certificate-checker-meta {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .certificate-checker-card,
+    .certificate-checker-result,
+    .certificate-checker-button,
+    .certificate-checker-input {
+        transition: none !important;
+        animation: none !important;
+    }
+}

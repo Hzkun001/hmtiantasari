@@ -27,30 +27,34 @@ export default function SmoothScrollProvider({
         // Initialize Lenis
         const lenis = new Lenis({
             duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            wheelMultiplier: 1.0,  // Mengatur sensitivitas scroll wheel (default: 1)
+            touchMultiplier: 2.0,  // Mengatur sensitivitas touch scroll (default: 2)
+            infinite: false,       // Nonaktifkan infinite scroll
         });
 
         lenisRef.current = lenis;
         window.lenis = lenis; // Make Lenis accessible globally
 
         // Synchronize Lenis with GSAP ScrollTrigger
-        lenis.on('scroll', ScrollTrigger.update);
+        const onLenisScroll = () => ScrollTrigger.update();
+        lenis.on('scroll', onLenisScroll);
 
         // Add Lenis to GSAP ticker
-        gsap.ticker.add((time) => {
+        const onTick = (time: number) => {
             lenis.raf(time * 1000);
-        });
+        };
+        gsap.ticker.add(onTick);
 
         // Disable lag smoothing
         gsap.ticker.lagSmoothing(0);
 
         // Cleanup
         return () => {
+            lenis.off('scroll', onLenisScroll);
             lenis.destroy();
             window.lenis = undefined;
-            gsap.ticker.remove((time) => {
-                lenis.raf(time * 1000);
-            });
+            gsap.ticker.remove(onTick);
         };
     }, []);
 

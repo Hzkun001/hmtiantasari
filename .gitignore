@@ -9,7 +9,9 @@
 # Next.js
 /.next/
 /out/
-.next/
+
+# TypeScript incremental build info
+*.tsbuildinfo
 
 
 # Production
@@ -81,4 +83,3 @@ yarn-error.log*
 # Macbook
 .AppleDouble
 .LSOverride
-.next/

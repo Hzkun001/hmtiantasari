@@ -1,21 +1,6 @@
 import type { Metadata } from 'next';
-import { Bentham, Manrope } from 'next/font/google';
 import './globals.css';
-import SmoothScrollProvider from '@/components/providers/SmoothScrollProvider';
-
-import Footer from '@/components/layout/Footer';
-
-const bentham = Bentham({
-    weight: '400',
-    subsets: ['latin'],
-    variable: '--font-bentham',
-});
-
-const manrope = Manrope({
-    weight: ['200', '300', '400', '500', '600', '700', '800'],
-    subsets: ['latin'],
-    variable: '--font-manrope',
-});
+import ConditionalSmoothScroll from '@/components/providers/ConditionalSmoothScroll';
 
 export const metadata: Metadata = {
     title: 'HMTI | Landing Page',
@@ -30,20 +15,29 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
                 <link
                     rel="stylesheet"
-                    href="https://unpkg.com/boxicons@latest/css/boxicons.min.css"
+                    href="https://fonts.googleapis.com/css2?family=Bentham&family=Manrope:wght@200..800&family=DM+Sans:wght@100..1000&display=swap"
                 />
+                <link
+                    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+                    rel="stylesheet"
+                    />
+                    <link
+                    href="https://unpkg.com/boxicons@2.1.4/css/boxicons-solid.min.css"
+                    rel="stylesheet"
+                    />
                 <link
                     rel="stylesheet"
                     href="https://unpkg.com/lenis@1.1.18/dist/lenis.css"
                 />
             </head>
-            <body className={`${bentham.variable} ${manrope.variable} antialiased`} >
-                <SmoothScrollProvider>
+            <body className="antialiased">
+                <ConditionalSmoothScroll>
                     {children}
-                    <Footer />
-                </SmoothScrollProvider>
+                </ConditionalSmoothScroll>
             </body>
         </html>
     );

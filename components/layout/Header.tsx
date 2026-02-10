@@ -2,16 +2,46 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
-export default function Header() {
+type HeaderProps = {
+    onlyShowAtTop?: boolean;
+    showAfterSelector?: string;
+    theme?: 'light' | 'dark';
+};
+
+type HeaderMenuItem = {
+    label: string;
+    href: string;
+};
+
+const HEADER_MENU_ITEMS: HeaderMenuItem[] = [
+    { label: 'Sejarah Kami', href: '/sejarah-kami' },
+    { label: 'Kabinet', href: '/kabinet' },
+    { label: 'Project', href: '/projects' },
+    { label: 'Kegiatan', href: '/kegiatan' },
+    { label: 'Sertifikat checker', href: '/certificate-checker' },
+];
+
+export default function Header({ onlyShowAtTop = false, showAfterSelector, theme = 'dark' }: HeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [hideHeader, setHideHeader] = useState(false);
+    const [hideBySection, setHideBySection] = useState(false);
     const headerRef = useRef<HTMLElement>(null);
     const heroSectionRef = useRef<HTMLElement | null>(null);
 
     useEffect(() => {
-        // Get hero section reference
+        return () => {
+            document.body.classList.remove('overflow-hidden');
+            document.body.removeAttribute('data-lenis-prevent');
+        };
+    }, []);
+
+    useEffect(() => {
         heroSectionRef.current = document.querySelector('.hero-section');
+        const showAfterElement = showAfterSelector ? document.querySelector(showAfterSelector) : null;
+        const footer = document.querySelector('footer');
 
         let scrollTimeout: number;
 
@@ -21,15 +51,41 @@ export default function Header() {
             }
 
             scrollTimeout = requestAnimationFrame(() => {
+                if (onlyShowAtTop) {
+                    const isAtTop = window.scrollY <= 4;
+                    setIsScrolled(!isAtTop);
+                    setHideHeader(!isAtTop);
+                    return;
+                }
+
+                if (showAfterElement) {
+                    const passedShowAfterSection = showAfterElement.getBoundingClientRect().bottom <= 0;
+                    setIsScrolled(passedShowAfterSection);
+                    setHideHeader(!passedShowAfterSection);
+                    return;
+                }
+
                 if (heroSectionRef.current) {
                     const scrollY = window.scrollY;
                     const heroHeight = heroSectionRef.current.offsetHeight;
                     setIsScrolled(scrollY >= heroHeight / 2);
+                } else {
+                    setIsScrolled(window.scrollY > 24);
+                }
+
+                if (footer) {
+                    const footerRect = footer.getBoundingClientRect();
+                    const headerHeight = headerRef.current?.offsetHeight || 0;
+                    setHideHeader(footerRect.top <= window.innerHeight - headerHeight);
+                } else {
+                    setHideHeader(false);
                 }
             });
         };
 
         window.addEventListener('scroll', handleScroll);
+        // Run once on mount
+        handleScroll();
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
@@ -37,7 +93,32 @@ export default function Header() {
                 cancelAnimationFrame(scrollTimeout);
             }
         };
-    }, []);
+    }, [onlyShowAtTop, showAfterSelector]);
+
+    useEffect(() => {
+        if (onlyShowAtTop) {
+            setHideBySection(false);
+            return;
+        }
+
+        const hideTrigger = document.querySelector('[data-header-hide-trigger]');
+        if (!hideTrigger) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setHideBySection(entry.isIntersecting);
+            },
+            {
+                threshold: 0.2,
+            }
+        );
+
+        observer.observe(hideTrigger);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, [onlyShowAtTop]);
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -58,11 +139,11 @@ export default function Header() {
     return (
         <header
             ref={headerRef}
-            className={`header ${isScrolled ? 'on-scroll' : ''} ${isMenuOpen ? 'menu-is-active' : ''}`}
+            className={`header ${theme === 'light' ? 'header-light' : ''} ${isScrolled ? 'on-scroll' : ''} ${isMenuOpen ? 'menu-is-active' : ''} ${(hideHeader || hideBySection) ? 'header-hidden' : ''}`}
         >
             <nav className="navbar">
                 <div className="header-container">
-                    <a href="#" className="brand">
+                    <Link href="/" scroll className="brand">
                         <Image
                             src="/kabinet.png"
                             alt="HMTI Logo"
@@ -70,7 +151,7 @@ export default function Header() {
                             height={24}
                             priority
                         />
-                    </a>
+                    </Link>
 
                     <button
                         className={`burger ${isMenuOpen ? 'is-active' : ''}`}
@@ -86,29 +167,11 @@ export default function Header() {
 
                     <div className="menu">
                         <div className="menu-header">
-                            <a href="#" className="brand">
-                                <svg width="108" height="24" viewBox="0 0 108 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clipPath="url(#clip0_1_71)">
-                                        <path
-                                            d="M0.96 23H9.856V22.552C6.656 22.136 5.696 20.792 5.696 17.56V2.872H5.888L14.208 23.032H15.36L22.816 2.872H22.976V20.728C22.976 22.008 22.176 22.456 19.904 22.552V23H30.944V22.552C28.256 22.456 27.616 21.944 27.616 20.728V2.968C27.616 1.752 28.256 1.208 30.944 1.112V0.695999H22.784L16.736 17.144H16.576L9.984 0.695999H0.96V1.112C3.712 1.176 4.896 2.648 4.896 4.568V17.56C4.896 20.792 3.968 22.168 0.96 22.552V23Z"
-                                            fill="white" />
-                                        <path
-                                            d="M52.128 23.352H53.664V6.104C53.664 2.936 54.528 1.56 57.536 1.112V0.695999H48.448V1.112C51.68 1.496 52.864 2.936 52.864 6.104V16.728H52.832L40.512 0.695999H32.96V1.112C35.712 1.24 36.896 2.872 36.896 4.824V17.56C36.896 20.792 35.968 22.168 32.96 22.552V23H41.984V22.552C38.72 22.2 37.696 20.792 37.696 17.56V4.728H37.728L52.128 23.352Z"
-                                            fill="white" />
-                                        <path
-                                            d="M63.6 23H75.696V22.552C72.848 22.488 71.984 21.944 71.984 20.728V1.272H72.752C75.216 1.272 77.136 3.736 79.376 8.088L79.856 8.024L79.696 0.695999H59.568L59.376 8.024L59.856 8.088C62.128 3.64 64.08 1.272 66.512 1.272H67.312V20.728C67.312 21.944 66.416 22.488 63.6 22.552V23Z"
-                                            fill="white" />
-                                        <path
-                                            d="M102.128 23.352H103.664V6.104C103.664 2.936 104.528 1.56 107.536 1.112V0.695999H98.448V1.112C101.68 1.496 102.864 2.936 102.864 6.104V16.728H102.832L90.512 0.695999H82.96V1.112C85.712 1.24 86.896 2.872 86.896 4.824V17.56C86.896 20.792 85.968 22.168 82.96 22.552V23H91.984V22.552C88.72 22.2 87.696 20.792 87.696 17.56V4.728H87.728L102.128 23.352Z"
-                                            fill="white" />
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_1_71">
-                                            <rect width="108" height="24" fill="white" />
-                                        </clipPath>
-                                    </defs>
+                            <Link href="/" scroll className="brand" onClick={closeMenu}>
+                                <svg width="169" height="53" viewBox="0 0 169 53" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M-4.76837e-07 52.8V0H10.368V21.792H30.112V0H40.448V52.8H30.112V30.88H10.368V52.8H-4.76837e-07ZM52.443 52.8L57.691 0H68.699L81.307 33.024L93.915 0H104.923L110.171 52.8H99.803L96.539 18.624L84.475 51.488H78.107L66.075 18.624L62.779 52.8H52.443ZM126.486 52.8V9.152H113.11V0H150.23V9.152H136.823V52.8H126.486ZM158.625 52.8V0H168.993V52.8H158.625Z" fill="#FFD56C" />
                                 </svg>
-                            </a>
+                            </Link>
                             <button
                                 className={`burger is-active close-menu`}
                                 onClick={closeMenu}
@@ -123,29 +186,24 @@ export default function Header() {
                         </div>
 
                         <ul className="menu-inner">
-                            <li className="menu-item">
-                                <a href="/sejarah-kami" className="menu-link" onClick={closeMenu}>Sejarah Kami</a>
-                            </li>
-                            <li className="menu-item">
-                                <a href="#" className="menu-link" onClick={closeMenu}>Kabinet</a>
-                            </li>
-                            <li className="menu-item">
-                                <a href="#" className="menu-link" onClick={closeMenu}>Kegiatan</a>
-                            </li>
-                            <li className="menu-item">
-                                <a href="#" className="menu-link" onClick={closeMenu}>Validasi Sertif</a>
-                            </li>
-                            <li className="menu-item">
-                                <a href="#" className="menu-link" onClick={closeMenu}>Kontak Kami</a>
-                            </li>
+                            {HEADER_MENU_ITEMS.map((item) => (
+                                <li key={item.href} className="menu-item">
+                                    <Link href={item.href} scroll className="menu-link" onClick={closeMenu}>
+                                        {item.label}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     </div>
 
                     <div className="menu-block">
-                        <a href="#" className="menu-block-link">
-                            <i className="bx bx-user-circle"></i>
+                        <Link href="/admin" className="menu-block-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                fill="currentColor" viewBox="0 0 24 24" >
+                                <path d="M12 7c-2 0-3.5 1.5-3.5 3.5S10 14 12 14s3.5-1.5 3.5-3.5S14 7 12 7m0 5c-.88 0-1.5-.62-1.5-1.5S11.12 9 12 9s1.5.62 1.5 1.5S12.88 12 12 12"></path><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M8.18 19c.41-1.16 1.51-2 2.82-2h2c1.3 0 2.4.84 2.82 2H8.19Zm9.71 0a5 5 0 0 0-4.9-4h-2c-2.41 0-4.43 1.72-4.9 4h-1.1V5h14v14z"></path>
+                            </svg>
                             Account
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </nav>

@@ -1,0 +1,642 @@
+.kabinet-page {
+    --kabinet-bg: #1a1a1a;
+    --kabinet-surface: #ffffff;
+    --kabinet-surface-soft: #f6f6f6;
+    --kabinet-text: #1a1a1a;
+    --kabinet-text-muted: rgba(26, 26, 26, 0.68);
+    --kabinet-border: rgba(26, 26, 26, 0.14);
+    --kabinet-accent: #ffd56c;
+    --kabinet-accent-soft: rgba(255, 213, 108, 0.28);
+    --kabinet-dark-surface: #202020;
+    --kabinet-dark-surface-soft: #2a2a2a;
+    --kabinet-light-text: rgba(255, 255, 255, 0.86);
+    min-height: 100svh;
+    color: var(--kabinet-light-text);
+    background-color: var(--kabinet-bg);
+}
+
+.kabinet-shell {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+}
+
+.kabinet-shell--landing {
+    margin-bottom: 1.25rem;
+}
+
+.kabinet-hero {
+    padding: clamp(5.6rem, 9vw, 8.3rem) 0 clamp(2rem, 4vw, 3rem);
+    background: radial-gradient(circle at 20% 0%, rgba(255, 213, 108, 0.16), transparent 44%),
+        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.08), transparent 38%),
+        var(--kabinet-bg);
+}
+
+.kabinet-hero-content {
+    max-width: 1120px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.kabinet-eyebrow {
+    text-align: center;
+    font-size: 0.76rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 213, 108, 0.9);
+    margin-bottom: 0.95rem;
+    font-weight: 700;
+}
+
+.kabinet-title {
+    text-align: center;
+    font-family: "Bentham", serif;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 1.08;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.kabinet-lead {
+    max-width: 74ch;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 0.97rem;
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.kabinet-stat-grid {
+    margin-top: clamp(1.45rem, 3vw, 2rem);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
+.kabinet-stat-card {
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.01));
+    padding: 1rem;
+    text-align: center;
+}
+
+.kabinet-stat-value {
+    font-family: "Bentham", serif;
+    font-size: clamp(1.85rem, 3vw, 2.5rem);
+    color: var(--kabinet-accent);
+    line-height: 1.05;
+    margin-bottom: 0.25rem;
+}
+
+.kabinet-stat-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.kabinet-section {
+    background: var(--kabinet-surface);
+    color: var(--kabinet-text);
+    border: 1px solid var(--kabinet-border);
+    padding: clamp(1.3rem, 2.7vw, 2.4rem);
+    margin-bottom: 1.5rem;
+}
+
+.kabinet-section-header {
+    text-align: center;
+    margin-bottom: clamp(1rem, 2vw, 1.8rem);
+}
+
+.kabinet-section-header h2 {
+    font-family: "Bentham", serif;
+    font-size: clamp(1.45rem, 4vw, 2.3rem);
+    color: var(--kabinet-text);
+    line-height: 1.08;
+}
+
+.kabinet-section-header p {
+    max-width: 72ch;
+    margin: 0.55rem auto 0;
+    font-size: 0.96rem;
+    line-height: 1.62;
+    color: var(--kabinet-text-muted);
+}
+
+.kabinet-team-state {
+    border: 1px solid var(--kabinet-border);
+    background: var(--kabinet-surface-soft);
+    color: var(--kabinet-text-muted);
+    padding: 0.8rem 0.9rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+}
+
+.kabinet-team-state--error {
+    border-color: rgba(169, 17, 28, 0.25);
+    color: rgba(115, 10, 19, 0.92);
+    background: #fff5f6;
+}
+
+.kabinet-core-grid {
+    --team-card-gap: 1rem;
+    display: flex;
+    gap: var(--team-card-gap);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.2rem;
+}
+
+.kabinet-core-grid>.kabinet-core-card {
+    flex: 0 0 calc((100% - (var(--team-card-gap) * 3)) / 4);
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
+.kabinet-core-card {
+    border: 1px solid var(--kabinet-border);
+    padding: 1rem 0.9rem;
+    background: var(--kabinet-surface);
+    display: grid;
+    justify-items: stretch;
+    text-align: center;
+    gap: 0.8rem;
+}
+
+.kabinet-core-id-card {
+    width: 100%;
+    position: relative;
+    aspect-ratio: 141.75 / 240.75;
+    isolation: isolate;
+}
+
+.kabinet-core-frame {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.kabinet-core-photo-wrap {
+    position: absolute;
+    left: 6.35%;
+    right: 0.18%;
+    top: 2.08%;
+    bottom: 17.5%;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.kabinet-core-name-wrap {
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding-inline: 9%;
+    bottom: 19.5%;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+}
+
+.kabinet-core-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    -webkit-user-drag: none;
+    user-select: none;
+}
+
+.kabinet-core-fallback {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: var(--kabinet-accent);
+    font-size: clamp(1.8rem, 3vw, 2.35rem);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    background: linear-gradient(140deg, #2e2e2e, #121212);
+}
+
+.kabinet-core-meta {
+    width: 100%;
+    display: grid;
+    gap: 0.35rem;
+    justify-items: center;
+}
+
+.kabinet-core-name {
+    width: fit-content;
+    max-width: 100%;
+    min-height: 50px;
+    height: auto;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.35;
+    color: #ffffff;
+    padding: 0.75rem 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    background: url('/images/cta-pixel.svg') center center / 100% 100% no-repeat;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+    text-align: center;
+}
+
+.kabinet-core-role {
+    width: fit-content;
+    max-width: 100%;
+    min-height: 28px;
+    height: auto;
+    margin: 0;
+    display: grid;
+    place-items: center;
+    font-size: 0.96rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    line-height: 1.35;
+    text-transform: uppercase;
+    font-family: Bentham, serif;
+    color: #ffffff;
+    background: #962222;
+    padding: 0.35rem 0.75rem;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: normal;
+    text-align: center;
+}
+
+.kabinet-division-team-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.kabinet-division-team-block {
+    border: 1px solid var(--kabinet-border);
+    background: var(--kabinet-surface);
+    padding: clamp(0.9rem, 2vw, 1.3rem);
+    display: grid;
+    gap: 1rem;
+}
+
+.kabinet-division-team-head {
+    display: grid;
+    gap: 0.45rem;
+}
+
+.kabinet-division-team-head h3 {
+    font-family: var(--font-bentham);
+    font-size: clamp(1.4rem, 2.2vw, 1.9rem);
+    line-height: 1.08;
+    color: var(--kabinet-text);
+    letter-spacing: 0.02em;
+}
+
+.kabinet-division-team-head p {
+    font-size: 0.9rem;
+    line-height: 1.62;
+    color: var(--kabinet-text-muted);
+    font-family: var(--font-manrope);
+}
+
+.kabinet-division-team-info {
+    border: 1px solid var(--kabinet-border);
+    background: var(--kabinet-surface-soft);
+    padding: 0.8rem;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.kabinet-division-team-title-wrap {
+    position: relative;
+    padding-left: 0.85rem;
+    display: grid;
+    gap: 0.38rem;
+}
+
+.kabinet-division-team-title-wrap::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    bottom: 0.15rem;
+    width: 3px;
+    background: linear-gradient(180deg, #b77a2f 0%, #7b3f1f 100%);
+}
+
+.kabinet-division-team-title-label,
+.kabinet-division-team-jobdesk-label {
+    font-size: 0.72rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-family: var(--font-manrope);
+}
+
+.kabinet-division-team-title-label {
+    color: rgba(86, 54, 24, 0.9);
+}
+
+.kabinet-division-team-jobdesk-label {
+    color: rgba(86, 54, 24, 0.72);
+}
+
+.kabinet-division-team-title {
+    border: 0;
+    background: transparent;
+    font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
+    padding: 0;
+    font-family: var(--font-bentham);
+    text-transform: uppercase;
+    color: #5b3a1b;
+    background-image: linear-gradient(90deg, #6b4320 0%, #81502a 50%, #6f2f20 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.kabinet-division-team-jobdesk {
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.34rem;
+}
+
+.kabinet-division-team-jobdesk li {
+    border-left: 2px solid rgba(123, 63, 31, 0.3);
+    background: linear-gradient(90deg, rgba(123, 63, 31, 0.06), transparent);
+    padding: 0.22rem 0 0.22rem 0.55rem;
+    font-size: 0.9rem;
+    line-height: 1.58;
+    color: rgba(71, 51, 37, 0.88);
+    font-family: var(--font-manrope);
+}
+
+.kabinet-division-team-jobdesk li strong {
+    color: rgba(64, 40, 24, 0.95);
+    font-weight: 700;
+}
+
+.kabinet-division-team-grid {
+    --team-card-gap: 1rem;
+    display: flex;
+    gap: var(--team-card-gap);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 0.2rem;
+}
+
+.kabinet-division-team-grid>.kabinet-core-card {
+    flex: 0 0 calc((100% - (var(--team-card-gap) * 3)) / 4);
+    min-width: 0;
+    scroll-snap-align: start;
+}
+
+.kabinet-draggable-row {
+    cursor: grab;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.kabinet-draggable-row::-webkit-scrollbar {
+    display: none;
+}
+
+.kabinet-draggable-row.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+}
+
+.kabinet-draggable-row.is-dragging .kabinet-core-card {
+    user-select: none;
+}
+
+.kabinet-jobdesk {
+    background: var(--kabinet-dark-surface);
+    border: 1px solid var(--kabinet-accent-soft);
+    color: var(--kabinet-light-text);
+    margin-bottom: clamp(2.2rem, 4vw, 3.5rem);
+}
+
+.kabinet-jobdesk .kabinet-section-header h2 {
+    color: #6f2f20;
+}
+
+.kabinet-jobdesk .kabinet-section-header p {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+.kabinet-jobdesk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+}
+
+.kabinet-jobdesk-card {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: var(--kabinet-dark-surface-soft);
+    padding: 0.95rem;
+}
+
+.kabinet-jobdesk-card h3 {
+    font-size: 1rem;
+    color: var(--kabinet-accent);
+    margin-bottom: 0.4rem;
+}
+
+.kabinet-jobdesk-card p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.82);
+}
+
+@media (max-width: 1080px) {
+
+    .kabinet-core-grid>.kabinet-core-card,
+    .kabinet-division-team-grid>.kabinet-core-card {
+        flex-basis: calc((100% - (var(--team-card-gap) * 2)) / 3);
+    }
+}
+
+@media (max-width: 860px) {
+    .kabinet-stat-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .kabinet-jobdesk-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 620px) {
+    .kabinet-shell {
+        width: min(1240px, calc(100% - 1rem));
+    }
+
+    .kabinet-shell--landing {
+        margin-bottom: 1rem;
+    }
+
+    .kabinet-section {
+        padding: 0.95rem;
+        margin-bottom: 1rem;
+    }
+
+    .kabinet-section-header {
+        margin-bottom: 0.8rem;
+    }
+
+    .kabinet-section-header h2 {
+        font-size: clamp(1.25rem, 6vw, 1.55rem);
+    }
+
+    .kabinet-section-header p {
+        margin-top: 0.45rem;
+        font-size: 0.82rem;
+        line-height: 1.5;
+    }
+
+    .kabinet-core-grid,
+    .kabinet-division-team-grid {
+        --team-card-gap: 0.65rem;
+    }
+
+    .kabinet-core-grid>.kabinet-core-card,
+    .kabinet-division-team-grid>.kabinet-core-card {
+        flex-basis: calc((100% - var(--team-card-gap)) / 2);
+    }
+
+    .kabinet-core-card {
+        padding: 0.62rem 0.55rem;
+        gap: 0.5rem;
+    }
+
+    .kabinet-core-meta {
+        gap: 0.25rem;
+    }
+
+    .kabinet-core-fallback {
+        font-size: clamp(1.15rem, 6vw, 1.65rem);
+        letter-spacing: 0.05em;
+    }
+
+    .kabinet-core-name {
+        width: 100%;
+        min-height: 38px;
+        font-size: 0.62rem;
+        line-height: 1.25;
+        letter-spacing: 0.045em;
+        padding: 0.5rem 0.45rem;
+    }
+
+    .kabinet-core-role {
+        width: 100%;
+        min-height: 24px;
+        font-size: 0.68rem;
+        line-height: 1.2;
+        letter-spacing: 0.08em;
+        padding: 0.25rem 0.35rem;
+    }
+
+    .kabinet-team-state {
+        padding: 0.65rem 0.7rem;
+        font-size: 0.8rem;
+        line-height: 1.45;
+    }
+
+    .kabinet-division-team-block {
+        padding: 0.75rem;
+        gap: 0.72rem;
+    }
+
+    .kabinet-division-team-head h3 {
+        font-size: clamp(1.1rem, 5vw, 1.35rem);
+    }
+
+    .kabinet-division-team-head p {
+        font-size: 0.8rem;
+        line-height: 1.48;
+    }
+
+    .kabinet-division-team-title-wrap {
+        gap: 0.28rem;
+        padding-left: 0.72rem;
+    }
+
+    .kabinet-division-team-title-label,
+    .kabinet-division-team-jobdesk-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.085em;
+    }
+
+    .kabinet-division-team-title {
+        font-size: clamp(0.98rem, 4.6vw, 1.2rem);
+        line-height: 1.08;
+    }
+
+    .kabinet-division-team-info {
+        padding: 0.62rem;
+    }
+
+    .kabinet-division-team-jobdesk {
+        gap: 0.25rem;
+    }
+
+    .kabinet-division-team-jobdesk li {
+        font-size: 0.78rem;
+        line-height: 1.42;
+        padding: 0.18rem 0 0.18rem 0.45rem;
+    }
+}
+
+@media (max-width: 420px) {
+    .kabinet-shell {
+        width: min(1240px, calc(100% - 0.75rem));
+    }
+
+    .kabinet-shell--landing {
+        margin-bottom: 0.75rem;
+    }
+
+    .kabinet-core-grid,
+    .kabinet-division-team-grid {
+        --team-card-gap: 0.55rem;
+    }
+
+    .kabinet-core-card {
+        padding: 0.55rem 0.45rem;
+        gap: 0.42rem;
+    }
+
+    .kabinet-core-name {
+        min-height: 34px;
+        font-size: 0.56rem;
+        line-height: 1.18;
+        letter-spacing: 0.03em;
+        padding: 0.42rem 0.32rem;
+    }
+
+    .kabinet-core-role {
+        min-height: 22px;
+        font-size: 0.6rem;
+        letter-spacing: 0.05em;
+        padding: 0.22rem 0.3rem;
+    }
+
+    .kabinet-division-team-title {
+        font-size: clamp(0.92rem, 4.8vw, 1.1rem);
+    }
+}

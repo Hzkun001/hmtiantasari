@@ -1,0 +1,120 @@
+.services {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.servicesHeader {
+    position: relative;
+    width: 100%;
+    padding: 0 2rem;
+    will-change: transform;
+}
+
+.servicesHeader img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.header1,
+.header3 {
+    transform: translateX(100%) translateY(0%);
+}
+
+.header2 {
+    transform: translateX(-100%) translateY(0%);
+    z-index: 2;
+}
+
+.servicesCopy {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+    margin-top: 155svh;
+    padding: 2rem 2rem 25svh 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+}
+
+.textContainer {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.animateText {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: -0.15rem;
+    line-height: 1.125;
+    text-align: justify;
+    text-justify: inter-word;
+    color: #d0d0d0;
+    --clip-value: 100%;
+}
+
+.animateText::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #1a1a1a;
+    clip-path: inset(0 0 var(--clip-value) 0);
+    will-change: clip-path;
+}
+
+@media (max-width: 1000px) {
+    .textContainer {
+        width: 90%;
+        gap: 2rem;
+    }
+
+    .animateText {
+        font-size: 2rem;
+        letter-spacing: -0.05rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .services {
+        height: auto;
+        min-height: 70svh;
+        padding: 6rem 1rem 2rem;
+    }
+
+    .servicesHeader {
+        padding: 0 1rem;
+    }
+
+    .header1,
+    .header2,
+    .header3 {
+        transform: translateX(0%) translateY(0%);
+    }
+
+    .servicesCopy {
+        height: auto;
+        margin-top: 0;
+        padding: 2.25rem 1.25rem 4rem;
+    }
+
+    .textContainer {
+        width: 100%;
+        gap: 2rem;
+    }
+}

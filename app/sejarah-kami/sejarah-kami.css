@@ -1,23 +1,293 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Italiana&family=Manrope:wght@200..800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
 html,
 body {
     width: 100%;
     min-height: 100%;
-    font-family: "Manrope", sans-serif;
-    background-color: #1a1a1a;
-    overflow-x: hidden;
-    overflow-y: auto;
 }
 
 canvas {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.sejarah-kami-page {
+    position: relative;
+    min-height: 100svh;
+}
+
+.sejarah-kami-container {
+    max-width: 1100px;
+    position: relative;
+    z-index: 3;
+}
+
+.sejarah-kami-section {
+    position: relative;
+    z-index: 1;
+    padding: clamp(2.5rem, 7vw, 3.1rem) 0;
+}
+
+.sejarah-kami-section--dark {
+    background: #111111;
+    color: #ffffff;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sejarah-kami-section--light {
+    background-color: #ffffff;
+    color: #1a1a1a;
+}
+
+.sejarah-kami-section--mono {
+    background-color: #ffffff;
+    color: #111111;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.sejarah-kami-intro {
+    text-align: center;
+}
+
+.sejarah-kami-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 0.75rem;
+}
+
+
+.sejarah-kami-lead {
+    max-width: 60ch;
+    margin: 0 auto 1.5rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    text-wrap: balance;
+}
+
+.sejarah-kami-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 2.25rem;
+}
+
+.sejarah-kami-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.02em;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.sejarah-kami-cta--primary {
+    background: #ffffff;
+    border-color: rgba(255, 255, 255, 0.65);
+    color: #111111;
+}
+
+.sejarah-kami-cta--ghost {
+    background: transparent;
+}
+
+.sejarah-kami-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.sejarah-kami-stat {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 1.1rem 1rem;
+    text-align: center;
+}
+
+.sejarah-kami-stat-value {
+    font-family: "Bentham", serif;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 0.35rem;
+}
+
+.sejarah-kami-stat-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.sejarah-kami-section-header {
+    text-align: center;
+    margin-bottom: 1.75rem;
+}
+
+.sejarah-kami-section-title {
+    padding-top: 1.5rem;
+    font-family: "Bentham", serif;
+    font-weight: 900;
+    font-size: clamp(1.5rem, 5vw, 4rem);
+    line-height: 1.1;
+    margin-bottom: 0.6rem;
+}
+
+.sejarah-kami-section-subtitle {
+    max-width: 70ch;
+    margin: 0;
+    color: rgba(0, 0, 0, 0.62);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-wrap: balance;
+}
+
+.sejarah-kami-mono-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(0, 0, 0, 0.56);
+    margin: 0 0 0.55rem;
+}
+
+.sejarah-kami-manifesto {
+    margin-bottom: 1.4rem;
+}
+
+.sejarah-kami-manifesto .sejarah-kami-section-title {
+    padding-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.sejarah-kami-manifesto-quote {
+    margin: 0;
+    border-left: 3px solid #111111;
+    padding-left: 1rem;
+}
+
+.sejarah-kami-manifesto-quote p {
+    margin: 0;
+    max-width: 70ch;
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    line-height: 1.55;
+    font-weight: 600;
+    color: #111111;
+}
+
+.sejarah-kami-pillar-layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) 1fr;
+    gap: 1.3rem;
+    align-items: start;
+}
+
+.sejarah-kami-pillar-intro h3 {
+    font-family: "Bentham", serif;
+    font-size: 1.5rem;
+    line-height: 1.15;
+    margin: 0 0 0.4rem;
+    color: #111111;
+}
+
+.sejarah-kami-pillar-intro p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.6;
+    color: rgba(0, 0, 0, 0.62);
+}
+
+.sejarah-kami-pillar-list,
+.sejarah-kami-mission-rail {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.22);
+}
+
+.sejarah-kami-pillar-row,
+.sejarah-kami-mission-row {
+    display: grid;
+    grid-template-columns: 52px minmax(220px, 300px) 1fr;
+    gap: 0.95rem;
+    align-items: start;
+    padding: 0.9rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.22);
+}
+
+.sejarah-kami-item-index {
+    font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 2.4rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: rgba(0, 0, 0, 0.58);
+    padding-top: 0.12rem;
+}
+
+.sejarah-kami-pillar-row h4,
+.sejarah-kami-mission-row h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.45;
+    color: #111111;
+}
+
+.sejarah-kami-pillar-row p,
+.sejarah-kami-mission-row p {
+    margin: 0;
+    font-size: 0.94rem;
+    line-height: 1.58;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.sejarah-kami-mission-heading {
+    margin-bottom: 0.85rem;
+}
+
+.sejarah-kami-mission-heading .sejarah-kami-section-title {
+    padding-top: 0;
+    margin-bottom: 0.4rem;
+}
+
+@media (max-width: 768px) {
+    .sejarah-kami-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .sejarah-kami-pillar-layout {
+        grid-template-columns: 1fr;
+        gap: 0.9rem;
+    }
+
+    .sejarah-kami-pillar-row,
+    .sejarah-kami-mission-row {
+        grid-template-columns: 1fr;
+        gap: 0.25rem;
+        padding: 0.85rem 0;
+    }
+
+    .sejarah-kami-item-index {
+        padding-top: 0;
+        margin-bottom: 0.2rem;
+    }
+
+    .sejarah-kami-manifesto-quote {
+        padding-left: 0.8rem;
+    }
 }

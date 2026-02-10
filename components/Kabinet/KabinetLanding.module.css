@@ -1,0 +1,262 @@
+
+.landingContainer {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    min-height: 100vh;
+    overflow: hidden;
+    background-color: #ffffff;
+    font-family: "PP Neue Montreal", sans-serif;
+}
+
+.landingContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.landingContainer p {
+    text-transform: uppercase;
+    font-family: "Akkurat Mono", monospace;
+    font-size: 0.7rem;
+}
+
+.landingContainer :global(.overlay) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100dvh;
+    padding: 2em;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    gap: 2em;
+    overflow: hidden;
+    z-index: 9;
+    pointer-events: none;
+}
+
+.landingContainer :global(.projects),
+.landingContainer :global(.loader),
+.landingContainer :global(.locations) {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2em;
+}
+
+.landingContainer :global(.loader) {
+    align-items: center;
+    gap: 0;
+}
+
+.landingContainer :global(.loader h1) {
+    text-align: center;
+    text-transform: uppercase;
+    font-family: "Bentham", serif;
+    font-size: 2.5rem;
+    font-style: italic;
+    line-height: 0.9;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-image: linear-gradient(0deg, #3a3a3a, #3a3a3a 50%, #fff 0);
+    background-size: 100% 200%;
+    background-position: 0% 100%;
+    color: #3a3a3a;
+}
+
+.landingContainer :global(.projects-header),
+.landingContainer :global(.project-item),
+.landingContainer :global(.locations-header),
+.landingContainer :global(.location-item) {
+    display: flex;
+    gap: 2em;
+    opacity: 0;
+}
+
+.landingContainer :global(.projects-header)>*,
+.landingContainer :global(.locations-header)>* {
+    flex: 1;
+}
+
+.landingContainer :global(.locations) {
+    align-items: center;
+}
+
+.landingContainer :global(.locations-header),
+.landingContainer :global(.location-item) {
+    width: 50%;
+}
+
+.landingContainer :global(.project-item),
+.landingContainer :global(.location-item) {
+    color: #4f4f4f;
+}
+
+.landingContainer :global(.image-grid) {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    width: 30%;
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    z-index: 10;
+}
+
+.landingContainer :global(.grid-row) {
+    width: 100%;
+    display: flex;
+    gap: 1em;
+}
+
+.landingContainer :global(.img) {
+    position: relative;
+    flex: 1;
+    aspect-ratio: 1;
+    clip-path: polygon(0% 0%, 100% 0%, 0% 0%);
+}
+
+.landingContainer :global(.banner-img) {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    -webkit-transform: translate(-50%, -50%) scale(0);
+    -moz-transform: translate(-50%, -50%) scale(0);
+    -ms-transform: translate(-50%, -50%) scale(0);
+    -o-transform: translate(-50%, -50%) scale(0);
+    width: 20%;
+    aspect-ratio: 3/5;
+    z-index: 11;
+}
+
+.landingContainer :global(.intro-copy) {
+    position: absolute;
+    top: 45%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    width: 100%;
+    padding: 0 8em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 11;
+}
+
+.landingContainer :global(.intro-copy h3) {
+    position: relative;
+    text-transform: uppercase;
+    color: #000;
+    font-family: "Bentham", serif;
+    font-weight: 500;
+    font-style: italic;
+    line-height: 0.9;
+    font-size: 1.5rem;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.landingContainer :global(.intro-copy h3 .word) {
+    display: inline-block;
+    position: relative;
+    will-change: transform;
+    margin-right: 0.1rem;
+}
+
+@media (max-width: 900px) {
+    .landingContainer {
+        height: 100dvh;
+        min-height: 100svh;
+    }
+
+    .landingContainer :global(.overlay) {
+        padding: 1.25em 1em;
+    }
+
+    .landingContainer :global(.loader) {
+        position: absolute;
+        width: 100%;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+    }
+
+    .landingContainer :global(.loader h1) {
+        font-size: clamp(2rem, 11vw, 3.2rem);
+    }
+
+    .landingContainer :global(.projects),
+    .landingContainer :global(.locations),
+    .landingContainer :global(.banner-img) {
+        display: none;
+    }
+
+    .landingContainer :global(.image-grid) {
+        top: 48%;
+        width: min(86vw, 360px);
+        gap: 0.5em;
+    }
+
+    .landingContainer :global(.grid-row) {
+        width: 100%;
+        justify-content: center;
+        gap: 0.5em;
+    }
+
+    .landingContainer :global(.intro-copy) {
+        top: auto;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 1.25rem);
+        transform: none;
+        -webkit-transform: none;
+        -moz-transform: none;
+        -ms-transform: none;
+        -o-transform: none;
+        width: 100%;
+        padding: 0 1rem;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 0.75rem;
+    }
+
+    .landingContainer :global(.intro-copy h3) {
+        color: #fff;
+        font-size: clamp(1rem, 5.2vw, 1.35rem);
+        line-height: 1;
+        text-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .landingContainer :global(.intro-copy h3:last-child) {
+        text-align: right;
+    }
+}
+
+@media (max-width: 560px) {
+    .landingContainer :global(.image-grid) {
+        width: min(90vw, 320px);
+    }
+
+    .landingContainer :global(.intro-copy) {
+        flex-direction: column;
+        align-items: flex-start;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+    }
+
+    .landingContainer :global(.intro-copy h3:last-child) {
+        text-align: left;
+    }
+}
