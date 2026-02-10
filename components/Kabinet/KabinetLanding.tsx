@@ -1,7 +1,7 @@
 "use client";
+/* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useRef } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { CustomEase, ScrollTrigger } from "gsap/all";
 import SplitType from "split-type";
@@ -88,9 +88,9 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
         // Image sources
         const allImageSources = [
-            "./kabinet/img1.jpg", "./kabinet/img2.jpg", "./kabinet/img3.jpg", "./kabinet/img4.jpg",
-            "./kabinet/img5.jpg", "./kabinet/img6.jpg", "./kabinet/img7.jpg", "./kabinet/img8.jpg",
-            "./kabinet/img9.jpg", "./kabinet/img10.jpg", "./kabinet/img11.jpg",
+            "/kabinet/img1.jpg", "/kabinet/img2.jpg", "/kabinet/img3.jpg", "/kabinet/img4.jpg",
+            "/kabinet/img5.jpg", "/kabinet/img6.jpg", "/kabinet/img7.jpg", "/kabinet/img8.jpg",
+            "/kabinet/img9.jpg", "/kabinet/img10.jpg", "/kabinet/img11.jpg",
         ];
 
         const getRandomImageSet = () => {
@@ -145,7 +145,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                             if (!imgElement) return;
 
                             if (cycle === totalCycles - 1 && img === heroImage) {
-                                imgElement.src = "./kabinet/img5.jpg";
+                                imgElement.src = "/kabinet/img5.jpg";
                                 gsap.set(".hero-img img", { scale: 1.2 });
                             } else {
                                 imgElement.src = randomImages[index];
@@ -341,44 +341,44 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             <div className="image-grid" ref={imageGridRef}>
                 <div className="grid-row">
                     <div className="img">
-                        <Image src="/kabinet/img1.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img1.jpg" alt="" />
                     </div>
                     <div className="img">
-                        <Image src="/kabinet/img2.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img2.jpg" alt="" />
                     </div>
                     <div className="img">
-                        <Image src="/kabinet/img3.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img3.jpg" alt="" />
                     </div>
                 </div>
                 <div className="grid-row">
                     <div className="img">
-                        <Image src="/kabinet/img4.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img4.jpg" alt="" />
                     </div>
                     <div className="img hero-img">
-                        <Image src="/kabinet/img5.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img5.jpg" alt="" />
                     </div>
                     <div className="img">
-                        <Image src="/kabinet/img6.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img6.jpg" alt="" />
                     </div>
                 </div>
                 <div className="grid-row">
                     <div className="img">
-                        <Image src="/kabinet/img9.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img9.jpg" alt="" />
                     </div>
                     <div className="img">
-                        <Image src="/kabinet/img10.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img10.jpg" alt="" />
                     </div>
                     <div className="img">
-                        <Image src="/kabinet/img11.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
+                        <img src="/kabinet/img11.jpg" alt="" />
                     </div>
                 </div>
             </div>
 
             <div className="banner-img banner-img-1">
-                <Image src="/kabinet/img7.jpg" alt="" fill sizes="(max-width: 900px) 40vw, 20vw" />
+                <img src="/kabinet/img7.jpg" alt="" />
             </div>
             <div className="banner-img banner-img-2">
-                <Image src="/kabinet/img8.jpg" alt="" fill sizes="(max-width: 900px) 40vw, 20vw" />
+                <img src="/kabinet/img8.jpg" alt="" />
             </div>
 
             <div className="intro-copy" ref={introCopyRef}>
