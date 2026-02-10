@@ -98,7 +98,7 @@
 
   html {
     box-sizing: inherit;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     height: -webkit-fill-available;
   }
 

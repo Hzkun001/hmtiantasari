@@ -4,8 +4,6 @@ import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useLenis } from '@/hooks/useLenis'
-import { useLenisScrollTrigger } from '@/hooks/useScrollTrigger'
 import styles from './HeroGallery.module.css'
 
 if (typeof window !== 'undefined') {
@@ -39,10 +37,6 @@ export default function VideoGallery() {
     const sectionRef = useRef<HTMLElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
     const headerRef = useRef<HTMLDivElement>(null)
-    const lenisRef = useLenis()
-
-    // Integrate Lenis with GSAP ScrollTrigger
-    useLenisScrollTrigger(lenisRef)
 
     useEffect(() => {
         if (!containerRef.current || !sectionRef.current) return
@@ -253,14 +247,11 @@ export default function VideoGallery() {
         window.addEventListener('touchmove', handleTouchMove, { passive: true })
         window.addEventListener('resize', handleResize)
 
+        let rafId = 0
+
         // Animation loop
         function animate() {
-            requestAnimationFrame(animate)
-
-            // Update Lenis smooth scrolling
-            if (lenisRef.current) {
-                lenisRef.current.raf(performance.now())
-            }
+            rafId = requestAnimationFrame(animate)
 
             // Update header transform
             if (headerRef.current) {
@@ -343,8 +334,9 @@ export default function VideoGallery() {
 
         animate()
 
-            // Cleanup
+        // Cleanup
         return () => {
+            cancelAnimationFrame(rafId)
             fadeOutTrigger.kill()
             window.removeEventListener('mousemove', handleMouseMove)
             window.removeEventListener('touchstart', resumeVideosFromGesture)
@@ -365,7 +357,7 @@ export default function VideoGallery() {
                 containerEl.removeChild(renderer.domElement)
             }
         }
-    }, [lenisRef])
+    }, [])
 
     return (
         <section

@@ -22,6 +22,7 @@ export default function HeroSection() {
     const ctaRowRef = useRef<HTMLDivElement>(null);
     const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
     const autoScrollTriggeredRef = useRef(false);
+    const lenisRecoveryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     useEffect(() => {
         // Check for prefers-reduced-motion
@@ -90,8 +91,18 @@ export default function HeroSection() {
                                 const heroRevealSection = document.querySelector('.hero-reveal-section');
 
                                 if (heroRevealSection && window.lenis) {
+                                    if (lenisRecoveryTimeoutRef.current) {
+                                        clearTimeout(lenisRecoveryTimeoutRef.current);
+                                    }
+
                                     // Lock scroll saat autoscroll berjalan
                                     window.lenis.stop();
+
+                                    // Fallback: pastikan Lenis aktif lagi kalau onComplete tidak terpanggil
+                                    lenisRecoveryTimeoutRef.current = setTimeout(() => {
+                                        window.lenis?.start();
+                                        lenisRecoveryTimeoutRef.current = null;
+                                    }, 2200);
 
                                     // Gunakan Lenis untuk smooth scroll
                                     window.lenis.scrollTo(heroRevealSection as HTMLElement, {
@@ -101,6 +112,10 @@ export default function HeroSection() {
                                         lock: true,
                                         force: true,
                                         onComplete: () => {
+                                            if (lenisRecoveryTimeoutRef.current) {
+                                                clearTimeout(lenisRecoveryTimeoutRef.current);
+                                                lenisRecoveryTimeoutRef.current = null;
+                                            }
                                             // Unlock scroll setelah autoscroll selesai
                                             if (window.lenis) {
                                                 window.lenis.start();
@@ -141,7 +156,14 @@ export default function HeroSection() {
             }
         });
 
-        return () => ctx.revert();
+        return () => {
+            if (lenisRecoveryTimeoutRef.current) {
+                clearTimeout(lenisRecoveryTimeoutRef.current);
+                lenisRecoveryTimeoutRef.current = null;
+            }
+            window.lenis?.start();
+            ctx.revert();
+        };
     }, [prefersReducedMotion]);
 
     return (
