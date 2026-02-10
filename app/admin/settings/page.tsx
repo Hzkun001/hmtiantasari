@@ -50,8 +50,10 @@ export default function SettingsPage() {
             const { data, error } = await supabase
                 .from('SiteSettings')
                 .select('*')
+                .order('updated_at', { ascending: false })
+                .order('id', { ascending: false })
                 .limit(1)
-                .single();
+                .maybeSingle();
 
             if (error && error.code !== 'PGRST116') {
                 throw error;
@@ -156,6 +158,9 @@ export default function SettingsPage() {
                 {/* General Settings */}
                 <div className="admin-card admin-settings-section">
                     <h2 className="admin-settings-section-title">General Information</h2>
+                    <p className="admin-page-subtitle" style={{ marginTop: '-8px', marginBottom: '14px' }}>
+                        Dipakai untuk judul website, metadata SEO, dan identitas utama di layout.
+                    </p>
                     <div className="admin-form">
                         <div className="admin-form-group">
                             <label className="admin-form-label">Site Name</label>
@@ -164,7 +169,7 @@ export default function SettingsPage() {
                                 value={formData.site_name}
                                 onChange={(e) => setFormData({ ...formData, site_name: e.target.value })}
                                 className="admin-form-input"
-                                placeholder="HMTI UNAIR"
+                                placeholder="HMTI UIN Antasari"
                             />
                         </div>
 
@@ -175,7 +180,7 @@ export default function SettingsPage() {
                                 value={formData.site_tagline}
                                 onChange={(e) => setFormData({ ...formData, site_tagline: e.target.value })}
                                 className="admin-form-input"
-                                placeholder="Your organization tagline"
+                                placeholder="Kabinet Arnanta"
                             />
                         </div>
 
@@ -185,7 +190,7 @@ export default function SettingsPage() {
                                 value={formData.about_text}
                                 onChange={(e) => setFormData({ ...formData, about_text: e.target.value })}
                                 className="admin-form-textarea"
-                                placeholder="Brief description about your organization"
+                                placeholder="Deskripsi singkat organisasi (dipakai sebagai metadata description)"
                                 rows={6}
                             />
                         </div>
@@ -195,29 +200,32 @@ export default function SettingsPage() {
                 {/* Contact Information */}
                 <div className="admin-card admin-settings-section">
                     <h2 className="admin-settings-section-title">Contact Information</h2>
+                    <p className="admin-page-subtitle" style={{ marginTop: '-8px', marginBottom: '14px' }}>
+                        Ditampilkan di footer website sebagai informasi kontak.
+                    </p>
                     <div className="admin-form">
                         <div className="admin-form-row">
                             <div className="admin-form-group">
                                 <label className="admin-form-label">Email</label>
                                 <input
-                                    type="email"
-                                    value={formData.contact_email}
-                                    onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
-                                    className="admin-form-input"
-                                    placeholder="contact@hmti.com"
-                                />
-                            </div>
+                                type="email"
+                                value={formData.contact_email}
+                                onChange={(e) => setFormData({ ...formData, contact_email: e.target.value })}
+                                className="admin-form-input"
+                                placeholder="hmti@uinantasari.ac.id"
+                            />
+                        </div>
 
                             <div className="admin-form-group">
                                 <label className="admin-form-label">Phone</label>
                                 <input
-                                    type="tel"
-                                    value={formData.contact_phone}
-                                    onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
-                                    className="admin-form-input"
-                                    placeholder="+62 xxx xxxx xxxx"
-                                />
-                            </div>
+                                type="tel"
+                                value={formData.contact_phone}
+                                onChange={(e) => setFormData({ ...formData, contact_phone: e.target.value })}
+                                className="admin-form-input"
+                                placeholder="+62 8xx xxxx xxxx"
+                            />
+                        </div>
                         </div>
 
                         <div className="admin-form-group">
@@ -226,7 +234,7 @@ export default function SettingsPage() {
                                 value={formData.address}
                                 onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                                 className="admin-form-textarea"
-                                placeholder="Full address"
+                                placeholder="Alamat lengkap untuk footer"
                                 rows={3}
                             />
                         </div>
@@ -236,6 +244,9 @@ export default function SettingsPage() {
                 {/* Social Media Links */}
                 <div className="admin-card admin-settings-section">
                     <h2 className="admin-settings-section-title">Social Media Links</h2>
+                    <p className="admin-page-subtitle" style={{ marginTop: '-8px', marginBottom: '14px' }}>
+                        Seluruh link social media di bagian footer diambil dari sini.
+                    </p>
                     <div className="admin-form">
                         <div className="admin-form-group">
                             <label className="admin-form-label">Facebook URL</label>

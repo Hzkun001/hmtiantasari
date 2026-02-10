@@ -12,10 +12,8 @@ if (typeof window !== 'undefined') {
 export default function HeroSection() {
     const heroRef = useRef<HTMLElement>(null);
     const skyRef = useRef<HTMLImageElement>(null);
-    const skyMobileRef = useRef<HTMLImageElement>(null);
     const mountainsRef = useRef<HTMLImageElement>(null);
     const manRef = useRef<HTMLImageElement>(null);
-    const manMobileRef = useRef<HTMLImageElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const titleSpansRef = useRef<HTMLSpanElement[]>([]);
     const subtitleRef = useRef<HTMLHeadingElement>(null);
@@ -133,9 +131,9 @@ export default function HeroSection() {
                         },
                     },
                 })
-                    .to([skyRef.current, skyMobileRef.current].filter(Boolean), { y: parallaxValues.sky }, '0')
+                    .to(skyRef.current, { y: parallaxValues.sky }, '0')
                     .to(mountainsRef.current, { y: parallaxValues.mountains }, '0');
-                scrollTriggerInstance.to([manRef.current, manMobileRef.current].filter(Boolean), { y: parallaxValues.man }, '0');
+                scrollTriggerInstance.to(manRef.current, { y: parallaxValues.man }, '0');
 
                 if (isDesktop) {
                     scrollTriggerInstance.to(contentRef.current, { y: parallaxValues.content, autoAlpha: 0 }, '0');
@@ -155,10 +153,8 @@ export default function HeroSection() {
 
                 const mediaElements = [
                     skyRef.current,
-                    skyMobileRef.current,
                     mountainsRef.current,
                     manRef.current,
-                    manMobileRef.current,
                 ].filter((el): el is HTMLImageElement => Boolean(el));
 
                 const mediaCleanup: Array<() => void> = [];
@@ -211,6 +207,10 @@ export default function HeroSection() {
 
     return (
         <section ref={heroRef} className="hero-section section" id="section-00">
+            {/* Background mobile sederhana tanpa parallax */}
+            <div className="hero-mobile-background" aria-hidden="true"></div>
+
+            {/* Parallax images - hanya untuk desktop */}
             <div className="hero-image-wrapper">
                 <img
                     ref={skyRef}
@@ -231,41 +231,12 @@ export default function HeroSection() {
                     fetchPriority="high"
                 />
                 <img
-                    ref={skyMobileRef}
-                    src="/sky-mobile.webp"
-                    width={646}
-                    height={1113}
-                    className="sky-mobile"
-                    alt=""
-                    aria-hidden="true"
-                    fetchPriority="high"
-                />
-                <img
-                    src="/mountains-mobile.webp"
-                    width={1710}
-                    height={2950}
-                    className="mountains-mobile"
-                    alt=""
-                    aria-hidden="true"
-                    fetchPriority="high"
-                />
-                <img
                     ref={manRef}
                     src="/man-standing.png"
                     width={1920}
                     height={1358}
                     className="man-standing"
                     alt="Hiker"
-                />
-                <img
-                    ref={manMobileRef}
-                    src="/man-standing-mobile.webp"
-                    width={788}
-                    height={1358}
-                    className="man-standing-mobile"
-                    alt=""
-                    aria-hidden="true"
-                    fetchPriority="high"
                 />
             </div>
 
@@ -281,14 +252,23 @@ export default function HeroSection() {
                         if (el) titleSpansRef.current[1] = el;
                     }}>
                         <span className="hero-title-word--mobile-hide">Teknologi Informasi</span>
-                        
+
                     </span>
                 </h1>
+                <p ref={descriptionRef} className="hero-description">
+                    Wadah belajar, berkarya, dan bertumbuh bersama mahasiswa Teknologi Informasi UIN Antasari.
+                </p>
                 <div ref={ctaRowRef} className="hero-cta-row" aria-label="Quick links">
+                    <a href="#section-01" className="hero-cta hero-cta-primary">
+                        Jelajahi
+                    </a>
+                    <a href="/kegiatan" className="hero-cta hero-cta-secondary">
+                        Kegiatan
+                    </a>
                 </div>
                 <a ref={actionRef} href="#section-01" className="hero-action">
                     Scroll down
-                    <svg width="16" height="24" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="20" height="12" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M16 16L14.59 14.59L9 20.17V0H7V20.17L1.42 14.58L0 16L8 24L16 16Z" fill="currentColor"></path>
                     </svg>
                 </a>

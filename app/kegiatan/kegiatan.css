@@ -20,9 +20,7 @@
 
 .kegiatan-hero {
     padding: clamp(5.6rem, 9vw, 8.3rem) 0 clamp(2rem, 4vw, 3rem);
-    background: radial-gradient(circle at 20% 0%, rgba(255, 213, 108, 0.16), transparent 44%),
-        radial-gradient(circle at 80% 10%, rgba(255, 255, 255, 0.08), transparent 38%),
-        var(--kegiatan-bg);
+    background: var(--kegiatan-bg)
 }
 
 .kegiatan-hero-layout {

@@ -1,11 +1,57 @@
 'use client';
 
 import Image from 'next/image';
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { supabase } from '@/lib/supabase';
 
 gsap.registerPlugin(ScrollTrigger);
+
+type FooterSettings = {
+  site_name?: string | null;
+  contact_email?: string | null;
+  contact_phone?: string | null;
+  address?: string | null;
+  facebook_url?: string | null;
+  twitter_url?: string | null;
+  instagram_url?: string | null;
+  linkedin_url?: string | null;
+  youtube_url?: string | null;
+};
+
+type SocialLinkItem = {
+  label: string;
+  href: string;
+};
+
+const DEFAULT_ADDRESS_LINES = [
+  'Universitas Islam Negeri',
+  'Antasari Banjarmasin',
+  'Jl. A. Yani KM 4.5',
+  'Banjarmasin, Kalimantan Selatan',
+  'Indonesia 70235',
+];
+
+const DEFAULT_SOCIAL_LINKS: SocialLinkItem[] = [
+  { label: 'INSTAGRAM', href: 'https://instagram.com/hmtiantasari' },
+  { label: 'TWITTER', href: 'https://x.com/hmtiuinantasari' },
+  { label: 'LINKEDIN', href: 'https://linkedin.com/company/hmtiuinantasari' },
+];
+
+function normalizeExternalUrl(value?: string | null) {
+  const normalized = value?.trim();
+  if (!normalized) return null;
+  if (normalized.startsWith('http://') || normalized.startsWith('https://')) return normalized;
+  return `https://${normalized.replace(/^\/+/, '')}`;
+}
+
+function toTelHref(value?: string | null) {
+  const normalized = value?.trim();
+  if (!normalized) return null;
+  const cleaned = normalized.replace(/[^\d+]/g, '');
+  return cleaned ? `tel:${cleaned}` : null;
+}
 
 export default function Footer() {
   const footerRef = useRef<HTMLElement | null>(null);
@@ -17,6 +63,59 @@ export default function Footer() {
   const copyRef = useRef<HTMLDivElement | null>(null);
   const wordmarkWrapRef = useRef<HTMLDivElement | null>(null); // masih dipakai sebagai wrapper SVG
   const svgStrokeRef = useRef<SVGSVGElement | null>(null);
+  const [settings, setSettings] = useState<FooterSettings | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function fetchFooterSettings() {
+      const { data, error } = await supabase
+        .from('SiteSettings')
+        .select(
+          'site_name,contact_email,contact_phone,address,facebook_url,twitter_url,instagram_url,linkedin_url,youtube_url'
+        )
+        .order('updated_at', { ascending: false })
+        .order('id', { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (!mounted || error || !data) return;
+      setSettings(data);
+    }
+
+    fetchFooterSettings();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const siteName = settings?.site_name?.trim() || 'HMTI UIN Antasari';
+  const contactEmail = settings?.contact_email?.trim() || 'hmti@uinantasari.ac.id';
+  const contactPhone = settings?.contact_phone?.trim() || null;
+  const contactPhoneHref = toTelHref(contactPhone);
+
+  const addressLines = useMemo(() => {
+    const rawAddress = settings?.address?.trim();
+    if (!rawAddress) return DEFAULT_ADDRESS_LINES;
+    const lines = rawAddress
+      .split('\n')
+      .map((line) => line.trim())
+      .filter(Boolean);
+    return lines.length > 0 ? lines : DEFAULT_ADDRESS_LINES;
+  }, [settings?.address]);
+
+  const socialLinks = useMemo<SocialLinkItem[]>(() => {
+    const links: SocialLinkItem[] = [
+      { label: 'INSTAGRAM', href: normalizeExternalUrl(settings?.instagram_url) || '' },
+      { label: 'TWITTER', href: normalizeExternalUrl(settings?.twitter_url) || '' },
+      { label: 'LINKEDIN', href: normalizeExternalUrl(settings?.linkedin_url) || '' },
+      { label: 'FACEBOOK', href: normalizeExternalUrl(settings?.facebook_url) || '' },
+      { label: 'YOUTUBE', href: normalizeExternalUrl(settings?.youtube_url) || '' },
+    ].filter((item) => Boolean(item.href));
+
+    return links.length > 0 ? links : DEFAULT_SOCIAL_LINKS;
+  }, [settings]);
 
   useLayoutEffect(() => {
     if (!footerRef.current) return;
@@ -171,7 +270,7 @@ export default function Footer() {
       hoverCleanups.forEach((fn) => fn());
       ctx.revert();
     };
-  }, []);
+  }, [socialLinks]);
   return (
     <footer
       ref={footerRef}
@@ -218,15 +317,32 @@ export default function Footer() {
               </nav>
             </div>
 
-            {/* Middle - Info */}
+            {/* Middle - Contact */}
             <div className="lg:col-span-4 font-sans relative z-20 text-center md:text-left">
-              <p className="text-sm text-neutral-500 mb-3 tracking-widest">KAMPUS</p>
+              <p className="text-sm text-neutral-500 mb-3 tracking-widest">CONTACT</p>
               <div className="space-y-2 text-neutral-300">
-                <p className="text-base">Universitas Islam Negeri</p>
-                <p className="text-base">Antasari Banjarmasin</p>
-                <p className="text-base text-neutral-500 mt-3">Jl. A. Yani KM 4.5</p>
-                <p className="text-base text-neutral-500">Banjarmasin, Kalimantan Selatan</p>
-                <p className="text-base text-neutral-500">Indonesia 70235</p>
+                {addressLines.map((line, index) => (
+                  <p
+                    key={`${line}-${index}`}
+                    className={`text-base ${index >= 2 ? 'text-neutral-500' : ''}`}
+                  >
+                    {line}
+                  </p>
+                ))}
+                {contactPhone && (
+                  <a
+                    href={contactPhoneHref || '#'}
+                    className="block text-base text-neutral-400 hover:text-[#FFD56C] transition-colors pt-1"
+                  >
+                    {contactPhone}
+                  </a>
+                )}
+                <a
+                  href={`mailto:${contactEmail}`}
+                  className="block text-base text-neutral-400 hover:text-[#FFD56C] transition-colors"
+                >
+                  {contactEmail}
+                </a>
               </div>
             </div>
 
@@ -235,94 +351,36 @@ export default function Footer() {
               <p className="text-sm font-sans text-neutral-500 mb-3 tracking-widest text-center md:text-right">CONNECT</p>
 
               <div className="flex flex-col items-center md:items-end gap-3">
-                <a
-                  data-hover="underline"
-                  href="https://instagram.com/hmtiantasari"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group text-base md:text-lg font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors flex items-center gap-3"
-                >
-                  <span className="text-xs text-neutral-500 group-hover:text-neutral-400 transition-colors">01</span>
-                  INSTAGRAM
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="inline transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                {socialLinks.map((link, index) => (
+                  <a
+                    key={link.label}
+                    data-hover="underline"
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group text-base md:text-lg font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors flex items-center gap-3"
                   >
-                    <path
-                      d="M3 13L13 3M13 3H5M13 3V11"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-
-                <a
-                  data-hover="underline"
-                  href="https://x.com/hmtiuinantasari"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group text-base md:text-lg font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors flex items-center gap-3"
-                >
-                  <span className="text-xs text-neutral-500 group-hover:text-neutral-400 transition-colors">02</span>
-                  TWITTER
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="inline transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
-                  >
-                    <path
-                      d="M3 13L13 3M13 3H5M13 3V11"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-
-                <a
-                  data-hover="underline"
-                  href="https://linkedin.com/company/hmtiuinantasari"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group text-base md:text-lg font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors flex items-center gap-3"
-                >
-                  <span className="text-xs text-neutral-500 group-hover:text-neutral-400 transition-colors">03</span>
-                  LINKEDIN
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="inline transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
-                  >
-                    <path
-                      d="M3 13L13 3M13 3H5M13 3V11"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-              </div>
-
-              {/* Email Contact (tanpa underline effect) */}
-              <div className="mt-3 text-center md:text-right">
-                <p className="text-sm text-neutral-500 mb-2">EMAIL</p>
-                <a
-                  href="mailto:hmti@uinantasari.ac.id"
-                  className="text-base text-neutral-300 hover:text-[#FFD56C] transition-colors"
-                >
-                  hmti@uinantasari.ac.id
-                </a>
+                    <span className="text-xs text-neutral-500 group-hover:text-neutral-400 transition-colors">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    {link.label}
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      className="inline transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                    >
+                      <path
+                        d="M3 13L13 3M13 3H5M13 3V11"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </a>
+                ))}
               </div>
             </div>
           </div>
@@ -383,7 +441,7 @@ export default function Footer() {
                 <a href="/">
                   <Image
                     src="/images/teknologi-informasi.svg"
-                    alt="Kabinet Arnanta"
+                    alt={siteName}
                     width={120}
                     height={120}
                     className="w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-28 lg:h-28 object-contain"
@@ -418,7 +476,7 @@ export default function Footer() {
             className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-sm md:text-base text-neutral-500 border-t border-neutral-800 pt-2 md:pt-4 text-center md:text-left"
           >
             <p>Made with by HMTI UIN Antasari</p>
-            <p>© {new Date().getFullYear()} HMTI Kabinet Arnanta - All Rights Reserved</p>
+            <p>© {new Date().getFullYear()} {siteName} - All Rights Reserved</p>
           </div>
         </div>
       </div>
