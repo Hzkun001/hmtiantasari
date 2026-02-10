@@ -33,6 +33,64 @@ const params = {
     verticalCurvature: 0.5,
 }
 
+const MOBILE_BREAKPOINT = 768
+const SMALL_MOBILE_BREAKPOINT = 480
+const TABLET_BREAKPOINT = 1024
+
+function getGalleryParams(width: number, isHandheld: boolean) {
+    // Desktop/laptop pointer should keep desktop gallery sizing
+    if (!isHandheld) {
+        return params
+    }
+
+    if (width <= SMALL_MOBILE_BREAKPOINT) {
+        return {
+            ...params,
+            rows: 2,
+            columns: 2,
+            spacing: 6.4,
+            imageWidth: 4.8,
+            imageHeight: 3.2,
+            curvature: 7.4,
+            depth: 5.8,
+            lookAtRange: 4.6,
+            verticalCurvature: 0.34,
+        }
+    }
+
+    if (width <= MOBILE_BREAKPOINT) {
+        return {
+            ...params,
+            rows: 2,
+            columns: 3,
+            spacing: 8.8,
+            imageWidth: 5.6,
+            imageHeight: 3.4,
+            curvature: 5.8,
+            depth: 7.1,
+            lookAtRange: 5.2,
+            verticalCurvature: 0.38,
+        }
+    }
+
+    if (width <= TABLET_BREAKPOINT) {
+        return {
+            ...params,
+            rows: 3,
+            columns: 4,
+            spacing: 11,
+            imageWidth: 6.2,
+            imageHeight: 3.8,
+            curvature: 5.8,
+            depth: 7.2,
+            lookAtRange: 6.8,
+            verticalCurvature: 0.4,
+        }
+    }
+
+    return params
+}
+
 export default function VideoGallery() {
     const sectionRef = useRef<HTMLElement>(null)
     const containerRef = useRef<HTMLDivElement>(null)
@@ -42,19 +100,11 @@ export default function VideoGallery() {
         if (!containerRef.current || !sectionRef.current) return
         const containerEl = containerRef.current
         const sectionEl = sectionRef.current
-        const isMobile = window.matchMedia('(max-width: 768px)').matches
-
-        const p = isMobile
-            ? {
-                ...params,
-                rows: 2,
-                columns: 3,
-                spacing: 9.5,
-                imageWidth: 8,
-                imageHeight: 4.7,
-                lookAtRange: 8,
-            }
-            : params
+        const viewportWidth = window.innerWidth
+        const isHandheld = window.matchMedia('(pointer: coarse)').matches
+        const usesMobileProfile = isHandheld && viewportWidth <= TABLET_BREAKPOINT
+        const isSmallMobile = usesMobileProfile && viewportWidth <= SMALL_MOBILE_BREAKPOINT
+        const p = getGalleryParams(viewportWidth, isHandheld)
 
         // Fade out animation saat scroll keluar dari section
         const fadeOutTrigger = ScrollTrigger.create({
@@ -81,7 +131,7 @@ export default function VideoGallery() {
             0.1,
             1000
         )
-        camera.position.set(0, 0, isMobile ? 34 : 40)
+        camera.position.set(0, 0, isSmallMobile ? 32 : usesMobileProfile ? 35 : 40)
 
         const renderer = new THREE.WebGLRenderer({
             antialias: true,
@@ -91,7 +141,7 @@ export default function VideoGallery() {
             alpha: true,
         })
         renderer.setSize(window.innerWidth, window.innerHeight)
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2))
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, usesMobileProfile ? 1.35 : 2))
         renderer.setClearColor(0x000000, 0)
         containerEl.appendChild(renderer.domElement)
 
@@ -113,10 +163,10 @@ export default function VideoGallery() {
             video.autoplay = true
             video.setAttribute('muted', '')
             video.setAttribute('playsinline', '')
-            video.preload = "auto"
+            video.preload = usesMobileProfile ? "metadata" : "auto"
             video.width = 640
             video.height = 360
-            video.play().catch(err => console.log("Video play error:", err))
+            video.play().catch(() => { })
             return video
         }
 
@@ -237,9 +287,22 @@ export default function VideoGallery() {
 
         const handleResize = () => {
             camera.aspect = window.innerWidth / window.innerHeight
+            const resizedWidth = window.innerWidth
+            if (isHandheld && resizedWidth <= SMALL_MOBILE_BREAKPOINT) {
+                camera.position.z = 32
+            } else if (isHandheld && resizedWidth <= TABLET_BREAKPOINT) {
+                camera.position.z = 35
+            } else {
+                camera.position.z = 40
+            }
             camera.updateProjectionMatrix()
             renderer.setSize(window.innerWidth, window.innerHeight)
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2))
+            renderer.setPixelRatio(
+                Math.min(
+                    window.devicePixelRatio,
+                    isHandheld && resizedWidth <= TABLET_BREAKPOINT ? 1.35 : 2
+                )
+            )
         }
 
         window.addEventListener('mousemove', handleMouseMove)
@@ -267,7 +330,7 @@ export default function VideoGallery() {
             // Smooth easing
             const now = performance.now()
             const inputIsRecent = now - lastInputAt < 1200
-            if (isMobile && !inputIsRecent) {
+            if (usesMobileProfile && !inputIsRecent) {
                 // Idle motion agar efek 3D tetap terasa walaupun tidak ada mouse
                 mouseX = Math.sin(now * 0.0006) * 0.18
                 mouseY = Math.cos(now * 0.00055) * 0.12
@@ -303,9 +366,11 @@ export default function VideoGallery() {
                 } = plane.userData
 
                 const mouseDistance = Math.sqrt(targetX * targetX + targetY * targetY)
-                const parallaxX = targetX * parallaxFactor * 3 * randomOffset.x
-                const parallaxY = targetY * parallaxFactor * 3 * randomOffset.y
-                const oscillation = Math.sin(time + phaseOffset) * mouseDistance * 0.1
+                const interactionStrength = usesMobileProfile ? 1.8 : 3
+                const oscillationStrength = usesMobileProfile ? 0.065 : 0.1
+                const parallaxX = targetX * parallaxFactor * interactionStrength * randomOffset.x
+                const parallaxY = targetY * parallaxFactor * interactionStrength * randomOffset.y
+                const oscillation = Math.sin(time + phaseOffset) * mouseDistance * oscillationStrength
 
                 plane.position.x = basePosition.x + parallaxX + oscillation * randomOffset.x
                 plane.position.y = basePosition.y + parallaxY + oscillation * randomOffset.y
@@ -363,12 +428,12 @@ export default function VideoGallery() {
         <section
             ref={sectionRef}
             data-history-hero-gallery
-            style={{ height: '100svh', position: 'relative', backgroundColor: '#1a1a1a' }}
+            className={styles.gallerySection}
         >
             <div className={styles.header} ref={headerRef}>
                 <h1>TheStory HMTI</h1>
             </div>
-            <div ref={containerRef} style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }} />
+            <div ref={containerRef} className={styles.canvasLayer} />
         </section>
     )
 }

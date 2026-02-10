@@ -1,7 +1,7 @@
 'use client';
+/* eslint-disable @next/next/no-img-element */
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -12,8 +12,10 @@ if (typeof window !== 'undefined') {
 export default function HeroSection() {
     const heroRef = useRef<HTMLElement>(null);
     const skyRef = useRef<HTMLImageElement>(null);
+    const skyMobileRef = useRef<HTMLImageElement>(null);
     const mountainsRef = useRef<HTMLImageElement>(null);
     const manRef = useRef<HTMLImageElement>(null);
+    const manMobileRef = useRef<HTMLImageElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
     const titleSpansRef = useRef<HTMLSpanElement[]>([]);
     const subtitleRef = useRef<HTMLHeadingElement>(null);
@@ -69,7 +71,7 @@ export default function HeroSection() {
             // Function to get parallax values based on device
             const getParallaxValues = (desktop: boolean) => desktop
                 ? { sky: 300, mountains: -300, man: -100, content: 450 }
-                : { sky: 280, mountains: 60, man: 0, content: 0 };
+                : { sky: -100, mountains: 0, man: 0, content: 0 };
 
             // Parallax scroll animations dengan auto-scroll ke HeroReveal
             if (heroRef.current) {
@@ -131,9 +133,9 @@ export default function HeroSection() {
                         },
                     },
                 })
-                    .to(skyRef.current, { y: parallaxValues.sky }, '0')
-                    .to(mountainsRef.current, { y: parallaxValues.mountains }, '0')
-                    .to(manRef.current, { y: parallaxValues.man }, '0');
+                    .to([skyRef.current, skyMobileRef.current].filter(Boolean), { y: parallaxValues.sky }, '0')
+                    .to(mountainsRef.current, { y: parallaxValues.mountains }, '0');
+                scrollTriggerInstance.to([manRef.current, manMobileRef.current].filter(Boolean), { y: parallaxValues.man }, '0');
 
                 if (isDesktop) {
                     scrollTriggerInstance.to(contentRef.current, { y: parallaxValues.content, autoAlpha: 0 }, '0');
@@ -169,34 +171,48 @@ export default function HeroSection() {
     return (
         <section ref={heroRef} className="hero-section section" id="section-00">
             <div className="hero-image-wrapper">
-                <Image
+                <img
                     ref={skyRef}
                     src="/sky.png"
-                    width={1620}
-                    height={939}
-                    sizes="100vw"
-                    priority
                     className="sky"
                     alt="Sky background"
+                    fetchPriority="high"
                 />
-                <Image
+                <img
                     ref={mountainsRef}
                     src="/mountains.webp"
-                    width={2301}
-                    height={1578}
-                    sizes="100vw"
-                    priority
                     className="mountains"
                     alt="Mountains"
+                    fetchPriority="high"
                 />
-                <Image
+                <img
+                    ref={skyMobileRef}
+                    src="/sky-mobile.webp"
+                    className="sky-mobile"
+                    alt=""
+                    aria-hidden="true"
+                    fetchPriority="high"
+                />
+                <img
+                    src="/mountains-mobile.webp"
+                    className="mountains-mobile"
+                    alt=""
+                    aria-hidden="true"
+                    fetchPriority="high"
+                />
+                <img
                     ref={manRef}
                     src="/man-standing.png"
-                    width={1920}
-                    height={1358}
-                    sizes="(max-width: 767px) 0px, (max-width: 1024px) 78vw, 70vw"
                     className="man-standing"
                     alt="Hiker"
+                />
+                <img
+                    ref={manMobileRef}
+                    src="/man-standing-mobile.webp"
+                    className="man-standing-mobile"
+                    alt=""
+                    aria-hidden="true"
+                    fetchPriority="high"
                 />
             </div>
 
@@ -215,13 +231,7 @@ export default function HeroSection() {
                         
                     </span>
                 </h1>
-                <p ref={descriptionRef} className="hero-description">
-                    Komunitas mahasiswa Teknologi Informasi UIN Antasari — kolaborasi, inovasi, dan kegiatan.
-                </p>
                 <div ref={ctaRowRef} className="hero-cta-row" aria-label="Quick links">
-                    <a className="hero-cta hero-cta-primary" href="#section-01">Jelajahi</a>
-                    <a className="hero-cta hero-cta-secondary" href="#projects">Lihat Project</a>
-                    <a className="hero-cta hero-cta-secondary" href="#section-02">Tentang Kami</a>
                 </div>
                 <a ref={actionRef} href="#section-01" className="hero-action">
                     Scroll down

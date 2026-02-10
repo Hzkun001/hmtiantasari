@@ -128,25 +128,35 @@
         font-size: clamp(1.35rem, 5.8vw, 2.15rem);
     }
 
+    .scene {
+        width: 100%;
+        max-width: none;
+        display: flex;
+        justify-content: center;
+    }
+
     .heroBg {
-        aspect-ratio: 16 / 10;
-        max-width: 560px;
+        width: min(86vw, 380px);
+        max-width: none;
+        aspect-ratio: 9 / 16;
+        border: 0.5rem solid #ffffff;
+        border-bottom: 1.8rem solid #ffffff;
         padding: 0;
     }
 
-    .scene {
-        max-width: 560px;
+    .heroBg video {
+        object-position: center 42%;
     }
 
     .hero {
-        padding: clamp(4.5rem, 10svh, 6.25rem) 0 clamp(2rem, 6svh, 3.25rem);
+        padding: clamp(4.5rem, 9svh, 5.75rem) 0 clamp(2rem, 5svh, 2.75rem);
         height: auto;
-        min-height: auto;
+        min-height: 100svh;
     }
 
     .hero :global(.container) {
         justify-content: flex-start;
-        gap: 0.75rem;
+        gap: 0.9rem;
     }
 
     .heroFooter {
@@ -156,20 +166,29 @@
 
     .characterLeft,
     .characterRight {
-        width: clamp(60px, 10vw, 120px);
-        bottom: -0.5rem;
+        width: clamp(58px, 18vw, 86px);
+        bottom: 0.25rem;
+    }
+
+    .characterLeft {
+        left: max(4vw, -0.35rem);
+    }
+
+    .characterRight {
+        right: max(4vw, -0.35rem);
     }
 }
 
 @media (max-width: 640px) {
     .heroBg {
-        aspect-ratio: 16 / 9;
-        border: 0.5rem solid #ffffff;
-        border-bottom: 1.25rem solid #ffffff;
+        width: min(84vw, 340px);
+        aspect-ratio: 9 / 16;
+        border: 0.45rem solid #ffffff;
+        border-bottom: 1.45rem solid #ffffff;
     }
 
     .scene {
-        max-width: 560px;
+        max-width: none;
     }
 
     .header h1 {
@@ -177,11 +196,10 @@
     }
 
     .hero {
-        padding: clamp(4.5rem, 10svh, 6.25rem) 0 clamp(2rem, 6svh, 3.25rem);
+        padding: clamp(4.25rem, 8.5svh, 5.5rem) 0 clamp(1.5rem, 4svh, 2.35rem);
         height: auto;
-        min-height: auto;
+        min-height: 100svh;
     }
-
 }
 
 /* Tablet and up */

@@ -1,3 +1,19 @@
+.gallerySection {
+    height: 100svh;
+    position: relative;
+    background-color: #1a1a1a;
+    overflow: hidden;
+}
+
+.canvasLayer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
 .header {
     position: fixed;
     top: 50%;
@@ -21,4 +37,25 @@
     backface-visibility: hidden;
     user-select: none;
     color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .header {
+        top: 48%;
+    }
+
+    .header h1 {
+        font-size: clamp(2.25rem, 13vw, 4rem);
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        top: 46%;
+    }
+
+    .header h1 {
+        font-size: clamp(2rem, 12.5vw, 3.2rem);
+        line-height: 0.96;
+    }
 }

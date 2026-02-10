@@ -154,9 +154,12 @@ export default function Header({ onlyShowAtTop = false, showAfterSelector, theme
                     </Link>
 
                     <button
+                        type="button"
                         className={`burger ${isMenuOpen ? 'is-active' : ''}`}
                         onClick={toggleMenu}
                         aria-label="Toggle menu"
+                        aria-expanded={isMenuOpen}
+                        aria-controls="mobile-nav-menu"
                     >
                         <div className="burger-line-wrapper">
                             <span className="burger-line"></span>
@@ -165,7 +168,7 @@ export default function Header({ onlyShowAtTop = false, showAfterSelector, theme
                         </div>
                     </button>
 
-                    <div className="menu">
+                    <div className="menu" id="mobile-nav-menu">
                         <div className="menu-header">
                             <Link href="/" scroll className="brand" onClick={closeMenu}>
                                 <svg width="169" height="53" viewBox="0 0 169 53" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -173,9 +176,11 @@ export default function Header({ onlyShowAtTop = false, showAfterSelector, theme
                                 </svg>
                             </Link>
                             <button
+                                type="button"
                                 className={`burger is-active close-menu`}
                                 onClick={closeMenu}
                                 aria-label="Close menu"
+                                aria-controls="mobile-nav-menu"
                             >
                                 <div className="burger-line-wrapper">
                                     <span className="burger-line"></span>
@@ -189,7 +194,13 @@ export default function Header({ onlyShowAtTop = false, showAfterSelector, theme
                             {HEADER_MENU_ITEMS.map((item) => (
                                 <li key={item.href} className="menu-item">
                                     <Link href={item.href} scroll className="menu-link" onClick={closeMenu}>
-                                        {item.label}
+                                        <span className="menu-link-content">{item.label}</span>
+                                        <span className="menu-link-icon" aria-hidden="true">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M3 8H13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
+                                                <path d="M9 4L13 8L9 12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                                            </svg>
+                                        </span>
                                     </Link>
                                 </li>
                             ))}

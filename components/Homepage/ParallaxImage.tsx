@@ -189,7 +189,7 @@ export default function ParallaxImage() {
                         data-text="1"
                         className="text absolute top-1/2 block w-full -translate-y-1/2 text-center"
                     >
-                        Semua berawal dari hal kecil
+                        Semua Berawal Dari Hal Kecil
                     </p>
                     <p
                         ref={text2Ref}
@@ -197,7 +197,7 @@ export default function ParallaxImage() {
                         className="text absolute top-1/2 block w-full -translate-y-1/2 text-center"
                         style={{ textWrap: 'balance' }}
                     >
-                        Untuk sesuatu yang besar
+                        Untuk Sesuatu <br/> Yang Besar
                     </p>
                 </div>
             </div>

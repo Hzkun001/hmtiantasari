@@ -120,10 +120,20 @@ export default function AboutContent() {
             <section className={styles.servicesCopy}>
                 <div className={styles.textContainer}>
                     <h1 ref={textRef} className={styles.animateText}>
-                        Lahirnya HMTI pada tahun 2025 adalah puncak dari perjalanan panjang sejak 2023. Kami mendirikan rumah ini dengan satu kesadaran, mahasiswa IT datang dari latar belakang yang beragam. Dan Kami menolak elitisme teknologi. Kami percaya bahwa setiap mahasiswa IT Antasari mempunyai timeline sukses masing masing.
+                        Lahirnya HMTI pada tahun 2025 adalah puncak dari perjalanan panjang sejak 2023.
+                        Kami mendirikan rumah ini dengan satu kesadaran: mahasiswa TI datang dari latar belakang
+                        yang beragam. Kami menolak elitisme teknologi. Kami percaya setiap mahasiswa TI Antasari
+                        memiliki timeline sukses masing-masing.
                     </h1>
                     <h1 ref={text2Ref} className={styles.animateText}>
-                        Visi kami sederhana, "No One Left Behind." HMTI hadir untuk merangkul semua. Bagi yang sudah berlari cepat, kami sediakan ruang untuk berinovasi. Bagi yang masih merangkak, kami sediakan tangan untuk menuntun. Kami mengubah kompetisi toxic menjadi kolaborasi yang saling menguatkan. Our Commitment Kami bukan sekadar himpunan pengurus acara. Kami adalah support system. Di sini, rasa takut salah atau rasa tidak percaya diri akan kami ganti dengan budaya peer learning ask. Karena di dunia teknologi yang luas ini, sukses sendirian itu biasa, tapi maju bersama adalah 
+                        Visi kami sederhana: "No One Left Behind." HMTI hadir untuk merangkul semua.
+                        Bagi yang sudah berlari cepat, kami sediakan ruang untuk berinovasi.
+                        Bagi yang masih merangkak, kami sediakan tangan untuk menuntun.
+                        Kami mengubah kompetisi yang toxic menjadi kolaborasi yang saling menguatkan.
+                        Kami bukan sekadar himpunan penyelenggara acara, kami adalah support system.
+                        Di sini, rasa takut salah dan rasa tidak percaya diri kami ganti dengan budaya
+                        peer learning yang saling menguatkan. Di dunia teknologi yang luas ini, sukses
+                        sendirian itu biasa, tetapi maju bersama adalah tujuan utama.
                     </h1>
                 </div>
             </section>
