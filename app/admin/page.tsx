@@ -11,6 +11,7 @@ export default function AdminDashboard() {
     const [stats, setStats] = useState({
         totalProjects: 0,
         activeProjects: 0,
+        totalTeamMembers: 0,
     });
     const [loading, setLoading] = useState(true);
     const router = useRouter();
@@ -18,19 +19,35 @@ export default function AdminDashboard() {
     const fetchDashboardData = useCallback(async () => {
         setLoading(true);
 
-        const { data: projectsData } = await supabase
-            .from('Projects')
-            .select('*')
-            .order('id', { ascending: false })
-            .limit(5);
+        const [
+            { data: projectsData },
+            { count: totalProjectsCount },
+            { count: activeProjectsCount },
+            { count: totalTeamMembersCount },
+        ] = await Promise.all([
+            supabase
+                .from('Projects')
+                .select('*')
+                .order('id', { ascending: false })
+                .limit(5),
+            supabase
+                .from('Projects')
+                .select('id', { count: 'exact', head: true }),
+            supabase
+                .from('Projects')
+                .select('id', { count: 'exact', head: true })
+                .not('image_url', 'is', null),
+            supabase
+                .from('TeamMembers')
+                .select('id', { count: 'exact', head: true }),
+        ]);
 
-        if (projectsData) {
-            setProjects(projectsData);
-            setStats({
-                totalProjects: projectsData.length,
-                activeProjects: projectsData.filter(p => p.image_url).length,
-            });
-        }
+        setProjects(projectsData || []);
+        setStats({
+            totalProjects: totalProjectsCount ?? (projectsData?.length ?? 0),
+            activeProjects: activeProjectsCount ?? ((projectsData || []).filter(p => p.image_url).length),
+            totalTeamMembers: totalTeamMembersCount ?? 0,
+        });
 
         setLoading(false);
     }, []);
@@ -88,7 +105,7 @@ export default function AdminDashboard() {
 
                 <div className="admin-stat-card">
                     <div className="admin-stat-label">Team Members</div>
-                    <div className="admin-stat-value">24</div>
+                    <div className="admin-stat-value">{stats.totalTeamMembers}</div>
                 </div>
 
                 <div className="admin-stat-card">

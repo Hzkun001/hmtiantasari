@@ -31,8 +31,8 @@ const lobster = Lobster({
 });
 
 export const metadata: Metadata = {
-    title: 'HMTI | Landing Page',
-    description: 'A modern and sleek landing page for HMTI organization.',
+    title: 'HMTI',
+    description: 'Himpunan Mahasiswa Teknologi Informasi UIN Antasari',
 };
 
 export default function RootLayout({
