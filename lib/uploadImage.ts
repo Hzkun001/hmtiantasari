@@ -1,5 +1,12 @@
 import { supabase } from './supabase';
 
+const isDev = process.env.NODE_ENV === 'development';
+const logDebug = (...args: unknown[]) => {
+    if (isDev) {
+        console.log(...args);
+    }
+};
+
 /**
  * Upload image ke Supabase Storage dan return public URL
  * @param file - File object dari input
@@ -7,9 +14,9 @@ import { supabase } from './supabase';
  * @returns Public URL dari image yang diupload
  */
 export async function uploadProjectImage(file: File, bucket: string = 'project-images'): Promise<string> {
-    console.log('[uploadImage] Starting upload...');
-    console.log('[uploadImage] File:', file.name, 'Size:', file.size);
-    console.log('[uploadImage] Bucket:', bucket);
+    logDebug('[uploadImage] Starting upload...');
+    logDebug('[uploadImage] File:', file.name, 'Size:', file.size);
+    logDebug('[uploadImage] Bucket:', bucket);
 
     try {
         // Generate unique filename
@@ -17,10 +24,10 @@ export async function uploadProjectImage(file: File, bucket: string = 'project-i
         const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
         const filePath = `${fileName}`;
 
-        console.log('[uploadImage] Generated filename:', filePath);
+        logDebug('[uploadImage] Generated filename:', filePath);
 
         // Upload file directly (bucket existence check removed as anon role can't list buckets)
-        console.log('[uploadImage] Uploading to Supabase Storage...');
+        logDebug('[uploadImage] Uploading to Supabase Storage...');
         const { data, error } = await supabase.storage
             .from(bucket)
             .upload(filePath, file, {
@@ -28,11 +35,13 @@ export async function uploadProjectImage(file: File, bucket: string = 'project-i
                 upsert: false
             });
 
-        console.log('[uploadImage] Upload response - data:', data);
-        console.log('[uploadImage] Upload response - error:', error);
+        logDebug('[uploadImage] Upload response - data:', data);
+        logDebug('[uploadImage] Upload response - error:', error);
 
         if (error) {
-            console.error('[uploadImage] Upload error details:', JSON.stringify(error, null, 2));
+            if (isDev) {
+                console.error('[uploadImage] Upload error details:', JSON.stringify(error, null, 2));
+            }
 
             // More helpful error messages
             if (error.message.includes('not found') || error.message.includes('does not exist')) {
@@ -45,16 +54,18 @@ export async function uploadProjectImage(file: File, bucket: string = 'project-i
         }
 
         // Get public URL
-        console.log('[uploadImage] Getting public URL...');
+        logDebug('[uploadImage] Getting public URL...');
         const { data: { publicUrl } } = supabase.storage
             .from(bucket)
             .getPublicUrl(filePath);
 
-        console.log('[uploadImage] Public URL:', publicUrl);
+        logDebug('[uploadImage] Public URL:', publicUrl);
 
         return publicUrl;
     } catch (error) {
-        console.error('[uploadImage] Caught error:', error);
+        if (isDev) {
+            console.error('[uploadImage] Caught error:', error);
+        }
         throw error;
     }
 }
@@ -107,8 +118,8 @@ export async function deleteProjectImage(imageUrl: string, bucket: string = 'pro
  * @returns Public URL dari image yang diupload
  */
 export async function uploadTeamImage(file: File, folderName: string): Promise<string> {
-    console.log('[uploadTeamImage] Starting upload to folder:', folderName);
-    console.log('[uploadTeamImage] File:', file.name, 'Size:', file.size);
+    logDebug('[uploadTeamImage] Starting upload to folder:', folderName);
+    logDebug('[uploadTeamImage] File:', file.name, 'Size:', file.size);
 
     try {
         // Generate unique filename
@@ -116,10 +127,10 @@ export async function uploadTeamImage(file: File, folderName: string): Promise<s
         const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
         const filePath = `${folderName}/${fileName}`;
 
-        console.log('[uploadTeamImage] Generated file path:', filePath);
+        logDebug('[uploadTeamImage] Generated file path:', filePath);
 
         // Upload file to team-images bucket
-        console.log('[uploadTeamImage] Uploading to Supabase Storage...');
+        logDebug('[uploadTeamImage] Uploading to Supabase Storage...');
         const { data, error } = await supabase.storage
             .from('team-images')
             .upload(filePath, file, {
@@ -127,11 +138,13 @@ export async function uploadTeamImage(file: File, folderName: string): Promise<s
                 upsert: false
             });
 
-        console.log('[uploadTeamImage] Upload response - data:', data);
-        console.log('[uploadTeamImage] Upload response - error:', error);
+        logDebug('[uploadTeamImage] Upload response - data:', data);
+        logDebug('[uploadTeamImage] Upload response - error:', error);
 
         if (error) {
-            console.error('[uploadTeamImage] Upload error details:', JSON.stringify(error, null, 2));
+            if (isDev) {
+                console.error('[uploadTeamImage] Upload error details:', JSON.stringify(error, null, 2));
+            }
 
             if (error.message.includes('not found') || error.message.includes('does not exist')) {
                 throw new Error('Bucket "team-images" tidak ditemukan. Pastikan bucket sudah dibuat di Supabase Dashboard → Storage');
@@ -143,16 +156,18 @@ export async function uploadTeamImage(file: File, folderName: string): Promise<s
         }
 
         // Get public URL
-        console.log('[uploadTeamImage] Getting public URL...');
+        logDebug('[uploadTeamImage] Getting public URL...');
         const { data: { publicUrl } } = supabase.storage
             .from('team-images')
             .getPublicUrl(filePath);
 
-        console.log('[uploadTeamImage] Public URL:', publicUrl);
+        logDebug('[uploadTeamImage] Public URL:', publicUrl);
 
         return publicUrl;
     } catch (error) {
-        console.error('[uploadTeamImage] Caught error:', error);
+        if (isDev) {
+            console.error('[uploadTeamImage] Caught error:', error);
+        }
         throw error;
     }
 }

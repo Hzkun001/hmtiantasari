@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase, Project } from '@/lib/supabase';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -15,25 +15,7 @@ export default function AdminDashboard() {
     const [loading, setLoading] = useState(true);
     const router = useRouter();
 
-    useEffect(() => {
-        checkAuth();
-    }, []);
-
-    async function checkAuth() {
-        console.log('Checking auth in admin page...');
-        const { data: { session } } = await supabase.auth.getSession();
-        console.log('Admin page session:', session);
-
-        if (!session) {
-            console.log('No session, redirecting to login...');
-            router.push('/login');
-        } else {
-            console.log('Session found, loading dashboard...');
-            fetchDashboardData();
-        }
-    }
-
-    async function fetchDashboardData() {
+    const fetchDashboardData = useCallback(async () => {
         setLoading(true);
 
         const { data: projectsData } = await supabase
@@ -51,7 +33,21 @@ export default function AdminDashboard() {
         }
 
         setLoading(false);
-    }
+    }, []);
+
+    const checkAuth = useCallback(async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+
+        if (!session) {
+            router.push('/login');
+        } else {
+            fetchDashboardData();
+        }
+    }, [fetchDashboardData, router]);
+
+    useEffect(() => {
+        checkAuth();
+    }, [checkAuth]);
 
     if (loading) {
         return (

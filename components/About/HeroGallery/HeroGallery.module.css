@@ -13,7 +13,7 @@
 
 .header h1 {
     text-transform: none;
-    font-family: "Lobster", sans-serif;
+    font-family: var(--font-lobster), "Lobster", sans-serif;
     font-size: 10.5vw;
     letter-spacing: 2;
     line-height: 1;

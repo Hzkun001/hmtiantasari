@@ -18,37 +18,26 @@ export default function LoginPage() {
         setError(null);
 
         try {
-            console.log('Starting login...');
             const { data, error } = await supabase.auth.signInWithPassword({
                 email,
                 password,
             });
 
-            console.log('Login response:', { data, error });
-
             if (error) {
-                console.error('Login error:', error);
                 throw error;
             }
 
             if (data.session) {
-                console.log('Session found:', data.session);
-                console.log('Access token:', data.session.access_token);
-
                 // Verify session is stored
-                const { data: { session: storedSession } } = await supabase.auth.getSession();
-                console.log('Stored session:', storedSession);
+                await supabase.auth.getSession();
 
                 // Use window.location for hard redirect to ensure cookies are set
-                console.log('Redirecting to /admin...');
                 window.location.href = '/admin';
             } else {
-                console.error('No session in response');
                 setError('Login successful but no session created');
                 setLoading(false);
             }
         } catch (err: any) {
-            console.error('Caught error:', err);
             setError(err.message || 'Login failed');
             setLoading(false);
         }

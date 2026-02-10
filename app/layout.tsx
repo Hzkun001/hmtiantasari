@@ -1,6 +1,33 @@
 import type { Metadata } from 'next';
+import { Bentham, DM_Sans, Lobster, Manrope } from 'next/font/google';
 import './globals.css';
 import ConditionalSmoothScroll from '@/components/providers/ConditionalSmoothScroll';
+
+const bentham = Bentham({
+    weight: '400',
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-bentham',
+});
+
+const manrope = Manrope({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-manrope',
+});
+
+const dmSans = DM_Sans({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-dm-sans',
+});
+
+const lobster = Lobster({
+    weight: '400',
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-lobster',
+});
 
 export const metadata: Metadata = {
     title: 'HMTI | Landing Page',
@@ -15,12 +42,6 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-                <link
-                    rel="stylesheet"
-                    href="https://fonts.googleapis.com/css2?family=Bentham&family=Manrope:wght@200..800&family=DM+Sans:wght@100..1000&display=swap"
-                />
                 <link
                     href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
                     rel="stylesheet"
@@ -34,7 +55,7 @@ export default function RootLayout({
                     href="https://unpkg.com/lenis@1.1.18/dist/lenis.css"
                 />
             </head>
-            <body className="antialiased">
+            <body className={`${bentham.variable} ${manrope.variable} ${dmSans.variable} ${lobster.variable} antialiased`}>
                 <ConditionalSmoothScroll>
                     {children}
                 </ConditionalSmoothScroll>

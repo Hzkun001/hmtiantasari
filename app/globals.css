@@ -6,12 +6,15 @@
 @theme {
   --font-bentham: var(--font-bentham);
   --font-manrope: var(--font-manrope);
+  --font-dm-sans: var(--font-dm-sans);
+  --font-lobster: var(--font-lobster);
 }
 
 :root {
   --font-bentham: "Bentham", serif;
   --font-manrope: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --font-dm-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-lobster: "Lobster", "Brush Script MT", cursive;
 }
 
 /* Marquee Animation */
