@@ -43,14 +43,11 @@ const ANIMATION_CONFIG = {
 
 export default function HeroReveal() {
     // Refs
-    const refs = {
-        section: useRef<HTMLElement>(null),
-        heroBg: useRef<HTMLDivElement>(null),
-        header: useRef<HTMLDivElement>(null),
-        characterLeft: useRef<HTMLDivElement>(null),
-        characterRight: useRef<HTMLDivElement>(null),
-        footer: useRef<HTMLDivElement>(null),
-    };
+    const sectionRef = useRef<HTMLElement>(null);
+    const heroBgRef = useRef<HTMLDivElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const characterLeftRef = useRef<HTMLDivElement>(null);
+    const characterRightRef = useRef<HTMLDivElement>(null);
 
     // Helper: Split text utility
     const createSplitText = (selector: string | Element | Element[], type: string, className: string) => {
@@ -65,17 +62,17 @@ export default function HeroReveal() {
         gsap.registerPlugin(CustomEase, SplitText, ScrollTrigger);
         CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
-        if (!refs.section.current || !refs.header.current) return;
+        if (!sectionRef.current || !headerRef.current) return;
 
         // Split text for header
-        const headerEl = refs.header.current.querySelector('h1');
+        const headerEl = headerRef.current.querySelector('h1');
         if (!headerEl) return;
         const headerSplit = createSplitText(headerEl, "chars", "char");
 
         // Main timeline
         const tl = gsap.timeline({
             scrollTrigger: {
-                trigger: refs.section.current,
+                trigger: sectionRef.current,
                 start: "top bottom",
                 end: "bottom center",
                 toggleActions: "play none none reverse",
@@ -86,12 +83,12 @@ export default function HeroReveal() {
         const animateFrameReveal = () => {
             const { clipPath, video } = ANIMATION_CONFIG;
 
-            tl.fromTo(refs.heroBg.current,
+            tl.fromTo(heroBgRef.current,
                 { clipPath: clipPath.from },
                 { clipPath: clipPath.to, duration: clipPath.duration, ease: clipPath.ease }
             );
 
-            tl.fromTo(refs.heroBg.current!.querySelector('video'),
+            tl.fromTo(heroBgRef.current!.querySelector('video'),
                 { scale: video.scaleFrom },
                 { scale: video.scaleTo, duration: video.duration, ease: video.ease },
                 "<"
@@ -101,8 +98,7 @@ export default function HeroReveal() {
         // Animate fade in elements
         const animateFadeIn = () => {
             const fadeElements = [
-                refs.header.current,
-                refs.footer.current
+                headerRef.current,
             ].filter(Boolean);
 
             tl.to(fadeElements, {
@@ -116,7 +112,7 @@ export default function HeroReveal() {
             const { text } = ANIMATION_CONFIG;
 
             // Header text
-            tl.to(refs.header.current!.querySelectorAll('.char'), {
+            tl.to(headerRef.current!.querySelectorAll('.char'), {
                 x: "0%",
                 scale: 1,
                 rotationX: 0,
@@ -131,8 +127,8 @@ export default function HeroReveal() {
         const animateCharacters = () => {
             const { characters } = ANIMATION_CONFIG;
             const characterAnimations = [
-                { ref: refs.characterLeft, x: -characters.moveDistance, ease: "back.out(1.7)" },
-                { ref: refs.characterRight, x: characters.moveDistance, ease: "power3.out" }
+                { ref: characterLeftRef, x: -characters.moveDistance, ease: "back.out(1.7)" },
+                { ref: characterRightRef, x: characters.moveDistance, ease: "power3.out" }
             ];
 
             characterAnimations.forEach(({ ref, x, ease }) => {
@@ -147,7 +143,7 @@ export default function HeroReveal() {
         };
 
         // Execute animations
-        if (refs.heroBg.current) animateFrameReveal();
+        if (heroBgRef.current) animateFrameReveal();
         animateFadeIn();
         animateText();
         animateCharacters();
@@ -160,16 +156,16 @@ export default function HeroReveal() {
     }, []);
 
     return (
-        <section id="section-01" className={`${styles.hero} hero-reveal-section`} ref={refs.section}>
+        <section id="section-01" className={`${styles.hero} hero-reveal-section`} ref={sectionRef}>
             <div className="container">
                 {/* Header Section */}
-                <div className={styles.header} ref={refs.header} style={{ fontFamily: 'var(--font-bentham)' }}>
+                <div className={styles.header} ref={headerRef} style={{ fontFamily: 'var(--font-bentham)' }}>
                     <h1>WELCOME ~  ~ WELCOME</h1>
                 </div>
 
                 {/* Video Frame */}
                 <div className={styles.scene}>
-                    <div className={styles.heroBg} ref={refs.heroBg}>
+                    <div className={styles.heroBg} ref={heroBgRef}>
                         <video
                             autoPlay
                             loop
@@ -185,7 +181,7 @@ export default function HeroReveal() {
                     </div>
 
                     {/* Character Left */}
-                    <div className={styles.characterLeft} ref={refs.characterLeft}>
+                    <div className={styles.characterLeft} ref={characterLeftRef}>
                         <Image
                             src="/Ykiri.svg"
                             width={412}
@@ -196,7 +192,7 @@ export default function HeroReveal() {
                     </div>
 
                     {/* Character Right */}
-                    <div className={styles.characterRight} ref={refs.characterRight}>
+                    <div className={styles.characterRight} ref={characterRightRef}>
                         <Image
                             src="/Ykanan.svg"
                             width={412}

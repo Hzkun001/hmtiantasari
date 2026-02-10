@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Bentham, DM_Sans, Lobster, Manrope } from 'next/font/google';
+import 'lenis/dist/lenis.css';
 import './globals.css';
 import ConditionalSmoothScroll from '@/components/providers/ConditionalSmoothScroll';
 
@@ -42,18 +43,6 @@ export default function RootLayout({
     return (
         <html lang="en">
             <head>
-                <link
-                    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-                    rel="stylesheet"
-                    />
-                    <link
-                    href="https://unpkg.com/boxicons@2.1.4/css/boxicons-solid.min.css"
-                    rel="stylesheet"
-                    />
-                <link
-                    rel="stylesheet"
-                    href="https://unpkg.com/lenis@1.1.18/dist/lenis.css"
-                />
             </head>
             <body className={`${bentham.variable} ${manrope.variable} ${dmSans.variable} ${lobster.variable} antialiased`}>
                 <ConditionalSmoothScroll>

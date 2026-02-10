@@ -1,14 +1,20 @@
 import type { NextConfig } from 'next';
 
+const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
+  ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
+  : null;
+
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'bybveeifcfoxgcwqwgwc.supabase.co',
-        port: '',
-        pathname: '/storage/v1/object/public/**',
-      },
+      ...(supabaseHostname
+        ? [{
+          protocol: 'https' as const,
+          hostname: supabaseHostname,
+          port: '',
+          pathname: '/storage/v1/object/public/**',
+        }]
+        : []),
       { protocol: 'https', hostname: 'res.cloudinary.com' },
       { protocol: 'https', hostname: '*.public.blob.vercel-storage.com' },
       { protocol: 'https', hostname: '*.r2.dev' },

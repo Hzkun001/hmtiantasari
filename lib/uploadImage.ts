@@ -106,7 +106,9 @@ export async function deleteProjectImage(imageUrl: string, bucket: string = 'pro
             throw error;
         }
     } catch (error) {
-        console.error('Error deleting image:', error);
+        if (isDev) {
+            console.error('Error deleting image:', error);
+        }
         throw error;
     }
 }
@@ -192,7 +194,9 @@ export async function deleteTeamImage(imageUrl: string): Promise<void> {
             throw error;
         }
     } catch (error) {
-        console.error('Error deleting team image:', error);
+        if (isDev) {
+            console.error('Error deleting team image:', error);
+        }
         throw error;
     }
 }

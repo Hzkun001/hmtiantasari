@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { CustomEase, ScrollTrigger } from "gsap/all";
 import SplitType from "split-type";
@@ -340,44 +341,44 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             <div className="image-grid" ref={imageGridRef}>
                 <div className="grid-row">
                     <div className="img">
-                        <img src="./kabinet/img1.jpg" alt="" />
+                        <Image src="/kabinet/img1.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                     <div className="img">
-                        <img src="./kabinet/img2.jpg" alt="" />
+                        <Image src="/kabinet/img2.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                     <div className="img">
-                        <img src="./kabinet/img3.jpg" alt="" />
+                        <Image src="/kabinet/img3.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                 </div>
                 <div className="grid-row">
                     <div className="img">
-                        <img src="./kabinet/img4.jpg" alt="" />
+                        <Image src="/kabinet/img4.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                     <div className="img hero-img">
-                        <img src="./kabinet/img5.jpg" alt="" />
+                        <Image src="/kabinet/img5.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                     <div className="img">
-                        <img src="./kabinet/img6.jpg" alt="" />
+                        <Image src="/kabinet/img6.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                 </div>
                 <div className="grid-row">
                     <div className="img">
-                        <img src="./kabinet/img9.jpg" alt="" />
+                        <Image src="/kabinet/img9.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                     <div className="img">
-                        <img src="./kabinet/img10.jpg" alt="" />
+                        <Image src="/kabinet/img10.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                     <div className="img">
-                        <img src="./kabinet/img11.jpg" alt="" />
+                        <Image src="/kabinet/img11.jpg" alt="" fill sizes="(max-width: 900px) 30vw, 10vw" />
                     </div>
                 </div>
             </div>
 
             <div className="banner-img banner-img-1">
-                <img src="./kabinet/img7.jpg" alt="" />
+                <Image src="/kabinet/img7.jpg" alt="" fill sizes="(max-width: 900px) 40vw, 20vw" />
             </div>
             <div className="banner-img banner-img-2">
-                <img src="./kabinet/img8.jpg" alt="" />
+                <Image src="/kabinet/img8.jpg" alt="" fill sizes="(max-width: 900px) 40vw, 20vw" />
             </div>
 
             <div className="intro-copy" ref={introCopyRef}>
