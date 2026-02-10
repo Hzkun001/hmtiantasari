@@ -105,6 +105,11 @@ export default function Footer() {
     return lines.length > 0 ? lines : DEFAULT_ADDRESS_LINES;
   }, [settings?.address]);
 
+  const campusCompactText = useMemo(() => {
+    if (addressLines.length === 0) return '';
+    return addressLines.slice(0, 2).join(', ');
+  }, [addressLines]);
+
   const socialLinks = useMemo<SocialLinkItem[]>(() => {
     const links: SocialLinkItem[] = [
       { label: 'INSTAGRAM', href: normalizeExternalUrl(settings?.instagram_url) || '' },
@@ -279,7 +284,81 @@ export default function Footer() {
       <div className="mx-auto w-full max-w-295 px-4 md:px-6">
         <div className="flex flex-col gap-3 md:gap-4">
           {/* Main Footer Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 md:gap-8 relative z-20">
+          <div className="grid grid-cols-2 gap-3 md:hidden relative z-20">
+            <div className="text-left">
+              <p className="text-[11px] font-sans text-neutral-500 mb-2 tracking-[0.2em]">NAVIGASI</p>
+              <nav className="space-y-1.5 flex flex-col items-start">
+                <a
+                  href="/kabinet"
+                  className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
+                >
+                  Kabinet
+                </a>
+                <a
+                  href="/sejarah-kami"
+                  className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
+                >
+                  Sejarah
+                </a>
+                <a
+                  href="/projects"
+                  className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
+                >
+                  Project
+                </a>
+                <a
+                  href="/kegiatan"
+                  className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
+                >
+                  Kegiatan
+                </a>
+                <a
+                  href="/certificate-checker"
+                  className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
+                >
+                  Certificate
+                </a>
+              </nav>
+
+              <p className="text-[11px] font-sans text-neutral-500 mt-3 mb-2 tracking-[0.2em]">CONNECT</p>
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                {socialLinks.slice(0, 4).map((link) => (
+                  <a
+                    key={`mobile-${link.label}`}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[11px] text-[#FFD56C] hover:text-neutral-400 transition-colors whitespace-nowrap"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            <div className="font-sans text-left">
+              <p className="text-[11px] text-neutral-500 mb-2 tracking-[0.2em]">KAMPUS</p>
+              <p className="text-xs leading-snug text-neutral-300">{campusCompactText}</p>
+
+              <p className="text-[11px] text-neutral-500 mt-3 mb-2 tracking-[0.2em]">EMAIL</p>
+              <a
+                href={`mailto:${contactEmail}`}
+                className="block text-xs text-neutral-300 hover:text-[#FFD56C] transition-colors break-all leading-snug"
+              >
+                {contactEmail}
+              </a>
+              {contactPhone && (
+                <a
+                  href={contactPhoneHref || '#'}
+                  className="mt-1 block text-[11px] text-neutral-400 hover:text-[#FFD56C] transition-colors"
+                >
+                  {contactPhone}
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-12 gap-4 md:gap-8 relative z-20">
             {/* Left Navigation (TANPA underline effect) */}
             <div ref={navRef} className="lg:col-span-4 relative z-20 text-center md:text-left">
               <p className="text-sm font-sans text-neutral-500 mb-3 tracking-widest">NAVIGASI</p>
@@ -402,23 +481,23 @@ export default function Footer() {
           {/* Bottom Links (PAKAI underline effect) */}
           <div
             ref={bottomLinksRef}
-            className="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm md:text-base text-neutral-500 relative z-20"
+            className="flex flex-wrap justify-center md:justify-between items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs md:text-base text-neutral-500 relative z-20"
           >
-            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
-              <a data-hover="underline" href="/privacy" className="hover:text-[#FFD56C] transition-colors">
+            <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
+              <a data-hover="underline" href="/privacy" className="hover:text-[#FFD56C] transition-colors whitespace-nowrap">
                 Privacy Policy
               </a>
-              <a data-hover="underline" href="/terms" className="hover:text-[#FFD56C] transition-colors">
+              <a data-hover="underline" href="/terms" className="hover:text-[#FFD56C] transition-colors whitespace-nowrap">
                 Terms of Service
               </a>
             </div>
-            <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5">
+            <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
               <a
                 data-hover="underline"
                 href="https://github.com/hmtiuinantasari"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#FFD56C] transition-colors"
+                className="hover:text-[#FFD56C] transition-colors whitespace-nowrap"
               >
                 GitHub
               </a>
@@ -427,7 +506,7 @@ export default function Footer() {
                 href="https://mastodon.social/@hmtiuinantasari"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#FFD56C] transition-colors"
+                className="hover:text-[#FFD56C] transition-colors whitespace-nowrap"
               >
                 Mastodon
               </a>

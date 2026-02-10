@@ -62,16 +62,33 @@ export default function ParallaxImage() {
         if (!stickyContainerRef.current || !text1Element || !text2Element) return;
 
         const splitToSpans = (el: HTMLElement) => {
-            const chars = el.textContent?.split('') || [];
-            const spans = chars.map((char) => {
-                const span = document.createElement('span');
-                span.textContent = char === ' ' ? '\u00A0' : char;
-                span.style.display = 'inline-block';
-                return span;
-            });
+            const text = el.textContent?.trim() || '';
+            const words = text.split(/\s+/).filter(Boolean);
+            const charSpans: HTMLSpanElement[] = [];
+
             el.textContent = '';
-            spans.forEach((span) => el.appendChild(span));
-            return spans;
+
+            words.forEach((word, wordIndex) => {
+                const wordSpan = document.createElement('span');
+                wordSpan.style.display = 'inline-block';
+                wordSpan.style.whiteSpace = 'nowrap';
+
+                word.split('').forEach((char) => {
+                    const charSpan = document.createElement('span');
+                    charSpan.textContent = char;
+                    charSpan.style.display = 'inline-block';
+                    wordSpan.appendChild(charSpan);
+                    charSpans.push(charSpan);
+                });
+
+                el.appendChild(wordSpan);
+
+                if (wordIndex < words.length - 1) {
+                    el.appendChild(document.createTextNode(' '));
+                }
+            });
+
+            return charSpans;
         };
 
         const text1Chars = splitToSpans(text1Element);
@@ -189,7 +206,7 @@ export default function ParallaxImage() {
                         data-text="1"
                         className="text absolute top-1/2 block w-full -translate-y-1/2 text-center"
                     >
-                        Semua Berawal Dari Hal Kecil
+                        semua berawal dari hal kecil
                     </p>
                     <p
                         ref={text2Ref}
@@ -197,7 +214,7 @@ export default function ParallaxImage() {
                         className="text absolute top-1/2 block w-full -translate-y-1/2 text-center"
                         style={{ textWrap: 'balance' }}
                     >
-                        Untuk Sesuatu <br/> Yang Besar
+                        untuk sesuatu yang besar
                     </p>
                 </div>
             </div>
