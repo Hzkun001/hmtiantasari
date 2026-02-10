@@ -153,8 +153,49 @@ export default function HeroSection() {
                     }
                 };
 
+                const mediaElements = [
+                    skyRef.current,
+                    skyMobileRef.current,
+                    mountainsRef.current,
+                    manRef.current,
+                    manMobileRef.current,
+                ].filter((el): el is HTMLImageElement => Boolean(el));
+
+                const mediaCleanup: Array<() => void> = [];
+                let pendingMedia = 0;
+
+                const refreshAfterMediaReady = () => {
+                    requestAnimationFrame(() => ScrollTrigger.refresh());
+                };
+
+                mediaElements.forEach((img) => {
+                    if (img.complete) return;
+                    pendingMedia += 1;
+
+                    const onSettled = () => {
+                        pendingMedia -= 1;
+                        if (pendingMedia === 0) {
+                            refreshAfterMediaReady();
+                        }
+                    };
+
+                    img.addEventListener('load', onSettled, { once: true });
+                    img.addEventListener('error', onSettled, { once: true });
+                    mediaCleanup.push(() => {
+                        img.removeEventListener('load', onSettled);
+                        img.removeEventListener('error', onSettled);
+                    });
+                });
+
+                if (pendingMedia === 0) {
+                    refreshAfterMediaReady();
+                }
+
                 window.addEventListener('resize', handleResize);
-                return () => window.removeEventListener('resize', handleResize);
+                return () => {
+                    window.removeEventListener('resize', handleResize);
+                    mediaCleanup.forEach((cleanup) => cleanup());
+                };
             }
         });
 
@@ -174,6 +215,8 @@ export default function HeroSection() {
                 <img
                     ref={skyRef}
                     src="/sky.png"
+                    width={1620}
+                    height={939}
                     className="sky"
                     alt="Sky background"
                     fetchPriority="high"
@@ -181,6 +224,8 @@ export default function HeroSection() {
                 <img
                     ref={mountainsRef}
                     src="/mountains.webp"
+                    width={2301}
+                    height={1578}
                     className="mountains"
                     alt="Mountains"
                     fetchPriority="high"
@@ -188,6 +233,8 @@ export default function HeroSection() {
                 <img
                     ref={skyMobileRef}
                     src="/sky-mobile.webp"
+                    width={646}
+                    height={1113}
                     className="sky-mobile"
                     alt=""
                     aria-hidden="true"
@@ -195,6 +242,8 @@ export default function HeroSection() {
                 />
                 <img
                     src="/mountains-mobile.webp"
+                    width={1710}
+                    height={2950}
                     className="mountains-mobile"
                     alt=""
                     aria-hidden="true"
@@ -203,12 +252,16 @@ export default function HeroSection() {
                 <img
                     ref={manRef}
                     src="/man-standing.png"
+                    width={1920}
+                    height={1358}
                     className="man-standing"
                     alt="Hiker"
                 />
                 <img
                     ref={manMobileRef}
                     src="/man-standing-mobile.webp"
+                    width={788}
+                    height={1358}
                     className="man-standing-mobile"
                     alt=""
                     aria-hidden="true"
