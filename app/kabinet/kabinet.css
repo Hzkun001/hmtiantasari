@@ -239,12 +239,12 @@
     place-items: center;
     font-size: 0.8rem;
     font-weight: 700;
-    line-height: 1.35;
+    line-height: 1.25;
     color: #ffffff;
     padding: 0.75rem 1rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    letter-spacing: 0.07em;
+    font-family: var(--font-bentham);
     background: url('/images/cta-pixel.svg') center center / 100% 100% no-repeat;
     overflow-wrap: anywhere;
     word-break: break-word;
