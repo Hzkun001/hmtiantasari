@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { MouseEvent, ReactNode } from 'react';
+import type { MouseEvent, ReactNode, TouchEvent } from 'react';
 import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -271,14 +271,32 @@ function DraggableCardRow({
         dragStateRef.current.hasMoved = false;
     };
 
+    const handleTouchStart = (_event: TouchEvent<HTMLDivElement>) => {
+        dragStateRef.current.hasMoved = false;
+        rowRef.current?.classList.add('is-dragging');
+    };
+
+    const handleTouchMove = (_event: TouchEvent<HTMLDivElement>) => {
+        dragStateRef.current.hasMoved = true;
+    };
+
+    const handleTouchEnd = (_event: TouchEvent<HTMLDivElement>) => {
+        rowRef.current?.classList.remove('is-dragging');
+    };
+
     return (
         <div
             ref={rowRef}
             className={`${className} kabinet-draggable-row`}
+            data-lenis-prevent-touch
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={stopDragging}
             onMouseLeave={stopDragging}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onTouchCancel={handleTouchEnd}
             onClickCapture={handleClickCapture}
         >
             {children}

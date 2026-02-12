@@ -143,7 +143,8 @@
     gap: var(--team-card-gap);
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
+    /* scroll-snap-type: x proximity; */
+    scroll-snap-type: none;
     padding-bottom: 0.2rem;
 }
 
@@ -395,7 +396,7 @@
     gap: var(--team-card-gap);
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: none;
     padding-bottom: 0.2rem;
 }
 
@@ -409,6 +410,8 @@
     cursor: grab;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
 }
 
 .kabinet-draggable-row::-webkit-scrollbar {
@@ -512,6 +515,7 @@
     .kabinet-core-grid,
     .kabinet-division-team-grid {
         --team-card-gap: 0.65rem;
+        scroll-snap-type: none;
     }
 
     .kabinet-core-grid>.kabinet-core-card,

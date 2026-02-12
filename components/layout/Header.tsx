@@ -8,6 +8,7 @@ type HeaderProps = {
     onlyShowAtTop?: boolean;
     showAfterSelector?: string;
     theme?: 'light' | 'dark';
+    hideOnFooter?: boolean;
 };
 
 type HeaderMenuItem = {
@@ -23,7 +24,12 @@ const HEADER_MENU_ITEMS: HeaderMenuItem[] = [
     { label: 'Sertifikat checker', href: '/certificate-checker' },
 ];
 
-export default function Header({ onlyShowAtTop = false, showAfterSelector, theme = 'dark' }: HeaderProps) {
+export default function Header({
+    onlyShowAtTop = false,
+    showAfterSelector,
+    theme = 'dark',
+    hideOnFooter = true,
+}: HeaderProps) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const [hideHeader, setHideHeader] = useState(false);
@@ -73,7 +79,7 @@ export default function Header({ onlyShowAtTop = false, showAfterSelector, theme
                     setIsScrolled(window.scrollY > 24);
                 }
 
-                if (footer) {
+                if (hideOnFooter && footer) {
                     const footerRect = footer.getBoundingClientRect();
                     const headerHeight = headerRef.current?.offsetHeight || 0;
                     setHideHeader(footerRect.top <= window.innerHeight - headerHeight);
@@ -93,7 +99,7 @@ export default function Header({ onlyShowAtTop = false, showAfterSelector, theme
                 cancelAnimationFrame(scrollTimeout);
             }
         };
-    }, [onlyShowAtTop, showAfterSelector]);
+    }, [onlyShowAtTop, showAfterSelector, hideOnFooter]);
 
     useEffect(() => {
         if (onlyShowAtTop) {

@@ -195,11 +195,11 @@ export default function ParallaxImage() {
                 </div>
                 <div
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 z-8 bg-black/30"
+                    className="pointer-events-none absolute inset-0 z-8 bg-black/10"
                 />
                 <div
                     data-text-center
-                    className="absolute top-1/2 left-1/2 w-[45vw] -translate-x-1/2 -translate-y-1/2 will-change-transform z-10 max-sm:top-[37%] max-sm:w-[88vw] max-sm:max-w-[28ch]"
+                    className="absolute top-1/2 left-1/2 w-[45vw] -translate-x-1/2 -translate-y-1/2 will-change-transform z-10 max-sm:top-[50%] max-sm:w-[88vw] max-sm:max-w-[28ch]"
                 >
                     <p
                         ref={text1Ref}

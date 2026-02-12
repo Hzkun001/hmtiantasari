@@ -108,7 +108,7 @@ export default function HeroSection() {
                                     window.lenis.scrollTo(heroRevealSection as HTMLElement, {
                                         duration: 1.5,
                                         easing: (t: number) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t,
-                                        offset: -50,
+                                        offset: 0,
                                         lock: true,
                                         force: true,
                                         onComplete: () => {

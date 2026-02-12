@@ -6,10 +6,9 @@ import './certificate-checker.css';
 export default function CertificateCheckerPage() {
     return (
         <main className="certificate-checker-page">
-            <Header />
+            <Header hideOnFooter={false} />
             <CertificateCheckerClient />
             <Footer />
         </main>
     );
 }
-

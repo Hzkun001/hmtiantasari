@@ -44,6 +44,17 @@ const LandingHero: React.FC<LandingHeroProps> = ({
         if (hasInitialized.current) return;
         hasInitialized.current = true;
 
+        const isMobileViewport = window.matchMedia("(max-width: 900px)").matches;
+        const heroLiftY = isMobileViewport ? -18 : -50;
+        const heroScale = isMobileViewport ? 2.15 : 4;
+        const heroClipPath = isMobileViewport
+            ? "polygon(14% 10%, 86% 10%, 86% 90%, 14% 90%)"
+            : "polygon(20% 10%, 80% 10%, 80% 90%, 20% 90%)";
+        const bannerLeftOne = isMobileViewport ? "30%" : "40%";
+        const bannerLeftTwo = isMobileViewport ? "70%" : "60%";
+        const bannerRotateOne = isMobileViewport ? -12 : -20;
+        const bannerRotateTwo = isMobileViewport ? 12 : 20;
+
         const html = document.documentElement;
         const body = document.body;
         const previousHtmlOverflow = html.style.overflow;
@@ -252,14 +263,14 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             });
 
             imagesTimeline.to(".hero-img", {
-                y: -50,
+                y: heroLiftY,
                 duration: 1,
                 ease: "hop",
             });
 
             imagesTimeline.to(".hero-img", {
-                scale: 4,
-                clipPath: "polygon(20% 10%, 80% 10%, 80% 90%, 20% 90%)",
+                scale: heroScale,
+                clipPath: heroClipPath,
                 duration: 1.5,
                 ease: "hop",
                 onStart: () => {
@@ -278,16 +289,16 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             });
 
             imagesTimeline.to(".banner-img-1", {
-                left: "40%",
-                rotate: -20,
+                left: bannerLeftOne,
+                rotate: bannerRotateOne,
                 duration: 1.5,
                 delay: 0.5,
                 ease: "hop",
             }, "<");
 
             imagesTimeline.to(".banner-img-2", {
-                left: "60%",
-                rotate: 20,
+                left: bannerLeftTwo,
+                rotate: bannerRotateTwo,
                 duration: 1.5,
                 ease: "hop",
             }, "<");

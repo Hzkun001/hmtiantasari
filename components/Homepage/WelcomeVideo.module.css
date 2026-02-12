@@ -5,7 +5,8 @@
     min-height: 100svh;
     overflow: hidden;
     z-index: 5;
-    background-color: #1a1a1a;
+    background-color: #ffffff;
+    margin-top: -1px;
     padding: 0;
     display: flex;
     align-items: center;
@@ -42,8 +43,8 @@
     border-bottom: clamp(2rem, 4vw, 5rem) solid #ffffff;
     background: #fff;
     padding: 0 0 1rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2),
-        0 20px 60px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1),
+        0 16px 42px rgba(0, 0, 0, 0.08);
 }
 
 .heroBg video {
@@ -93,9 +94,9 @@
 .header h1 {
     font-size: clamp(2rem, 4.5vw, 4.5rem);
     text-align: center;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1;
-    color: #fbd784;
+    color: #000000;
     overflow: hidden;
     letter-spacing: 0.02em;
     margin: 0;
@@ -149,7 +150,7 @@
     }
 
     .hero {
-        padding: clamp(4.5rem, 9svh, 5.75rem) 0 clamp(2rem, 5svh, 2.75rem);
+        padding: clamp(2.2rem, 5.2svh, 3.2rem) 0 clamp(1.6rem, 4svh, 2.2rem);
         height: auto;
         min-height: 100svh;
     }
@@ -196,7 +197,7 @@
     }
 
     .hero {
-        padding: clamp(4.25rem, 8.5svh, 5.5rem) 0 clamp(1.5rem, 4svh, 2.35rem);
+        padding: clamp(1.9rem, 4.8svh, 2.8rem) 0 clamp(1.25rem, 3.4svh, 1.9rem);
         height: auto;
         min-height: 100svh;
     }

@@ -61,7 +61,7 @@
 
 @media (max-width: 640px) {
   [data-text-center]>.text {
-    color: #fff6db;
+    color: #fbd784;
     font-size: min(9.4vw, 36px);
     font-weight: 700;
     line-height: 1.08;
@@ -725,10 +725,10 @@
   /* Lebih tinggi di mobile */
   z-index: 5;
   background-image: linear-gradient(180deg,
-      rgba(26, 26, 26, 0) 0%,
-      rgba(26, 26, 26, 0.6) 40%,
-      rgba(26, 26, 26, 0.95) 80%,
-      #1a1a1a 100%);
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.62) 40%,
+      rgba(255, 255, 255, 0.9) 80%,
+      #ffffff 100%);
 }
 
 @media (min-width: 768px) {
@@ -742,9 +742,9 @@
     height: 120px;
     /* Kembali normal di desktop */
     background-image: linear-gradient(180deg,
-        rgba(11, 29, 38, 0),
-        #1a1a1a,
-        #1a1a1a);
+        rgba(255, 255, 255, 0),
+        #ffffff,
+        #ffffff);
   }
 }
 
