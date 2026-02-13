@@ -63,7 +63,7 @@ export async function fetchNewsRecords(options: FetchNewsOptions = {}): Promise<
             continue;
         }
 
-        const rows = (data || []) as Activity[];
+        const rows = (data ?? []) as unknown as Activity[];
 
         if (rows.length > 0) {
             return { table, data: rows };
