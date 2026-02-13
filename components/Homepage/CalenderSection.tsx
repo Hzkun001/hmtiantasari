@@ -333,7 +333,7 @@ export default function CalendarSection() {
                         className="relative w-full max-w-md overflow-hidden border border-neutral-200 bg-white p-6 shadow-2xl"
                         onClick={(event) => event.stopPropagation()}
                     >
-                        <div className="pointer-events-none absolute -top-1 -right-1 opacity-70" aria-hidden="true">
+                        <div className="pointer-events-none absolute bottom-1 right-0 opacity-70" aria-hidden="true">
                             <Image
                                 src="/Ykiri.svg"
                                 alt=""
