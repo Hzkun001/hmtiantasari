@@ -408,30 +408,6 @@
     box-shadow: 18px 0 40px rgba(0, 0, 0, 0.42);
   }
 
-  .menu::before,
-  .menu::after {
-    content: "";
-    position: absolute;
-    pointer-events: none;
-  }
-
-  .menu::before {
-    width: 130px;
-    height: 130px;
-    top: 120px;
-    right: -46px;
-    border-radius: 999px;
-    border: 1px solid rgba(251, 215, 132, 0.16);
-  }
-
-  .menu::after {
-    width: 92px;
-    height: 92px;
-    bottom: 80px;
-    left: -36px;
-    border-radius: 999px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-  }
 
   .menu-header {
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
@@ -1900,4 +1876,262 @@ footer {
 
 .header.header-light .burger-line {
   background-color: #000;
+}
+
+/* =================================
+   HERO MOBILE CINEMATIC (HOMEPAGE)
+   ================================= */
+
+.hero-section-cinematic {
+  background-color: #0f1117;
+}
+
+.hero-mobile-cinematic {
+  display: block;
+  position: relative;
+  z-index: 8;
+  width: 100%;
+  min-height: 100svh;
+  padding: 0 0 16px;
+}
+
+.hero-mobile-cinematic-frame {
+  position: relative;
+  width: min(100%, 430px);
+  height: calc(100svh - 16px);
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: linear-gradient(180deg, rgba(213, 213, 213, 0.3) 0%, rgba(145, 145, 145, 0.2) 100%);
+}
+
+.hero-mobile-cinematic-video,
+.hero-mobile-cinematic-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-mobile-cinematic-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--font-dm-sans, ui-sans-serif), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.25), rgba(16, 18, 23, 0.9) 64%);
+}
+
+.hero-mobile-cinematic-placeholder code {
+  margin-left: 6px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 11px;
+}
+
+.hero-mobile-cinematic-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(15, 17, 23, 0.32) 0%, rgba(15, 17, 23, 0.2) 26%, rgba(15, 17, 23, 0.52) 72%, rgba(15, 17, 23, 0.82) 100%),
+    radial-gradient(circle at 50% 24%, rgba(209, 198, 227, 0.22), rgba(209, 198, 227, 0) 45%);
+  pointer-events: none;
+}
+
+.hero-mobile-cinematic-top {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  z-index: 2;
+}
+
+.hero-mobile-cinematic-top {
+  top: 5%;
+  text-align: center;
+}
+
+.hero-mobile-cinematic-brand {
+  color: #fff;
+  font-size: clamp(30px, 5.8vw, 36px);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  font-family: var(--font-bentham);
+}
+
+.hero-mobile-cinematic-links {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.hero-mobile-cinematic-chip {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.hero-mobile-cinematic-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  min-width: 62px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(84, 84, 84, 0.44);
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.hero-mobile-cinematic-play:disabled {
+  opacity: 0.6;
+}
+
+.hero-mobile-cinematic-timeline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 48px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.28);
+  z-index: 2;
+  overflow: hidden;
+}
+
+.hero-mobile-cinematic-timeline-progress {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.94);
+  transform-origin: left center;
+  animation-name: hero-mobile-timeline-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hero-mobile-timeline-fill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-mobile-cinematic-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: linear-gradient(180deg, rgba(15, 17, 23, 0) 0%, rgba(15, 17, 23, 0.66) 100%);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.hero-mobile-cinematic-meta {
+  line-height: 1.1;
+}
+
+.hero-mobile-cinematic-meta p:first-child {
+  color: rgba(255, 255, 255, 0.96);
+  font-family: var(--font-bentham);
+  font-size: 14px;
+}
+
+.hero-mobile-cinematic-meta p:last-child {
+  margin-top: 1px;
+  color: rgba(255, 255, 255, 0.84);
+  font-family: var(--font-bentham);
+  font-size: 14px;
+}
+
+.hero-mobile-cinematic-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  margin-right: 6px;
+  font-family: var(--font-dm-sans, ui-sans-serif), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.02em;
+}
+
+.hero-mobile-cinematic-counter span {
+  color: rgba(255, 255, 255, 0.48);
+  transition: color 0.2s ease;
+}
+
+.hero-mobile-cinematic-counter span.is-active {
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.hero-mobile-cinematic-corner {
+  width: 24px;
+  height: 20px;
+  margin-left: 2px;
+  flex: 0 0 auto;
+  opacity: 0.56;
+  background: repeating-linear-gradient(135deg,
+      rgba(255, 255, 255, 0.74) 0,
+      rgba(255, 255, 255, 0.74) 2px,
+      transparent 2px,
+      transparent 5px);
+  clip-path: polygon(100% 0, 0 100%, 100% 100%);
+}
+
+@media (max-width: 767px) {
+  body.home-cinematic-hero .header,
+  body.home-cinematic-hero .header.on-scroll {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: none !important;
+  }
+
+  body.home-cinematic-hero .navbar {
+    box-shadow: none;
+  }
+
+  .hero-section.hero-section-cinematic {
+    min-height: 100svh !important;
+    max-height: none !important;
+    padding-bottom: 0;
+  }
+
+  .hero-section.hero-section-cinematic::before,
+  .hero-section.hero-section-cinematic::after {
+    display: none !important;
+    content: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-mobile-cinematic {
+    display: none;
+  }
 }

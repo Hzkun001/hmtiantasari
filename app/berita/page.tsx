@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Activity, fetchNewsRecords } from '@/lib/supabase';
+import { getCloudinaryFetchImageUrl } from '@/lib/cloudinary';
 
 type ActivityCard = Activity & {
     categoryLabel: string;
@@ -223,6 +224,13 @@ export default function KegiatanPage() {
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {filteredActivities.map((activity) => {
                                     const activityLink = normalizeExternalLink(activity.link);
+                                    const optimizedImageUrl = getCloudinaryFetchImageUrl(activity.image_url, {
+                                        width: 1280,
+                                        height: 800,
+                                        crop: 'fill',
+                                        gravity: 'auto',
+                                        quality: 'auto:good',
+                                    });
 
                                     return (
                                         <article
@@ -232,7 +240,7 @@ export default function KegiatanPage() {
                                         <div className="absolute inset-0">
                                             {activity.image_url ? (
                                                 <Image
-                                                    src={activity.image_url}
+                                                    src={optimizedImageUrl || activity.image_url}
                                                     alt={activity.title}
                                                     fill
                                                     className="object-cover transition duration-500 group-hover:scale-105"

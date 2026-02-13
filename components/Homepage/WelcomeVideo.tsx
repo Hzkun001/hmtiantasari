@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { CustomEase } from 'gsap/CustomEase';
@@ -48,6 +48,17 @@ export default function HeroReveal() {
     const headerRef = useRef<HTMLDivElement>(null);
     const characterLeftRef = useRef<HTMLDivElement>(null);
     const characterRightRef = useRef<HTMLDivElement>(null);
+    const [isDesktopViewport, setIsDesktopViewport] = useState(false);
+
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(min-width: 768px)');
+        const syncViewport = () => setIsDesktopViewport(mediaQuery.matches);
+
+        syncViewport();
+        mediaQuery.addEventListener('change', syncViewport);
+
+        return () => mediaQuery.removeEventListener('change', syncViewport);
+    }, []);
 
     // Helper: Split text utility
     const createSplitText = (selector: string | Element | Element[], type: string, className: string) => {
@@ -58,6 +69,8 @@ export default function HeroReveal() {
     };
 
     useEffect(() => {
+        if (!isDesktopViewport) return;
+
         // Register plugins
         gsap.registerPlugin(CustomEase, SplitText, ScrollTrigger);
         CustomEase.create("hop", "0.9, 0, 0.1, 1");
@@ -153,7 +166,9 @@ export default function HeroReveal() {
             headerSplit.revert();
             tl.kill();
         };
-    }, []);
+    }, [isDesktopViewport]);
+
+    if (!isDesktopViewport) return null;
 
     return (
         <section id="section-01" className={`${styles.hero} hero-reveal-section`} ref={sectionRef}>
@@ -176,7 +191,7 @@ export default function HeroReveal() {
                                 e.currentTarget.currentTime = 3;
                             }}
                         >
-                            <source src="/hero-vid.webm" type="video/webm" />
+                            <source src="/hero-vid.webm" type="video/mp4" />
                         </video>
                     </div>
 

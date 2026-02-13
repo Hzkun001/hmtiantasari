@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Activity, fetchNewsRecords } from '@/lib/supabase';
+import { getCloudinaryFetchImageUrl } from '@/lib/cloudinary';
 
 const HOMEPAGE_NEWS_LIMIT = 6;
 const NEWS_IMAGE_SIZES = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px';
@@ -80,7 +81,16 @@ export default function ActivitiesSection() {
                 {/* Blog-style Grid */}
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-                        {activities.map((activity) => (
+                        {activities.map((activity) => {
+                            const optimizedImageUrl = getCloudinaryFetchImageUrl(activity.image_url, {
+                                width: 960,
+                                height: 640,
+                                crop: 'fill',
+                                gravity: 'auto',
+                                quality: 'auto:good',
+                            });
+
+                            return (
                             <article
                                 key={activity.id}
                                 className="group bg-white overflow-hidden border border-neutral-200 flex flex-col"
@@ -89,7 +99,7 @@ export default function ActivitiesSection() {
                                 <div className="relative w-full h-64 overflow-hidden">
                                     {activity.image_url ? (
                                         <Image
-                                            src={activity.image_url}
+                                            src={optimizedImageUrl || activity.image_url}
                                             alt={activity.title}
                                             fill
                                             className="object-cover"
@@ -164,7 +174,8 @@ export default function ActivitiesSection() {
                                     </div>
                                 </div>
                             </article>
-                        ))}
+                            );
+                        })}
                     </div>
 
                     {/* Empty State */}
