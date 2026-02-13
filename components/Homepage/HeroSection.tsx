@@ -311,7 +311,7 @@ export default function HeroSection() {
                         </div>
                     </div>
 
-                    <button
+                    {/* <button
                         type="button"
                         className="hero-mobile-cinematic-play"
                         onClick={toggleMobileVideo}
@@ -319,7 +319,7 @@ export default function HeroSection() {
                         aria-label={isMobileVideoPlaying ? 'Pause video hero' : 'Play video hero'}
                     >
                         {isMobileVideoPlaying ? 'PAUSE' : 'PLAY'}
-                    </button>
+                    </button> */}
 
                     <div className="hero-mobile-cinematic-timeline" aria-hidden="true">
                         <span
