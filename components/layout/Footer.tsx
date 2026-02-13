@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { supabase } from '@/lib/supabase';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,18 +68,16 @@ export default function Footer() {
     let mounted = true;
 
     async function fetchFooterSettings() {
-      const { data, error } = await supabase
-        .from('SiteSettings')
-        .select(
-          'site_name,contact_email,contact_phone,address,facebook_url,twitter_url,instagram_url,linkedin_url,youtube_url'
-        )
-        .order('updated_at', { ascending: false })
-        .order('id', { ascending: false })
-        .limit(1)
-        .maybeSingle();
+      try {
+        const response = await fetch('/api/public/site-settings');
+        if (!response.ok) return;
 
-      if (!mounted || error || !data) return;
-      setSettings(data);
+        const payload = (await response.json()) as { data?: FooterSettings | null };
+        if (!mounted || !payload.data) return;
+        setSettings(payload.data);
+      } catch {
+        // Keep defaults if fetch fails.
+      }
     }
 
     fetchFooterSettings();

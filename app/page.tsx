@@ -1,10 +1,6 @@
 import HeroSection from '@/components/Homepage/HeroSection';
-import SliderNavigation from '@/components/Homepage/SliderNavigation';
-import HeroReveal from '@/components/Homepage/WelcomeVideo';
-import AboutSection from '@/components/Homepage/ParallaxImage';
-import CalendarSection from '@/components/Homepage/CalenderSection';
+import HomeDeferredSections from '@/components/Homepage/HomeDeferredSections';
 import Header from '@/components/layout/Header';
-import NewsSection from '@/components/Homepage/NewsSection';
 import Footer from '@/components/layout/Footer';
 
 export default function HomePage() {
@@ -12,11 +8,7 @@ export default function HomePage() {
         <main>
             <Header />
             <HeroSection />
-            <HeroReveal />
-            <AboutSection />
-            <CalendarSection />
-            <NewsSection />
-            <SliderNavigation />
+            <HomeDeferredSections />
             <Footer />
         </main>
     );

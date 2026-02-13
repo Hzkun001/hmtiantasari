@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Activity, fetchNewsRecords } from '@/lib/supabase';
+import type { Activity } from '@/lib/supabase';
 import { getCloudinaryFetchImageUrl } from '@/lib/cloudinary';
 
 const HOMEPAGE_NEWS_LIMIT = 6;
@@ -16,11 +16,13 @@ export default function ActivitiesSection() {
     useEffect(() => {
         async function fetchActivities() {
             try {
-                const { data } = await fetchNewsRecords({
-                    limit: HOMEPAGE_NEWS_LIMIT,
-                    columns: 'id,title,content,image_url,date,category,author,link',
-                });
-                setActivities(data || []);
+                const response = await fetch(`/api/public/news?limit=${HOMEPAGE_NEWS_LIMIT}`);
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch news: ${response.status}`);
+                }
+
+                const payload = (await response.json()) as { data?: Activity[] };
+                setActivities(payload.data ?? []);
             } catch (err) {
                 console.error('Error fetching activities:', err);
                 setError(err instanceof Error ? err.message : 'Failed to load activities');

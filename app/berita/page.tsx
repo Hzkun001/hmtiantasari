@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Activity, fetchNewsRecords } from '@/lib/supabase';
+import type { Activity } from '@/lib/supabase';
 import { getCloudinaryFetchImageUrl } from '@/lib/cloudinary';
 
 type ActivityCard = Activity & {
@@ -82,10 +82,16 @@ export default function KegiatanPage() {
             setLoading(true);
 
             try {
-                const { data } = await fetchNewsRecords();
+                const response = await fetch('/api/public/news?limit=100');
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch news: ${response.status}`);
+                }
+
+                const payload = (await response.json()) as { data?: Activity[] };
+                const data = payload.data ?? [];
                 if (!mounted) return;
 
-                const normalizedActivities = (data ?? []).map((activity) => ({
+                const normalizedActivities = data.map((activity) => ({
                     ...activity,
                     categoryLabel: inferActivityCategory(activity),
                 }));

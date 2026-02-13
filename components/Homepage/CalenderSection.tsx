@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { supabase, CalendarEvent } from '@/lib/supabase';
+import type { CalendarEvent } from '@/lib/supabase';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const CALENDAR_HISTORY_YEARS = 1;
@@ -75,20 +75,17 @@ export default function CalendarSection() {
     useEffect(() => {
         async function fetchCalendarEvents() {
             try {
-                const fetchStartDate = new Date(minViewDate.getFullYear(), 0, 1).toISOString();
-                const fetchEndDate = new Date(maxViewDate.getFullYear() + 1, 0, 1).toISOString();
+                const response = await fetch(
+                    `/api/public/calendar-events?limit=${CALENDAR_FETCH_LIMIT}&historyYears=${CALENDAR_HISTORY_YEARS}&futureYears=${CALENDAR_FUTURE_YEARS}`
+                );
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch calendar: ${response.status}`);
+                }
 
-                const { data, error } = await supabase
-                    .from('CalendarEvents')
-                    .select('id,title,start_at,organizer_department')
-                    .gte('start_at', fetchStartDate)
-                    .lt('start_at', fetchEndDate)
-                    .limit(CALENDAR_FETCH_LIMIT)
-                    .order('start_at', { ascending: true });
+                const payload = (await response.json()) as { data?: CalendarEvent[] };
+                const data = payload.data ?? [];
 
-                if (error) throw error;
-
-                const normalizedEvents = (data ?? []).map((event) => {
+                const normalizedEvents = data.map((event) => {
                     const startDate = parseEventStart(event);
                     return {
                         ...event,
