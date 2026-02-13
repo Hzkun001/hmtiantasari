@@ -44,17 +44,17 @@
 }
 
 [data-text-center]>.text {
-  color: #fbd784;
+  color: #ffffff;
   font-family: "Bentham", serif;
-  font-size: max(44px, min(3.472vw, 66.5px));
-  letter-spacing: -0.05em;
+  font-size: max(54px, min(3.472vw, 66.5px));
+  letter-spacing: -0.06em;
   line-height: 1.05;
   text-wrap: balance;
 }
 
 @media (max-width: 1023px) {
   [data-text-center]>.text {
-    font-size: min(7.692vw, 34.5px);
+    font-size: min(8.692vw, 34.5px);
     line-height: 1.12;
   }
 }
@@ -62,7 +62,7 @@
 @media (max-width: 640px) {
   [data-text-center]>.text {
     color: #fbd784;
-    font-size: min(9.4vw, 36px);
+    font-size: min(10.4vw, 36px);
     font-weight: 700;
     line-height: 1.08;
     text-shadow:
@@ -1432,6 +1432,7 @@ footer {
     transform: translateY(-50%);
     text-align: right;
     z-index: 9;
+    pointer-events: none;
   }
 
   .slider .container {
@@ -1453,6 +1454,7 @@ footer {
     color: #fbd784;
     font-weight: bold;
     font-size: 14px;
+    pointer-events: auto;
   }
 
   .slider-progress {

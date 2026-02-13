@@ -71,22 +71,6 @@ export async function uploadProjectImage(file: File, bucket: string = 'project-i
 }
 
 /**
- * Update project image_url di database
- * @param projectId - ID project yang akan diupdate
- * @param imageUrl - URL image baru
- */
-export async function updateProjectImage(projectId: number, imageUrl: string): Promise<void> {
-    const { error } = await supabase
-        .from('Projects')
-        .update({ image_url: imageUrl })
-        .eq('id', projectId);
-
-    if (error) {
-        throw error;
-    }
-}
-
-/**
  * Delete image dari Supabase Storage
  * @param imageUrl - Public URL dari image yang akan dihapus
  * @param bucket - Nama bucket di Supabase Storage (default: 'project-images')

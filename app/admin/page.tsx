@@ -1,16 +1,30 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { supabase, Project } from '@/lib/supabase';
+import { supabase, CalendarEvent, fetchNewsRecords } from '@/lib/supabase';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
+function formatStartAt(rawValue: string): string {
+    const date = new Date(rawValue);
+    if (Number.isNaN(date.getTime())) return '-';
+
+    return new Intl.DateTimeFormat('id-ID', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+    }).format(date);
+}
+
 export default function AdminDashboard() {
-    const [projects, setProjects] = useState<Project[]>([]);
+    const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
     const [stats, setStats] = useState({
-        totalProjects: 0,
-        activeProjects: 0,
+        totalCalendarEvents: 0,
+        monthCalendarEvents: 0,
+        totalNewsPosts: 0,
         totalTeamMembers: 0,
     });
     const [loading, setLoading] = useState(true);
@@ -19,33 +33,47 @@ export default function AdminDashboard() {
     const fetchDashboardData = useCallback(async () => {
         setLoading(true);
 
+        const now = new Date();
+        const monthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+        const nextMonthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
+
         const [
-            { data: projectsData },
-            { count: totalProjectsCount },
-            { count: activeProjectsCount },
+            { data: calendarEventsData },
+            { count: totalCalendarEventsCount },
+            { count: monthCalendarEventsCount },
             { count: totalTeamMembersCount },
         ] = await Promise.all([
             supabase
-                .from('Projects')
+                .from('CalendarEvents')
                 .select('*')
-                .order('id', { ascending: false })
+                .order('start_at', { ascending: true })
                 .limit(5),
             supabase
-                .from('Projects')
+                .from('CalendarEvents')
                 .select('id', { count: 'exact', head: true }),
             supabase
-                .from('Projects')
+                .from('CalendarEvents')
                 .select('id', { count: 'exact', head: true })
-                .not('image_url', 'is', null),
+                .gte('start_at', monthStart.toISOString())
+                .lt('start_at', nextMonthStart.toISOString()),
             supabase
                 .from('TeamMembers')
                 .select('id', { count: 'exact', head: true }),
         ]);
 
-        setProjects(projectsData || []);
+        let totalNewsPostsCount = 0;
+        try {
+            const { data } = await fetchNewsRecords();
+            totalNewsPostsCount = data.length;
+        } catch (error) {
+            console.error('Error fetching news stats:', error);
+        }
+
+        setCalendarEvents(calendarEventsData || []);
         setStats({
-            totalProjects: totalProjectsCount ?? (projectsData?.length ?? 0),
-            activeProjects: activeProjectsCount ?? ((projectsData || []).filter(p => p.image_url).length),
+            totalCalendarEvents: totalCalendarEventsCount ?? (calendarEventsData?.length ?? 0),
+            monthCalendarEvents: monthCalendarEventsCount ?? 0,
+            totalNewsPosts: totalNewsPostsCount ?? 0,
             totalTeamMembers: totalTeamMembersCount ?? 0,
         });
 
@@ -78,7 +106,6 @@ export default function AdminDashboard() {
 
     return (
         <div className="admin-shell">
-            {/* Header */}
             <div className="admin-header-section">
                 <div className="admin-dashboard-header">
                     <div className="admin-dashboard-logo" aria-hidden="true">
@@ -86,96 +113,81 @@ export default function AdminDashboard() {
                     </div>
                     <div>
                         <h1 className="admin-page-title">Dashboard</h1>
-                        <p className="admin-page-subtitle">Overview of your projects and activities</p>
+                        <p className="admin-page-subtitle">Overview of calendar, news, and organization data</p>
                     </div>
                 </div>
             </div>
 
-            {/* Stats Cards */}
             <div className="admin-stats-grid">
                 <div className="admin-stat-card">
-                    <div className="admin-stat-label">Total Projects</div>
-                    <div className="admin-stat-value">{stats.totalProjects}</div>
+                    <div className="admin-stat-label">Total Calendar Events</div>
+                    <div className="admin-stat-value">{stats.totalCalendarEvents}</div>
                 </div>
 
                 <div className="admin-stat-card">
-                    <div className="admin-stat-label">Active Projects</div>
-                    <div className="admin-stat-value">{stats.activeProjects}</div>
+                    <div className="admin-stat-label">Events This Month</div>
+                    <div className="admin-stat-value">{stats.monthCalendarEvents}</div>
+                </div>
+
+                <div className="admin-stat-card">
+                    <div className="admin-stat-label">Total News Posts</div>
+                    <div className="admin-stat-value">{stats.totalNewsPosts}</div>
                 </div>
 
                 <div className="admin-stat-card">
                     <div className="admin-stat-label">Team Members</div>
                     <div className="admin-stat-value">{stats.totalTeamMembers}</div>
                 </div>
-
-                <div className="admin-stat-card">
-                    <div className="admin-stat-label">Completion Rate</div>
-                    <div className="admin-stat-value">94%</div>
-                </div>
             </div>
 
-            {/* Main Content */}
             <div className="admin-content-grid">
-                {/* Recent Projects */}
                 <div className="admin-card admin-projects-section">
                     <div className="admin-card-header-row">
-                        <h2 className="admin-card-title">Recent Projects</h2>
-                        <Link href="/admin/projects" className="admin-link-button">
+                        <h2 className="admin-card-title">Upcoming Calendar Events</h2>
+                        <Link href="/admin/calendar-events" className="admin-link-button">
                             View All →
                         </Link>
                     </div>
 
                     <div className="admin-project-list">
-                        {projects.length > 0 ? (
-                            projects.map((project) => (
-                                <div key={project.id} className="admin-project-item">
+                        {calendarEvents.length > 0 ? (
+                            calendarEvents.map((event) => (
+                                <div key={event.id} className="admin-project-item">
                                     <div className="admin-project-image">
-                                        {project.image_url ? (
-                                            <Image
-                                                src={project.image_url}
-                                                alt={project.title}
-                                                fill
-                                                className="admin-image-cover"
-                                            />
-                                        ) : (
-                                            <div className="admin-image-placeholder">No Image</div>
-                                        )}
+                                        <div className="admin-image-placeholder">
+                                            {formatStartAt(event.start_at)}
+                                        </div>
                                     </div>
                                     <div className="admin-project-info">
-                                        <h3 className="admin-project-title">{project.title}</h3>
-                                        <p className="admin-project-desc">{project.description}</p>
+                                        <h3 className="admin-project-title">{event.title}</h3>
+                                        <p className="admin-project-desc">{event.organizer_department}</p>
                                     </div>
                                     <div className="admin-project-status">
-                                        {project.image_url ? (
-                                            <span className="admin-badge admin-badge-success">Complete</span>
-                                        ) : (
-                                            <span className="admin-badge admin-badge-warning">Pending</span>
-                                        )}
+                                        <span className="admin-badge admin-badge-success">Scheduled</span>
                                     </div>
                                 </div>
                             ))
                         ) : (
                             <div className="admin-empty-state">
-                                <p>No projects yet</p>
-                                <Link href="/admin/projects" className="admin-button-primary">
-                                    Create Project
+                                <p>No calendar events yet</p>
+                                <Link href="/admin/calendar-events" className="admin-button-primary">
+                                    Create Event
                                 </Link>
                             </div>
                         )}
                     </div>
                 </div>
 
-                {/* Quick Actions */}
                 <div className="admin-card admin-actions-section">
                     <h2 className="admin-card-title">Quick Actions</h2>
 
                     <div className="admin-action-list">
-                        <Link href="/admin/projects" className="admin-action-item">
-                            <span>Manage Projects</span>
+                        <Link href="/admin/calendar-events" className="admin-action-item">
+                            <span>Calendar Events</span>
                         </Link>
 
-                        <Link href="/admin/activities" className="admin-action-item">
-                            <span>View Activities</span>
+                        <Link href="/admin/news" className="admin-action-item">
+                            <span>Manage News</span>
                         </Link>
 
                         <Link href="/admin/team-members" className="admin-action-item">

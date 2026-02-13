@@ -2,9 +2,9 @@ import HeroSection from '@/components/Homepage/HeroSection';
 import SliderNavigation from '@/components/Homepage/SliderNavigation';
 import HeroReveal from '@/components/Homepage/WelcomeVideo';
 import AboutSection from '@/components/Homepage/ParallaxImage';
-import ProjectsSection from '@/components/Homepage/ProjectsSection';
+import CalendarSection from '@/components/Homepage/CalenderSection';
 import Header from '@/components/layout/Header';
-import ActivitiesSection from '@/components/Homepage/ActivitiesSection';
+import NewsSection from '@/components/Homepage/NewsSection';
 import Footer from '@/components/layout/Footer';
 
 export default function HomePage() {
@@ -14,8 +14,8 @@ export default function HomePage() {
             <HeroSection />
             <HeroReveal />
             <AboutSection />
-            <ProjectsSection />
-            <ActivitiesSection />
+            <CalendarSection />
+            <NewsSection />
             <SliderNavigation />
             <Footer />
         </main>

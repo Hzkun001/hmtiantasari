@@ -34,7 +34,7 @@ const DEFAULT_ADDRESS_LINES = [
 ];
 
 const DEFAULT_SOCIAL_LINKS: SocialLinkItem[] = [
-  { label: 'INSTAGRAM', href: 'https://instagram.com/hmtiantasari' },
+  { label: 'INSTAGRAM', href: 'https://www.instagram.com/hmit_uinantasari' },
   { label: 'TWITTER', href: 'https://x.com/hmtiuinantasari' },
   { label: 'LINKEDIN', href: 'https://linkedin.com/company/hmtiuinantasari' },
 ];
@@ -289,28 +289,28 @@ export default function Footer() {
               <p className="text-[11px] font-sans text-neutral-500 mb-2 tracking-[0.2em]">NAVIGASI</p>
               <nav className="space-y-1.5 flex flex-col items-start">
                 <a
+                  href="/sejarah-kami"
+                  className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
+                >
+                  Sejarah-kami
+                </a>
+                <a
                   href="/kabinet"
                   className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
                 >
                   Kabinet
                 </a>
                 <a
-                  href="/sejarah-kami"
+                  href="/berita"
                   className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
                 >
-                  Sejarah
+                  Berita
                 </a>
                 <a
-                  href="/projects"
+                  href="/keuangan"
                   className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
                 >
-                  Project
-                </a>
-                <a
-                  href="/kegiatan"
-                  className="block text-sm font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors leading-tight"
-                >
-                  Kegiatan
+                  Keuangan
                 </a>
                 <a
                   href="/certificate-checker"
@@ -376,10 +376,10 @@ export default function Footer() {
                   Sejarah
                 </a>
                 <a
-                  href="/projects"
+                  href="/#calendar"
                   className="block text-lg md:text-xl font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors"
                 >
-                  Project
+                  Kalender
                 </a>
                 <a
                   href="/kegiatan"

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase, Activity } from '@/lib/supabase';
+import { supabase, Activity, fetchNewsRecords, NewsTableName } from '@/lib/supabase';
 import { uploadProjectImage, deleteProjectImage } from '@/lib/uploadImage';
 import Image from 'next/image';
 
@@ -16,6 +16,7 @@ type FormData = {
 
 export default function AdminActivitiesPage() {
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [newsTable, setNewsTable] = useState<NewsTableName>('Activities');
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
     const [editingActivity, setEditingActivity] = useState<Activity | null>(null);
@@ -40,18 +41,18 @@ export default function AdminActivitiesPage() {
 
     async function fetchActivities() {
         setLoading(true);
-        const { data, error } = await supabase
-            .from('Activities')
-            .select('*')
-            .order('date', { ascending: false });
-
-        if (error) {
+        try {
+            const { table, data } = await fetchNewsRecords();
+            setNewsTable(table);
+            setActivities(data || []);
+            setError(null);
+        } catch (error) {
             console.error('Error fetching activities:', error);
             setError('Failed to load activities');
-        } else {
-            setActivities(data || []);
+            setActivities([]);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     }
 
     function resetForm() {
@@ -123,7 +124,7 @@ export default function AdminActivitiesPage() {
                 }
 
                 const { error } = await supabase
-                    .from('Activities')
+                    .from(newsTable)
                     .update(updateData)
                     .eq('id', editingActivity.id);
 
@@ -132,7 +133,7 @@ export default function AdminActivitiesPage() {
             } else {
                 // Create new activity
                 const { error } = await supabase
-                    .from('Activities')
+                    .from(newsTable)
                     .insert({
                         title: formData.title,
                         content: formData.content,
@@ -169,12 +170,15 @@ export default function AdminActivitiesPage() {
             }
 
             // Delete activity from database
-            const { error } = await supabase
-                .from('Activities')
-                .delete()
+            const { error, count } = await supabase
+                .from(newsTable)
+                .delete({ count: 'exact' })
                 .eq('id', activity.id);
 
             if (error) throw error;
+            if (!count) {
+                throw new Error('Delete ditolak policy (RLS) atau data tidak ditemukan.');
+            }
 
             setSuccess('Activity deleted successfully!');
             await fetchActivities();
@@ -193,7 +197,7 @@ export default function AdminActivitiesPage() {
 
             // Update activity with new image URL
             const { error } = await supabase
-                .from('Activities')
+                .from(newsTable)
                 .update({ image_url: imageUrl })
                 .eq('id', activityId);
 
@@ -231,12 +235,12 @@ export default function AdminActivitiesPage() {
             {/* Header */}
             <div className="admin-header-section">
                 <div className="admin-header-content">
-                    <h1 className="admin-title">Activities</h1>
+                    <h1 className="admin-title">News</h1>
                     <button
                         onClick={() => setShowForm(!showForm)}
                         className="admin-button-add"
                     >
-                        {showForm ? 'Cancel' : 'Add Activity'}
+                        {showForm ? 'Cancel' : 'Add News'}
                     </button>
                 </div>
             </div>
@@ -257,7 +261,7 @@ export default function AdminActivitiesPage() {
             {showForm && (
                 <div className="admin-card admin-form-card">
                     <h2 className="admin-form-title">
-                        {editingActivity ? 'Edit Activity' : 'Create New Activity'}
+                        {editingActivity ? 'Edit News' : 'Create News'}
                     </h2>
                     <form onSubmit={handleSubmit} className="admin-form">
                         <div className="admin-form-group">
@@ -269,7 +273,7 @@ export default function AdminActivitiesPage() {
                                 value={formData.title}
                                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                                 className="admin-form-input"
-                                placeholder="Activity title"
+                                placeholder="News title"
                                 required
                             />
                         </div>
@@ -282,7 +286,7 @@ export default function AdminActivitiesPage() {
                                 value={formData.content}
                                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                                 className="admin-form-textarea"
-                                placeholder="Activity content or description"
+                                placeholder="News content"
                                 rows={6}
                                 required
                             />
@@ -380,7 +384,7 @@ export default function AdminActivitiesPage() {
                                 disabled={uploadingForm}
                                 className="admin-button-primary"
                             >
-                                {uploadingForm ? 'Saving...' : (editingActivity ? 'Update Activity' : 'Create Activity')}
+                                {uploadingForm ? 'Saving...' : (editingActivity ? 'Update News' : 'Create News')}
                             </button>
                             <button
                                 type="button"
@@ -483,7 +487,7 @@ export default function AdminActivitiesPage() {
                 </div>
             ) : (
                 <div className="admin-card">
-                    <p className="admin-text-center">No activities found. Click "Add Activity" to create one.</p>
+                    <p className="admin-text-center">No news found. Click "Add News" to create one.</p>
                 </div>
             )}
         </div>

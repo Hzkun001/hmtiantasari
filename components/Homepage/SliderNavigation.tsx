@@ -98,7 +98,7 @@ export default function SliderNavigation() {
                             if (el) listItemsRef.current[3] = el;
                         }}
                     >
-                        <a href="#projects">03</a>
+                        <a href="#calendar">03</a>
                     </li>
                     <li
                         className="slider-list-item"

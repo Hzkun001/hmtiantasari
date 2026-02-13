@@ -2,7 +2,7 @@
 
 import { Fragment, useState, useEffect } from 'react';
 import Image from 'next/image';
-import { supabase, Activity } from '@/lib/supabase';
+import { Activity, fetchNewsRecords } from '@/lib/supabase';
 
 export default function ActivitiesSection() {
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -12,13 +12,7 @@ export default function ActivitiesSection() {
     useEffect(() => {
         async function fetchActivities() {
             try {
-                const { data, error } = await supabase
-                    .from('Activities')
-                    .select('*')
-                    .order('date', { ascending: false });
-
-                if (error) throw error;
-
+                const { data } = await fetchNewsRecords();
                 setActivities(data || []);
             } catch (err) {
                 console.error('Error fetching activities:', err);
@@ -70,10 +64,10 @@ export default function ActivitiesSection() {
                 {/* Main Title - Always visible at top center */}
                 <div className="text-center mb-12 md:mb-16 lg:mb-20">
                     <h2
-                        className="text-3xl md:text-4xl lg:text-6xl font-bold text-neutral-900 text-center mb-4"
+                        className="text-3xl md:text-4xl lg:text-6xl font-bold text-neutral-900 text-center mt-2 mb-3"
                         style={{ fontFamily: 'var(--font-bentham)' }}
                     >
-                        Our Activities
+                        Berita Terkini
                     </h2>
                 </div>
 
@@ -175,10 +169,10 @@ export default function ActivitiesSection() {
                 {/* Read More Button */}
                 <div className="text-center mt-12 md:mt-16 lg:mt-20 pb-10 md:pb-15">
                     <a
-                        href="/kegiatan"
-                        className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-neutral-900 text-neutral-900 font-semibold text-lg transition-all duration-300 hover:bg-neutral-900 hover:text-neutral-500"
+                        href="/berita"
+                        className="group inline-flex items-center gap-2 px-8 py-4 border-2 border-neutral-900 text-neutral-900 font-semibold text-lg transition-all duration-300 hover:bg-neutral-900 hover:text-white"
                     >
-                        Read More
+                        Lihat Semua Berita
                         <svg
                             className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
                             fill="none"

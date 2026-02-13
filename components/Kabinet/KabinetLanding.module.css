@@ -170,7 +170,6 @@
 .landingContainer :global(.intro-copy h3 .word) {
     display: inline-block;
     position: relative;
-    will-change: transform;
     margin-right: 0.1rem;
 }
 

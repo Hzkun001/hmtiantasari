@@ -19,8 +19,8 @@ type HeaderMenuItem = {
 const HEADER_MENU_ITEMS: HeaderMenuItem[] = [
     { label: 'Sejarah Kami', href: '/sejarah-kami' },
     { label: 'Kabinet', href: '/kabinet' },
-    { label: 'Project', href: '/projects' },
-    { label: 'Kegiatan', href: '/kegiatan' },
+    { label: 'Berita', href: '/berita' },
+    { label: 'Keuangan', href: '/keuangan' },
     { label: 'Sertifikat checker', href: '/certificate-checker' },
 ];
 

@@ -119,7 +119,7 @@ export default function CertificateCheckerClient() {
                                 className="certificate-checker-input"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value.toUpperCase())}
-                                placeholder="Contoh: HMIT-TI-ML-067"
+                                placeholder="Contoh: HMIT-TI-ML-047"
                                 inputMode="text"
                                 autoCapitalize="characters"
                                 autoComplete="off"

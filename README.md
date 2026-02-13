@@ -1,6 +1,6 @@
 # HMTI Website
 
-Website resmi Himpunan Mahasiswa Teknologi Informasi (HMTI) yang dibangun menggunakan Next.js. menampilkan profil organisasi, kegiatan, proyek, dan sistem manajemen admin.
+Website resmi Himpunan Mahasiswa Teknologi Informasi (HMTI) yang dibangun menggunakan Next.js. menampilkan profil organisasi, kegiatan, berita, kalender kegiatan, dan sistem manajemen admin.
 
 ## 🚀 Fitur Utama
 
@@ -9,13 +9,13 @@ Website resmi Himpunan Mahasiswa Teknologi Informasi (HMTI) yang dibangun menggu
 - **Sejarah Organisasi** - Halaman tentang sejarah dan visi misi HMTI
 - **Kabinet** - Informasi tentang struktur kabinet organisasi
 - **Kegiatan** - Showcase kegiatan dan aktivitas HMTI
-- **Projects** - Portfolio proyek-proyek yang telah dikerjakan
+- **Kalender Kegiatan** - Jadwal kegiatan berdasarkan waktu mulai dan departemen penyelenggara
 - **Certificate Checker** - Sistem verifikasi sertifikat kegiatan
 
 ### Admin Panel
-- **Dashboard** - Overview statistik proyek dan anggota tim
-- **Manajemen Proyek** - CRUD operations untuk proyek
-- **Manajemen Kegiatan** - Kelola kegiatan organisasi
+- **Dashboard** - Overview statistik kalender, berita, dan anggota tim
+- **Manajemen Kalender Kegiatan** - CRUD events untuk kalender homepage
+- **Manajemen Kegiatan/Berita** - Kelola konten kegiatan/berita organisasi
 - **Manajemen Tim** - Kelola data anggota tim
 - **Settings** - Konfigurasi website
 
@@ -53,14 +53,13 @@ hmti/
 ├── app/                          # Next.js App Router
 │   ├── admin/                    # Admin panel routes
 │   │   ├── activities/          # Manajemen kegiatan
-│   │   ├── projects/            # Manajemen proyek
+│   │   ├── calendar-events/     # Manajemen kalender kegiatan
 │   │   ├── team-members/        # Manajemen anggota
 │   │   └── settings/            # Pengaturan
 │   ├── certificate-checker/     # Verifikasi sertifikat
 │   ├── kabinet/                 # Halaman kabinet
 │   ├── kegiatan/                # Halaman kegiatan
 │   ├── login/                   # Halaman login admin
-│   ├── projects/                # Halaman proyek
 │   ├── sejarah-kami/            # Halaman sejarah
 │   ├── layout.tsx               # Root layout
 │   ├── page.tsx                 # Homepage
@@ -80,7 +79,7 @@ hmti/
 │   └── useScrollTrigger.ts      # GSAP ScrollTrigger hook
 ├── lib/                          # Utility libraries
 │   ├── certificates.ts          # Certificate logic
-│   ├── projectsData.ts          # Projects data
+│   ├── projectsData.ts          # Data kabinet (legacy naming)
 │   ├── site-settings-server.ts  # Site settings
 │   ├── supabase.ts              # Supabase client & types
 │   ├── uploadImage.ts           # Image upload utility
@@ -129,11 +128,18 @@ hmti/
 4. **Setup Supabase Database**
    
    Buat tabel-tabel berikut di Supabase:
-   - `Projects` - Data proyek
+   - `CalendarEvents` - Data kalender kegiatan
    - `Activities` - Data kegiatan
    - `TeamMembers` - Data anggota tim
    - `Certificates` - Data sertifikat
    - `SiteSettings` - Pengaturan website
+
+   Jalankan migration untuk kalender kegiatan dengan tabel terpisah:
+   - File: `supabase/migrations/20260213_calendar_events_table.sql`
+   - Tujuan: membuat tabel `CalendarEvents` (judul kegiatan, waktu mulai, departemen penyelenggara)
+   - Lanjutkan dengan policy RLS:
+   - File: `supabase/migrations/20260213_calendar_events_rls_policies.sql`
+   - Tujuan: read publik untuk homepage, write khusus user `authenticated` (admin)
 
 5. **Run Development Server**
    ```bash

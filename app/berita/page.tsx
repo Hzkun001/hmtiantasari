@@ -4,25 +4,13 @@ import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { supabase, Project } from '@/lib/supabase';
+import { Activity, fetchNewsRecords } from '@/lib/supabase';
 
-type ProjectCard = Project & {
-    size: 'large' | 'medium' | 'small';
-    category: string;
+type ActivityCard = Activity & {
+    categoryLabel: string;
 };
 
-const DEFAULT_SIZE_PATTERN: Array<'large' | 'medium' | 'small'> = ['large', 'small', 'medium', 'large', 'small'];
 const DEFAULT_CATEGORY = 'General';
-
-function normalizeSize(rawSize: string | undefined, index: number): 'large' | 'medium' | 'small' {
-    const size = rawSize?.toLowerCase().trim();
-
-    if (size === 'large' || size === 'medium' || size === 'small') {
-        return size;
-    }
-
-    return DEFAULT_SIZE_PATTERN[index % DEFAULT_SIZE_PATTERN.length];
-}
 
 function formatCategoryLabel(value: string): string {
     return value
@@ -34,46 +22,53 @@ function formatCategoryLabel(value: string): string {
         .join(' ');
 }
 
-function inferProjectCategory(project: Project): string {
-    const rawSize = project.size?.trim().toLowerCase();
+function inferActivityCategory(activity: Activity): string {
+    const rawCategory = activity.category?.trim();
+    if (rawCategory) return formatCategoryLabel(rawCategory);
 
-    if (rawSize && rawSize !== 'large' && rawSize !== 'medium' && rawSize !== 'small') {
-        return formatCategoryLabel(rawSize);
+    const activityText = [activity.title, activity.content].join(' ').toLowerCase();
+
+    if (/(workshop|pelatihan|kelas|bootcamp)/.test(activityText)) {
+        return 'Workshop';
     }
 
-    const projectText = [
-        project.title,
-        project.description,
-        ...(project.tech_stack ?? []),
-    ]
-        .join(' ')
-        .toLowerCase();
-
-    if (/(e-commerce|ecommerce|marketplace|online shop|toko online)/.test(projectText)) {
-        return 'E-Commerce Development';
+    if (/(seminar|talkshow|diskusi|webinar)/.test(activityText)) {
+        return 'Seminar';
     }
 
-    if (/(mobile|android|ios|app|flutter|react native)/.test(projectText)) {
-        return 'Mobile Apps';
+    if (/(kolaborasi|kunjungan|kemitraan|partnership)/.test(activityText)) {
+        return 'Kolaborasi';
     }
 
-    if (/(ux|ui\/ux|research|riset|usability|prototype)/.test(projectText)) {
-        return 'UX Research';
-    }
-
-    if (/(website|web app|landing page|company profile|portal)/.test(projectText)) {
-        return 'Website';
+    if (/(pengabdian|sosial|donasi|bakti)/.test(activityText)) {
+        return 'Pengabdian';
     }
 
     return DEFAULT_CATEGORY;
 }
 
-function formatTotalProjects(count: number): string {
-    return `${count} project${count > 1 ? 's' : ''}`;
+function formatTotalActivities(count: number): string {
+    return `${count} kegiatan`;
 }
 
-export default function ProjectsPage() {
-    const [projects, setProjects] = useState<ProjectCard[]>([]);
+function formatDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+    });
+}
+
+function normalizeExternalLink(url?: string | null): string | null {
+    if (!url) return null;
+    const trimmed = url.trim();
+    if (!trimmed) return null;
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed}`;
+}
+
+export default function KegiatanPage() {
+    const [activities, setActivities] = useState<ActivityCard[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [activeCategory, setActiveCategory] = useState('All');
     const [loading, setLoading] = useState(true);
@@ -82,35 +77,31 @@ export default function ProjectsPage() {
     useEffect(() => {
         let mounted = true;
 
-        async function fetchProjects() {
+        async function fetchActivities() {
             setLoading(true);
 
-            const { data, error: fetchError } = await supabase
-                .from('Projects')
-                .select('*')
-                .order('id', { ascending: false });
+            try {
+                const { data } = await fetchNewsRecords();
+                if (!mounted) return;
 
-            if (!mounted) return;
-
-            if (fetchError) {
-                console.error('Error fetching projects for projects page:', fetchError);
-                setError('Projects belum dapat dimuat. Silakan coba lagi.');
-                setProjects([]);
-            } else {
-                const normalizedProjects = (data ?? []).map((project, index) => ({
-                    ...project,
-                    size: normalizeSize(project.size, index),
-                    category: inferProjectCategory(project),
+                const normalizedActivities = (data ?? []).map((activity) => ({
+                    ...activity,
+                    categoryLabel: inferActivityCategory(activity),
                 }));
 
-                setProjects(normalizedProjects);
+                setActivities(normalizedActivities);
                 setError(null);
+            } catch (fetchError) {
+                if (!mounted) return;
+                console.error('Error fetching activities for kegiatan page:', fetchError);
+                setError('Kegiatan belum dapat dimuat. Silakan coba lagi.');
+                setActivities([]);
+            } finally {
+                if (mounted) setLoading(false);
             }
-
-            setLoading(false);
         }
 
-        fetchProjects();
+        fetchActivities();
 
         return () => {
             mounted = false;
@@ -118,31 +109,32 @@ export default function ProjectsPage() {
     }, []);
 
     const categories = useMemo(() => {
-        const uniqueCategories = Array.from(new Set(projects.map((project) => project.category))).sort();
+        const uniqueCategories = Array.from(new Set(activities.map((activity) => activity.categoryLabel))).sort();
         return ['All', ...uniqueCategories];
-    }, [projects]);
+    }, [activities]);
 
-    const filteredProjects = useMemo(() => {
+    const filteredActivities = useMemo(() => {
         const normalizedQuery = searchQuery.trim().toLowerCase();
 
-        return projects.filter((project) => {
-            const matchesCategory = activeCategory === 'All' || project.category === activeCategory;
+        return activities.filter((activity) => {
+            const matchesCategory = activeCategory === 'All' || activity.categoryLabel === activeCategory;
             if (!matchesCategory) return false;
 
             if (!normalizedQuery) return true;
 
             const searchableText = [
-                project.title,
-                project.description,
-                project.category,
-                ...(project.tech_stack ?? []),
+                activity.title,
+                activity.content,
+                activity.categoryLabel,
+                activity.author ?? '',
+                activity.date,
             ]
                 .join(' ')
                 .toLowerCase();
 
             return searchableText.includes(normalizedQuery);
         });
-    }, [projects, activeCategory, searchQuery]);
+    }, [activities, activeCategory, searchQuery]);
 
     return (
         <main className="min-h-screen bg-[#0f1014] text-white">
@@ -155,10 +147,10 @@ export default function ProjectsPage() {
                             className="text-center text-4xl sm:text-5xl md:text-6xl text-white"
                             style={{ fontFamily: 'var(--font-bentham)' }}
                         >
-                            Explore Our Previous Works
+                            Berita HMTI
                         </h1>
                         <p className="mt-4 text-center text-sm md:text-base text-neutral-300">
-                            Halaman ini untuk eksplorasi semua project HMTI, sementara section home tetap sebagai preview.
+                            Berita terbaru lingkup Teknologi Informasi yang telah dipublikasikan.
                         </p>
 
                         <div className="mt-8 relative">
@@ -176,7 +168,7 @@ export default function ProjectsPage() {
                                 type="text"
                                 value={searchQuery}
                                 onChange={(event) => setSearchQuery(event.target.value)}
-                                placeholder="Search projects..."
+                                placeholder="Search news..."
                                 className="w-full rounded-xl border border-white/15 bg-white/10 py-4 pl-12 pr-4 text-base text-white placeholder:text-neutral-400 outline-none transition focus:border-[#FFD56C] focus:bg-white/15"
                             />
                         </div>
@@ -198,7 +190,7 @@ export default function ProjectsPage() {
                         </div>
 
                         <p className="mt-6 text-sm md:text-base text-neutral-300">
-                            Menampilkan {formatTotalProjects(filteredProjects.length)}
+                            Menampilkan {formatTotalActivities(filteredActivities.length)} berita
                         </p>
                     </div>
                 </div>
@@ -220,25 +212,28 @@ export default function ProjectsPage() {
                             <div className="rounded-2xl border border-red-400/30 bg-red-500/10 p-6 text-red-200">
                                 {error}
                             </div>
-                        ) : filteredProjects.length === 0 ? (
+                        ) : filteredActivities.length === 0 ? (
                             <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
-                                <p className="text-lg md:text-xl text-neutral-100">Project tidak ditemukan.</p>
+                                <p className="text-lg md:text-xl text-neutral-100">Kegiatan tidak ditemukan.</p>
                                 <p className="mt-2 text-sm md:text-base text-neutral-400">
                                     Coba kata kunci lain atau pilih kategori berbeda.
                                 </p>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                                {filteredProjects.map((project) => (
-                                    <article
-                                        key={project.id}
-                                        className="group relative min-h-90 overflow-hidden rounded-2xl border border-white/20 bg-[#11131a]"
-                                    >
+                                {filteredActivities.map((activity) => {
+                                    const activityLink = normalizeExternalLink(activity.link);
+
+                                    return (
+                                        <article
+                                            key={activity.id}
+                                            className="group relative min-h-90 overflow-hidden rounded-2xl border border-white/20 bg-[#11131a]"
+                                        >
                                         <div className="absolute inset-0">
-                                            {project.image_url ? (
+                                            {activity.image_url ? (
                                                 <Image
-                                                    src={project.image_url}
-                                                    alt={project.title}
+                                                    src={activity.image_url}
+                                                    alt={activity.title}
                                                     fill
                                                     className="object-cover transition duration-500 group-hover:scale-105"
                                                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -250,26 +245,48 @@ export default function ProjectsPage() {
                                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,213,108,0.25),transparent_35%)]" />
                                         </div>
 
-                                        <div className="relative z-10 flex h-full flex-col justify-between p-6">
-                                            <div>
+                                        <div className="relative z-10 flex h-full flex-col justify-between p-6 pointer-events-none">
+                                            <div className="flex items-start justify-between gap-3">
                                                 <span className="inline-block rounded-full border border-white/20 bg-black/40 px-3 py-1 text-xs tracking-wide text-neutral-100">
-                                                    {project.category}
+                                                    {activity.categoryLabel}
                                                 </span>
+                                                <time className="text-xs text-neutral-300">{formatDate(activity.date)}</time>
                                             </div>
                                             <div>
                                                 <h2
                                                     className="text-2xl md:text-3xl text-white"
                                                     style={{ fontFamily: 'var(--font-bentham)' }}
                                                 >
-                                                    {project.title}
+                                                    {activity.title}
                                                 </h2>
                                                 <p className="mt-2 text-sm md:text-base text-neutral-200 leading-relaxed">
-                                                    {project.description}
+                                                    {activity.content}
                                                 </p>
+                                                {activity.author ? (
+                                                    <p className="mt-3 text-xs md:text-sm text-neutral-300">
+                                                        Oleh {activity.author}
+                                                    </p>
+                                                ) : null}
+                                                {activityLink ? (
+                                                    <p className="mt-3 text-xs md:text-sm text-[#FFD56C]">
+                                                        Baca selengkapnya →
+                                                    </p>
+                                                ) : null}
                                             </div>
                                         </div>
+
+                                        {activityLink ? (
+                                            <a
+                                                href={activityLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                aria-label={`Buka berita: ${activity.title}`}
+                                                className="absolute inset-0 z-20"
+                                            />
+                                        ) : null}
                                     </article>
-                                ))}
+                                    );
+                                })}
                             </div>
                         )}
                     </div>

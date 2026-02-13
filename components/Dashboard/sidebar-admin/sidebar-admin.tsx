@@ -16,7 +16,7 @@ import {
     SidebarTrigger,
     useSidebar,
 } from '@/components/ui-shadcn/sidebar';
-import { LayoutDashboard, FolderKanban, Calendar, Users, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, CalendarDays, Newspaper, Users, Settings, LogOut } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 type MenuItem = {
@@ -32,14 +32,14 @@ const menuItems: MenuItem[] = [
         icon: <LayoutDashboard className="h-4 w-4" />,
     },
     {
-        label: 'Projects',
-        href: '/admin/projects',
-        icon: <FolderKanban className="h-4 w-4" />,
+        label: 'Calendar Events',
+        href: '/admin/calendar-events',
+        icon: <CalendarDays className="h-4 w-4" />,
     },
     {
-        label: 'Activities',
-        href: '/admin/activities',
-        icon: <Calendar className="h-4 w-4" />,
+        label: 'News',
+        href: '/admin/news',
+        icon: <Newspaper className="h-4 w-4" />,
     },
     {
         label: 'Team Members',
