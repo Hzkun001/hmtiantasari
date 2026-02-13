@@ -6,6 +6,9 @@ import Image from 'next/image';
 import { supabase, CalendarEvent } from '@/lib/supabase';
 
 const WEEK_DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const CALENDAR_HISTORY_YEARS = 1;
+const CALENDAR_FUTURE_YEARS = 1;
+const CALENDAR_FETCH_LIMIT = 300;
 
 type CalendarEventWithMeta = CalendarEvent & {
     startDate: Date | null;
@@ -50,17 +53,37 @@ function buildCalendarDays(year: number, month: number): Date[] {
 }
 
 export default function CalendarSection() {
+    const todayMonthStart = useMemo(() => {
+        const now = new Date();
+        return new Date(now.getFullYear(), now.getMonth(), 1);
+    }, []);
+    const minViewDate = useMemo(
+        () => new Date(todayMonthStart.getFullYear() - CALENDAR_HISTORY_YEARS, 0, 1),
+        [todayMonthStart]
+    );
+    const maxViewDate = useMemo(
+        () => new Date(todayMonthStart.getFullYear() + CALENDAR_FUTURE_YEARS, 11, 1),
+        [todayMonthStart]
+    );
+
     const [events, setEvents] = useState<CalendarEventWithMeta[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedEvent, setSelectedEvent] = useState<CalendarEventWithMeta | null>(null);
+    const [viewDate, setViewDate] = useState<Date>(todayMonthStart);
 
     useEffect(() => {
         async function fetchCalendarEvents() {
             try {
+                const fetchStartDate = new Date(minViewDate.getFullYear(), 0, 1).toISOString();
+                const fetchEndDate = new Date(maxViewDate.getFullYear() + 1, 0, 1).toISOString();
+
                 const { data, error } = await supabase
                     .from('CalendarEvents')
-                    .select('*')
+                    .select('id,title,start_at,organizer_department')
+                    .gte('start_at', fetchStartDate)
+                    .lt('start_at', fetchEndDate)
+                    .limit(CALENDAR_FETCH_LIMIT)
                     .order('start_at', { ascending: true });
 
                 if (error) throw error;
@@ -84,7 +107,7 @@ export default function CalendarSection() {
         }
 
         fetchCalendarEvents();
-    }, []);
+    }, [maxViewDate, minViewDate]);
 
     useEffect(() => {
         if (!selectedEvent) return;
@@ -105,27 +128,16 @@ export default function CalendarSection() {
         };
     }, [selectedEvent]);
 
-    const calendarBaseDate = useMemo(() => {
-        const firstDatedEvent = events.find((event) => event.startDate);
-        return firstDatedEvent?.startDate ?? new Date();
-    }, [events]);
-
-    const [viewDate, setViewDate] = useState<Date | null>(null);
-
-    useEffect(() => {
-        if (!viewDate) {
-            setViewDate(new Date(calendarBaseDate.getFullYear(), calendarBaseDate.getMonth(), 1));
-        }
-    }, [calendarBaseDate, viewDate]);
-
-    const activeViewDate = viewDate ?? new Date(calendarBaseDate.getFullYear(), calendarBaseDate.getMonth(), 1);
+    const activeViewDate = viewDate;
     const calendarMonth = activeViewDate.getMonth();
     const calendarYear = activeViewDate.getFullYear();
 
     function shiftMonth(offset: number) {
         setViewDate((current) => {
-            const base = current ?? new Date(calendarBaseDate.getFullYear(), calendarBaseDate.getMonth(), 1);
-            return new Date(base.getFullYear(), base.getMonth() + offset, 1);
+            const nextViewDate = new Date(current.getFullYear(), current.getMonth() + offset, 1);
+            if (nextViewDate < minViewDate) return minViewDate;
+            if (nextViewDate > maxViewDate) return maxViewDate;
+            return nextViewDate;
         });
     }
 
@@ -151,12 +163,21 @@ export default function CalendarSection() {
         monthlyEvents.forEach((event) => {
             if (!event.startDate) return;
             const key = toDateKey(event.startDate);
-            const currentEvents = map.get(key) ?? [];
-            map.set(key, [...currentEvents, event]);
+            const currentEvents = map.get(key);
+            if (currentEvents) {
+                currentEvents.push(event);
+            } else {
+                map.set(key, [event]);
+            }
         });
 
         return map;
     }, [monthlyEvents]);
+
+    const isAtMinMonth =
+        calendarYear === minViewDate.getFullYear() && calendarMonth === minViewDate.getMonth();
+    const isAtMaxMonth =
+        calendarYear === maxViewDate.getFullYear() && calendarMonth === maxViewDate.getMonth();
 
     const monthLabel = useMemo(
         () =>
@@ -231,7 +252,12 @@ export default function CalendarSection() {
                                 type="button"
                                 onClick={() => shiftMonth(-1)}
                                 aria-label="Previous month"
-                                className="h-9 w-9 border border-neutral-400 text-neutral-700 transition-colors hover:bg-neutral-900 hover:text-white"
+                                disabled={isAtMinMonth}
+                                className={`h-9 w-9 border border-neutral-400 text-neutral-700 transition-colors ${
+                                    isAtMinMonth
+                                        ? 'cursor-not-allowed opacity-40'
+                                        : 'hover:bg-neutral-900 hover:text-white'
+                                }`}
                             >
                                 &#8592;
                             </button>
@@ -239,7 +265,12 @@ export default function CalendarSection() {
                                 type="button"
                                 onClick={() => shiftMonth(1)}
                                 aria-label="Next month"
-                                className="h-9 w-9 border border-neutral-400 text-neutral-700 transition-colors hover:bg-neutral-900 hover:text-white"
+                                disabled={isAtMaxMonth}
+                                className={`h-9 w-9 border border-neutral-400 text-neutral-700 transition-colors ${
+                                    isAtMaxMonth
+                                        ? 'cursor-not-allowed opacity-40'
+                                        : 'hover:bg-neutral-900 hover:text-white'
+                                }`}
                             >
                                 &#8594;
                             </button>

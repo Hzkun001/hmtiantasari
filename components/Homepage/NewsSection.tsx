@@ -1,8 +1,11 @@
 'use client';
 
-import { Fragment, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Activity, fetchNewsRecords } from '@/lib/supabase';
+
+const HOMEPAGE_NEWS_LIMIT = 6;
+const NEWS_IMAGE_SIZES = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px';
 
 export default function ActivitiesSection() {
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -12,7 +15,10 @@ export default function ActivitiesSection() {
     useEffect(() => {
         async function fetchActivities() {
             try {
-                const { data } = await fetchNewsRecords();
+                const { data } = await fetchNewsRecords({
+                    limit: HOMEPAGE_NEWS_LIMIT,
+                    columns: 'id,title,content,image_url,date,category,author,link',
+                });
                 setActivities(data || []);
             } catch (err) {
                 console.error('Error fetching activities:', err);
@@ -87,7 +93,10 @@ export default function ActivitiesSection() {
                                             alt={activity.title}
                                             fill
                                             className="object-cover"
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                            sizes={NEWS_IMAGE_SIZES}
+                                            quality={62}
+                                            loading="lazy"
+                                            decoding="async"
                                         />
                                     ) : (
                                         <div className="w-full h-full bg-linear-to-br from-neutral-200 to-neutral-300 flex items-center justify-center">

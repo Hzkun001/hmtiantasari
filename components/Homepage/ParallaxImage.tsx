@@ -7,6 +7,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const PARALLAX_IMAGE_SIZES = '100vw';
+const PARALLAX_IMAGE_QUALITY = 55;
+
 const IMAGES_CONFIG = {
     top: [
         {
@@ -157,9 +160,13 @@ export default function ParallaxImage() {
                                     src={img.src}
                                     alt="Image description"
                                     fill
-                                    sizes="(max-width: 640px) 1080px, 100vw"
+                                    sizes={PARALLAX_IMAGE_SIZES}
+                                    quality={PARALLAX_IMAGE_QUALITY}
                                     className="object-cover"
-                                    priority={false} />
+                                    loading="lazy"
+                                    decoding="async"
+                                    fetchPriority="low"
+                                />
                             </div>
                         ))}
                     </div>
@@ -172,9 +179,13 @@ export default function ParallaxImage() {
                                     src={img.src}
                                     alt="Image description"
                                     fill
-                                    sizes="(max-width: 640px) 1080px, 100vw"
+                                    sizes={PARALLAX_IMAGE_SIZES}
+                                    quality={PARALLAX_IMAGE_QUALITY}
                                     className="object-cover"
-                                    priority={img.type === "main"} />
+                                    loading="lazy"
+                                    decoding="async"
+                                    fetchPriority={img.type === 'main' ? 'auto' : 'low'}
+                                />
                             </div>
                         ))}
                     </div>
@@ -186,9 +197,13 @@ export default function ParallaxImage() {
                                     src={img.src}
                                     alt="Image description"
                                     fill
-                                    sizes="(max-width: 640px) 1080px, 100vw"
+                                    sizes={PARALLAX_IMAGE_SIZES}
+                                    quality={PARALLAX_IMAGE_QUALITY}
                                     className="object-cover"
-                                    priority={false} />
+                                    loading="lazy"
+                                    decoding="async"
+                                    fetchPriority="low"
+                                />
                             </div>
                         ))}
                     </div>

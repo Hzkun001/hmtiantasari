@@ -33,19 +33,30 @@ type FetchNewsResult = {
     data: Activity[];
 };
 
+type FetchNewsOptions = {
+    limit?: number;
+    columns?: string;
+};
+
 /**
  * Fetches news records with table fallback support.
  * Primary table is "Activities"; falls back to "News" for backward compatibility.
  */
-export async function fetchNewsRecords(): Promise<FetchNewsResult> {
+export async function fetchNewsRecords(options: FetchNewsOptions = {}): Promise<FetchNewsResult> {
+    const { limit, columns = '*' } = options;
     let firstSuccessful: FetchNewsResult | null = null;
     let lastError: PostgrestError | null = null;
 
     for (const table of NEWS_TABLE_CANDIDATES) {
-        const { data, error } = await supabase
+        let query = supabase
             .from(table)
-            .select('*')
+            .select(columns)
             .order('date', { ascending: false });
+        if (typeof limit === 'number') {
+            query = query.limit(limit);
+        }
+
+        const { data, error } = await query;
 
         if (error) {
             lastError = error;
