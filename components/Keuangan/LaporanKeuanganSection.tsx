@@ -77,7 +77,6 @@ export default function CashReportSection() {
         mode: 'year',
         value: 'all',
     });
-    const [selectedPreviewId, setSelectedPreviewId] = useState<string | null>(null);
 
     const yearOptions = useMemo(() => {
         return Array.from(new Set(sortedDocuments.map((document) => String(document.year)))).sort(
@@ -104,13 +103,6 @@ export default function CashReportSection() {
             return document.cabinet === appliedFilter.value;
         });
     }, [sortedDocuments, appliedFilter]);
-
-    const previewDocument = useMemo(() => {
-        if (filteredDocuments.length === 0) return null;
-
-        return filteredDocuments.find((document) => document.id === selectedPreviewId) ?? filteredDocuments[0];
-    }, [filteredDocuments, selectedPreviewId]);
-    const previewDownloadUrl = previewDocument?.pdfUrl ? resolveDownloadUrl(previewDocument.pdfUrl) : null;
 
     function handleModeChange(nextMode: ReportFilterMode) {
         setFilterMode(nextMode);
@@ -220,55 +212,24 @@ export default function CashReportSection() {
                                                     <td className="px-4 py-3">{document.title}</td>
                                                     <td className="px-4 py-3">{document.cabinet}</td>
                                                     <td className="px-4 py-3">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => setSelectedPreviewId(document.id)}
-                                                            className="rounded-md bg-[#FFD56C] px-3 py-1.5 text-xs font-semibold text-white transition hover:opacity-80"
-                                                        >
-                                                            PDF
-                                                        </button>
+                                                        {document.pdfUrl ? (
+                                                            <a
+                                                                href={resolveDownloadUrl(document.pdfUrl)}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="rounded-md bg-[#FFD56C] px-3 py-1.5 text-xs font-semibold text-black transition hover:opacity-80"
+                                                            >
+                                                                Download PDF
+                                                            </a>
+                                                        ) : (
+                                                            <span className="text-xs text-neutral-500">N/A</span>
+                                                        )}
                                                     </td>
                                                 </tr>
                                             ))
                                         )}
                                     </tbody>
                                 </table>
-                            </div>
-
-                            <div className="mt-5 rounded-lg border border-white/10 bg-black/20 p-4">
-                                <div className="flex flex-wrap items-center justify-between gap-2">
-                                    <p className="text-sm text-neutral-300">
-                                        Preview:{' '}
-                                        <span className="text-white">
-                                            {previewDocument ? previewDocument.title : 'Belum ada dokumen dipilih'}
-                                        </span>
-                                    </p>
-
-                                    {previewDocument?.pdfUrl ? (
-                                        <a
-                                            href={previewDownloadUrl ?? previewDocument.pdfUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="rounded-md border border-white/20 bg-[#FFD56C] px-3 py-1.5 text-xs font-semibold text-black transition hover:opacity-90"
-                                        >
-                                            Download PDF
-                                        </a>
-                                    ) : null}
-                                </div>
-
-                                {previewDocument?.pdfUrl ? (
-                                    <div className="mt-3 overflow-hidden rounded-md border border-white/10">
-                                        <iframe
-                                            title={`Preview ${previewDocument.title}`}
-                                            src={previewDocument.pdfUrl}
-                                            className="h-130 w-full"
-                                        />
-                                    </div>
-                                ) : (
-                                    <p className="mt-2 text-sm text-neutral-400">
-                                        File PDF belum tersedia.
-                                    </p>
-                                )}
                             </div>
                         </section>
                     </div>
