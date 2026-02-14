@@ -7,6 +7,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Paste Cloudinary optimized MP4 URL for mobile hero cinematic here.
 const MOBILE_HERO_VIDEO_URL = 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto/q_auto:good,vc_auto,w_1280,c_limit/v1770998713/output2_svhzuz.mp4';
+const DESKTOP_HERO_SKY_IMAGE_URL = 'https://res.cloudinary.com/dxlmztdlg/image/upload/f_auto,q_auto:good,w_2000,c_limit/v1771060043/sky_gze6e3.png';
+const DESKTOP_HERO_MOUNTAINS_IMAGE_URL = 'https://res.cloudinary.com/dxlmztdlg/image/upload/f_auto,q_auto:good,w_2400,c_limit/v1771060041/mountains_phf0xg.webp';
+const DESKTOP_HERO_MAN_IMAGE_URL = 'https://res.cloudinary.com/dxlmztdlg/image/upload/f_auto,q_auto:good,w_1920,c_limit/v1771060036/man-standing_tcyw90.png';
 
 const MOBILE_HERO_LINKS = [
     { label: 'ABOUT', href: '/sejarah-kami' },
@@ -354,7 +357,7 @@ export default function HeroSection() {
                     <div className="hero-image-wrapper" aria-hidden="true">
                         <img
                             ref={skyRef}
-                            src="/sky.png"
+                            src={DESKTOP_HERO_SKY_IMAGE_URL}
                             width={1620}
                             height={939}
                             className="sky"
@@ -363,7 +366,7 @@ export default function HeroSection() {
                         />
                         <img
                             ref={mountainsRef}
-                            src="/mountains.webp"
+                            src={DESKTOP_HERO_MOUNTAINS_IMAGE_URL}
                             width={2301}
                             height={1578}
                             className="mountains"
@@ -372,7 +375,7 @@ export default function HeroSection() {
                         />
                         <img
                             ref={manRef}
-                            src="/man-standing.png"
+                            src={DESKTOP_HERO_MAN_IMAGE_URL}
                             width={1920}
                             height={1358}
                             className="man-standing"

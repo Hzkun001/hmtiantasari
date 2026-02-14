@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase, Activity, fetchNewsRecords, NewsTableName } from '@/lib/supabase';
-import { uploadProjectImage, deleteProjectImage } from '@/lib/uploadImage';
+import { uploadActivitiesImage, deleteActivitiesImage } from '@/lib/uploadImage';
 import Image from 'next/image';
 
 type FormData = {
@@ -104,7 +104,7 @@ export default function AdminActivitiesPage() {
 
             // Upload image if selected
             if (selectedImageFile) {
-                imageUrl = await uploadProjectImage(selectedImageFile);
+                imageUrl = await uploadActivitiesImage(selectedImageFile);
             }
 
             if (editingActivity) {
@@ -166,7 +166,7 @@ export default function AdminActivitiesPage() {
         try {
             // Delete image from storage if exists
             if (activity.image_url) {
-                await deleteProjectImage(activity.image_url);
+                await deleteActivitiesImage(activity.image_url);
             }
 
             // Delete activity from database
@@ -193,7 +193,7 @@ export default function AdminActivitiesPage() {
         setError(null);
 
         try {
-            const imageUrl = await uploadProjectImage(file);
+            const imageUrl = await uploadActivitiesImage(file);
 
             // Update activity with new image URL
             const { error } = await supabase

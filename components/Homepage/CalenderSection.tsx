@@ -286,13 +286,22 @@ export default function CalendarSection() {
                         {calendarDays.map((day, index) => {
                             const key = toDateKey(day);
                             const dayEvents = eventsByDate.get(key) ?? [];
+                            const hasEvents = dayEvents.length > 0;
                             const isCurrentMonth = day.getMonth() === calendarMonth;
                             const isLastColumn = (index + 1) % 7 === 0;
 
                             return (
                                 <div
                                     key={key}
-                                    className={`min-h-24 sm:min-h-28 md:min-h-32 px-2 py-2 sm:px-3 sm:py-3 border-b border-neutral-300 ${isLastColumn ? '' : 'border-r border-neutral-300'} ${isCurrentMonth ? 'bg-white' : 'bg-neutral-50'}`}
+                                    className={`min-h-24 sm:min-h-28 md:min-h-32 px-2 py-2 sm:px-3 sm:py-3 border-b border-neutral-300 ${
+                                        isLastColumn ? '' : 'border-r border-neutral-300'
+                                    } ${
+                                        isCurrentMonth
+                                            ? hasEvents
+                                                ? 'bg-[#fbd784]'
+                                                : 'bg-white'
+                                            : 'bg-neutral-50'
+                                    }`}
                                 >
                                     <p className={`text-sm sm:text-base font-semibold ${isCurrentMonth ? 'text-neutral-900' : 'text-neutral-300'}`}>
                                         {day.getDate()}
@@ -303,12 +312,12 @@ export default function CalendarSection() {
                                                 key={event.id}
                                                 type="button"
                                                 onClick={() => setSelectedEvent(event)}
-                                                className="block w-full rounded border border-neutral-200 px-1.5 py-1 text-left transition-colors hover:bg-neutral-100 hover:border-neutral-300"
+                                                className="block w-full rounded border border-black bg-neutral-800 px-1.5 py-1 text-left transition-colors hover:bg-neutral-700 hover:border-neutral-400"
                                             >
-                                                <p className="text-[10px] sm:text-[11px] font-semibold text-neutral-900 truncate">
+                                                <p className="text-[10px] sm:text-[11px] font-semibold text-white truncate">
                                                     {event.timeLabel} - {event.title}
                                                 </p>
-                                                <p className="text-[10px] sm:text-[11px] text-neutral-600 truncate">
+                                                <p className="text-[10px] sm:text-[11px] text-white truncate">
                                                     {event.organizer_department}
                                                 </p>
                                             </button>

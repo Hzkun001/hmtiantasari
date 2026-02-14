@@ -10,10 +10,10 @@ const logDebug = (...args: unknown[]) => {
 /**
  * Upload image ke Supabase Storage dan return public URL
  * @param file - File object dari input
- * @param bucket - Nama bucket di Supabase Storage (default: 'project-images')
+ * @param bucket - Nama bucket di Supabase Storage (default: 'activity-images')
  * @returns Public URL dari image yang diupload
  */
-export async function uploadProjectImage(file: File, bucket: string = 'project-images'): Promise<string> {
+export async function uploadActivitiesImage(file: File, bucket: string = 'activity-images'): Promise<string> {
     logDebug('[uploadImage] Starting upload...');
     logDebug('[uploadImage] File:', file.name, 'Size:', file.size);
     logDebug('[uploadImage] Bucket:', bucket);
@@ -73,9 +73,9 @@ export async function uploadProjectImage(file: File, bucket: string = 'project-i
 /**
  * Delete image dari Supabase Storage
  * @param imageUrl - Public URL dari image yang akan dihapus
- * @param bucket - Nama bucket di Supabase Storage (default: 'project-images')
+ * @param bucket - Nama bucket di Supabase Storage (default: 'activity-images')
  */
-export async function deleteProjectImage(imageUrl: string, bucket: string = 'project-images'): Promise<void> {
+export async function deleteActivitiesImage(imageUrl: string, bucket: string = 'activity-images'): Promise<void> {
     try {
         // Extract file path from URL
         const url = new URL(imageUrl);
