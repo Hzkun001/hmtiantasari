@@ -9,6 +9,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const PARALLAX_IMAGE_SIZES = '100vw';
 const PARALLAX_IMAGE_QUALITY = 55;
+const HIGH_QUALITY_IMAGE_SRC = '/parallaxgallery/picture1.webp';
+
+const getImageQuality = (src: string) => (
+    src === HIGH_QUALITY_IMAGE_SRC ? 100 : PARALLAX_IMAGE_QUALITY
+);
 
 const IMAGES_CONFIG = {
     top: [
@@ -161,7 +166,7 @@ export default function ParallaxImage() {
                                     alt="Image description"
                                     fill
                                     sizes={PARALLAX_IMAGE_SIZES}
-                                    quality={PARALLAX_IMAGE_QUALITY}
+                                    quality={getImageQuality(img.src)}
                                     className="object-cover"
                                     loading="lazy"
                                     decoding="async"
@@ -180,7 +185,7 @@ export default function ParallaxImage() {
                                     alt="Image description"
                                     fill
                                     sizes={PARALLAX_IMAGE_SIZES}
-                                    quality={PARALLAX_IMAGE_QUALITY}
+                                    quality={getImageQuality(img.src)}
                                     className="object-cover"
                                     loading="lazy"
                                     decoding="async"
@@ -198,7 +203,7 @@ export default function ParallaxImage() {
                                     alt="Image description"
                                     fill
                                     sizes={PARALLAX_IMAGE_SIZES}
-                                    quality={PARALLAX_IMAGE_QUALITY}
+                                    quality={getImageQuality(img.src)}
                                     className="object-cover"
                                     loading="lazy"
                                     decoding="async"

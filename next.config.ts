@@ -8,7 +8,7 @@ const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
 const nextConfig: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
   images: {
-    qualities: [55, 62, 75],
+    qualities: [55, 62, 75, 100],
     remotePatterns: [
       ...(supabaseHostname
         ? [{

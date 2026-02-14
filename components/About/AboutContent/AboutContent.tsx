@@ -23,17 +23,24 @@ export default function AboutContent() {
         const headers = [header1Ref.current, header2Ref.current, header3Ref.current];
         const isMobile = window.matchMedia('(max-width: 768px)').matches;
 
-        // Mobile: skip pinned/entry animations (lebih stabil dan layout lebih rapih)
-        if (isMobile) {
-            headers.forEach((header) => gsap.set(header, { x: '0%', y: '0%', scale: 1 }));
-            return;
-        }
+        const pinDistance = isMobile ? window.innerHeight * 1.4 : window.innerHeight * 2;
+        const minScale = isMobile ? 0.45 : window.innerWidth <= 1000 ? 0.3 : 0.1;
+        const entryStart = isMobile ? 'top 92%' : 'top bottom';
+        const entryEnd = isMobile ? 'top 20%' : 'top top';
+        const topToMiddleDistance = header2Ref.current.offsetTop - header1Ref.current.offsetTop;
+        const bottomToMiddleDistance = header3Ref.current.offsetTop - header2Ref.current.offsetTop;
+        const mobileDriftDown = window.innerHeight * 0.12;
+
+        headers.forEach((header, index) => {
+            const initialX = index === 1 ? '-100%' : '100%';
+            gsap.set(header, { x: initialX, y: 0, scale: 1, autoAlpha: 1 });
+        });
 
         // Entry animation - slide in from sides
         const entryTrigger = ScrollTrigger.create({
             trigger: sectionRef.current,
-            start: 'top bottom',
-            end: 'top top',
+            start: entryStart,
+            end: entryEnd,
             scrub: true,
             onUpdate: (self) => {
                 gsap.set(headers[0], { x: `${100 - self.progress * 100}%` });
@@ -46,24 +53,53 @@ export default function AboutContent() {
         const pinnedTrigger = ScrollTrigger.create({
             trigger: sectionRef.current,
             start: 'top top',
-            end: `+=${window.innerHeight * 2}`,
+            end: `+=${pinDistance}`,
             pin: true,
             scrub: true,
             pinSpacing: false,
             onUpdate: (self) => {
                 if (self.progress <= 0.5) {
                     const yProgress = self.progress / 0.5;
+
+                    if (isMobile) {
+                        gsap.set(headers[0], { x: '0%', y: topToMiddleDistance * yProgress, autoAlpha: 1, scale: 1 });
+                        gsap.set(headers[1], { x: '0%', y: 0, autoAlpha: 1, scale: 1 });
+                        gsap.set(headers[2], { x: '0%', y: -bottomToMiddleDistance * yProgress, autoAlpha: 1, scale: 1 });
+                        return;
+                    }
+
                     gsap.set(headers[0], { x: '0%', y: `${yProgress * 100}%` });
                     gsap.set(headers[1], { x: '0%' });
                     gsap.set(headers[2], { x: '0%', y: `${yProgress * -100}%` });
                 } else {
-                    gsap.set(headers[0], { x: '0%', y: '100%' });
-                    gsap.set(headers[2], { x: '0%', y: '-100%' });
-
                     const scaleProgress = (self.progress - 0.5) / 0.5;
-                    const minScale = window.innerWidth <= 1000 ? 0.3 : 0.1;
                     const scale = 1 - scaleProgress * (1 - minScale);
 
+                    if (isMobile) {
+                        const driftDown = mobileDriftDown * scaleProgress;
+                        gsap.set(headers[0], {
+                            x: '0%',
+                            y: topToMiddleDistance + driftDown,
+                            scale,
+                            autoAlpha: 1 - scaleProgress,
+                        });
+                        gsap.set(headers[1], {
+                            x: '0%',
+                            y: driftDown,
+                            scale,
+                            autoAlpha: 1,
+                        });
+                        gsap.set(headers[2], {
+                            x: '0%',
+                            y: -bottomToMiddleDistance + driftDown,
+                            scale,
+                            autoAlpha: 1 - scaleProgress,
+                        });
+                        return;
+                    }
+
+                    gsap.set(headers[0], { x: '0%', y: '100%' });
+                    gsap.set(headers[2], { x: '0%', y: '-100%' });
                     headers.forEach((header) => gsap.set(header, { scale }));
                 }
             },

@@ -191,7 +191,10 @@ export default function HeroReveal() {
                                 e.currentTarget.currentTime = 3;
                             }}
                         >
-                            <source src="/hero-vid.webm" type="video/mp4" />
+                            <source
+                                src="https://res.cloudinary.com/dxlmztdlg/video/upload/f_mp4,vc_h265/v1771050184/hero-vid_coodvu"
+                                type="video/mp4"
+                            />
                         </video>
                     </div>
 

@@ -38,6 +38,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
     const locationsContainerRef = useRef<HTMLDivElement>(null);
     const imageGridRef = useRef<HTMLDivElement>(null);
     const introCopyRef = useRef<HTMLDivElement>(null);
+    const bottomCopyRef = useRef<HTMLDivElement>(null);
     const hasInitialized = useRef(false);
 
     useEffect(() => {
@@ -93,6 +94,11 @@ const LandingHero: React.FC<LandingHeroProps> = ({
 
         // Split text for animations
         const introCopy = new SplitType(".intro-copy h3", {
+            types: "words",
+            absolute: false,
+        });
+
+        const bottomCopy = new SplitType(".bottom-copy p", {
             types: "words",
             absolute: false,
         });
@@ -170,6 +176,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
         // Setup initial states
         const setupInitialStates = () => {
             gsap.set(introCopy.words, { y: "110%" });
+            gsap.set(bottomCopy.words, { y: "110%" });
         };
 
         // Create animation timelines
@@ -309,6 +316,14 @@ const LandingHero: React.FC<LandingHeroProps> = ({
                 stagger: 0.1,
                 delay: 9.5,
                 ease: "power3.out",
+            });
+
+            textTimeline.to(bottomCopy.words, {
+                y: "0%",
+                duration: 1,
+                stagger: 0.1,
+                delay: 0.3,
+                ease: "power3.out",
                 onComplete: unlockScroll,
             });
         };
@@ -324,6 +339,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
         return () => {
             window.clearTimeout(scrollUnlockFallback);
             introCopy.revert();
+            bottomCopy.revert();
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
             unlockScroll();
         };
@@ -395,6 +411,11 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             <div className="intro-copy" ref={introCopyRef}>
                 <h3>Sentra Berhimpun</h3>
                 <h3>Aksi Transformatif</h3>
+            </div>
+
+            <div className="bottom-copy" ref={bottomCopyRef}>
+                <p>Bersama Melangkah</p>
+                <p>Bersatu Berkarya</p>
             </div>
         </div>
     );

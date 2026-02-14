@@ -10,14 +10,32 @@ if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger)
 }
 
-const videoData = [
-    { name: "/videos/v1.mp4" },
-    { name: "/videos/v2.mp4" },
-    { name: "/videos/v3.mp4" },
-    { name: "/videos/v4.mp4" },
-    { name: "/videos/v5.mp4" },
-    { name: "/videos/v6.mp4" },
-    { name: "/videos/v7.mp4" },
+type VideoSource = {
+    cloudinaryUrl: string
+}
+
+const videoData: VideoSource[] = [
+    {
+        cloudinaryUrl: 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto,q_auto:good,vc_auto,w_960,c_limit/v1771051558/v1_hlkrjv.mp4',
+    },
+    {
+        cloudinaryUrl: 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto,q_auto:good,vc_auto,w_960,c_limit/v1771051657/v2_ggntcz.mp4',
+    },
+    {
+        cloudinaryUrl: 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto,q_auto:good,vc_auto,w_960,c_limit/v1771051668/v3_ru3iya.mp4',
+    },
+    {
+        cloudinaryUrl: 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto,q_auto:good,vc_auto,w_960,c_limit/v1771051674/v4_laxeeg.mp4',
+    },
+    {
+        cloudinaryUrl: 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto,q_auto:good,vc_auto,w_960,c_limit/v1771051680/v5_qww7zy.mp4',
+    },
+    {
+        cloudinaryUrl: 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto,q_auto:good,vc_auto,w_960,c_limit/v1771055996/v6_me7ojx.mp4',
+    },
+    {
+        cloudinaryUrl: 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto,q_auto:good,vc_auto,w_960,c_limit/v1771056008/v7_r1izuz.mp4',
+    },
 ]
 
 const params = {
@@ -153,9 +171,9 @@ export default function VideoGallery() {
         let lastInputAt = performance.now()
 
         // Helper functions
-        function createVideoElement(videoSource: string): HTMLVideoElement {
+        function createVideoElement(videoSource: VideoSource): HTMLVideoElement {
             const video = document.createElement("video")
-            video.src = videoSource
+            video.src = videoSource.cloudinaryUrl
             video.crossOrigin = "anonymous"
             video.loop = true
             video.muted = true
@@ -205,7 +223,7 @@ export default function VideoGallery() {
             videoIndex++
 
             const geometry = new THREE.PlaneGeometry(p.imageWidth, p.imageHeight)
-            const video = createVideoElement(videoSource.name)
+            const video = createVideoElement(videoSource)
             const videoTexture = new THREE.VideoTexture(video)
             videoTexture.minFilter = THREE.LinearFilter
             videoTexture.magFilter = THREE.LinearFilter

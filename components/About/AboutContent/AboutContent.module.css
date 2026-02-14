@@ -93,8 +93,8 @@
 
 @media (max-width: 768px) {
     .services {
-        height: auto;
-        min-height: 70svh;
+        height: 100svh;
+        min-height: 100svh;
         padding: 6rem 1rem 2rem;
     }
 
@@ -102,15 +102,9 @@
         padding: 0 1rem;
     }
 
-    .header1,
-    .header2,
-    .header3 {
-        transform: translateX(0%) translateY(0%);
-    }
-
     .servicesCopy {
         height: auto;
-        margin-top: 0;
+        margin-top: 112svh;
         padding: 2rem 1.15rem 3.4rem;
     }
 
@@ -129,6 +123,7 @@
 
 @media (max-width: 480px) {
     .servicesCopy {
+        margin-top: 105svh;
         padding: 1.75rem 1rem 2.8rem;
     }
 

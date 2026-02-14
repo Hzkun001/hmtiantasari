@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Paste Cloudinary optimized MP4 URL for mobile hero cinematic here.
-const MOBILE_HERO_VIDEO_URL = 'https://res.cloudinary.com/dxlmztdlg/video/upload/v1770998713/output2_svhzuz.mp4';
+const MOBILE_HERO_VIDEO_URL = 'https://res.cloudinary.com/dxlmztdlg/video/upload/f_auto/q_auto:good,vc_auto,w_1280,c_limit/v1770998713/output2_svhzuz.mp4';
 
 const MOBILE_HERO_LINKS = [
     { label: 'ABOUT', href: '/sejarah-kami' },
