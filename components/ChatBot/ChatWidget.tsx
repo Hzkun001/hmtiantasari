@@ -145,11 +145,11 @@ export default function FaqChatWidget() {
             {showWidget && open && (
                 <div
                     ref={panelRef}
-                    className="fixed bottom-24 right-6 z-9999 w-[92vw] max-w-[380px] overflow-hidden rounded-2xl border bg-white shadow-xl"
+                    className="fixed bottom-24 right-6 z-9999 flex max-h-[calc(100dvh-7rem)] w-[92vw] max-w-[380px] flex-col overflow-hidden rounded-2xl border bg-white shadow-xl"
                     role="dialog"
                     aria-label="Chatbot FAQ HMTI"
                 >
-                    <div className="flex items-center justify-between border-b px-4 py-3">
+                    <div className="flex shrink-0 items-center justify-between border-b bg-white px-4 py-3">
                         <div className="font-semibold">FAQ HMTI</div>
                         <button
                             className="rounded-lg border px-2 py-1 text-sm"
@@ -160,7 +160,7 @@ export default function FaqChatWidget() {
                         </button>
                     </div>
 
-                    <div className="max-h-[420px] overflow-y-auto px-3 py-3">
+                    <div className="min-h-0 flex-1 overflow-y-auto px-3 py-3">
                         <div className="space-y-2">
                             {messages.map((m, i) => (
                                 <div key={i} className={m.role === "user" ? "text-right" : "text-left"}>
@@ -185,7 +185,7 @@ export default function FaqChatWidget() {
                         </div>
                     </div>
 
-                    <div className="flex gap-2 border-t p-3">
+                    <div className="flex shrink-0 gap-2 border-t bg-white p-3">
                         <input
                             ref={inputRef}
                             className="flex-1 rounded-xl border px-3 py-2 text-sm
