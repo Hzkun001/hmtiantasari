@@ -7,10 +7,12 @@ const AboutSection = dynamic(() => import('@/components/Homepage/ParallaxImage')
 const CalendarSection = dynamic(() => import('@/components/Homepage/CalenderSection'), { ssr: false });
 const NewsSection = dynamic(() => import('@/components/Homepage/NewsSection'), { ssr: false });
 const SliderNavigation = dynamic(() => import('@/components/Homepage/SliderNavigation'), { ssr: false });
+import ChatWidget from '@/components/ChatBot/ChatWidget'
 
 export default function HomeDeferredSections() {
     return (
         <>
+            <ChatWidget />
             <HeroReveal />
             <AboutSection />
             <CalendarSection />

@@ -1,5 +1,5 @@
 {
-    "name": "HMTI-website",
+    "name": "hmti-website",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -10,6 +10,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@google/genai": "^1.41.0",
         "@gsap/react": "^2.1.2",
         "@supabase/auth-helpers-nextjs": "^0.15.0",
         "@supabase/supabase-js": "^2.93.3",
