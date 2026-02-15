@@ -44,18 +44,27 @@ function buildContext(items: FaqItem[]) {
 
 export async function POST(req: Request) {
     const t0 = Date.now();
+    try {
+        const body = await req.json();
+        const message = body?.message;
+        if (!message || typeof message !== "string") {
+            return NextResponse.json({ error: "message required" }, { status: 400 });
+        }
 
-    const { message } = await req.json();
-    if (!message || typeof message !== "string") {
-        return NextResponse.json({ error: "message required" }, { status: 400 });
-    }
+        const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
+        if (!apiKey) {
+            return NextResponse.json(
+                { error: "Server belum dikonfigurasi. GEMINI_API_KEY belum tersedia." },
+                { status: 500 }
+            );
+        }
 
-    const ai = new GoogleGenAI({});
+        const ai = new GoogleGenAI({ apiKey });
 
-    const picked = pickRelevantFaq(message, 6);
-    const context = buildContext(picked);
+        const picked = pickRelevantFaq(message, 6);
+        const context = buildContext(picked);
 
-    const system = `
+        const system = `
 Kamu adalah chatbot FAQ HMTI.
 
 ATURAN KERAS:
@@ -65,10 +74,7 @@ ATURAN KERAS:
 - Jangan menambah info di luar context.
 - Bahasa Indonesia, ringkas (maks 5 kalimat).
 `.trim();
-
-    const userPrompt = `FAQ CONTEXT:\n${context}\n\nPertanyaan: ${message}`;
-
-    try {
+        const userPrompt = `FAQ CONTEXT:\n${context}\n\nPertanyaan: ${message}`;
         const t1 = Date.now();
 
         const response = await ai.models.generateContent({
@@ -79,7 +85,7 @@ ATURAN KERAS:
 
         const t2 = Date.now();
 
-        const reply = (response.text ?? "").trim();
+        const reply = (response.text ?? "").trim() || "Maaf, saya belum bisa menjawab saat ini.";
 
         // debug timing (hapus kalau tidak perlu)
         return NextResponse.json({
@@ -93,7 +99,13 @@ ATURAN KERAS:
         });
     } catch (e: any) {
         return NextResponse.json(
-            { error: "Gemini call failed", detail: String(e?.message ?? e) },
+            {
+                error: "Gemini call failed",
+                detail:
+                    process.env.NODE_ENV === "development"
+                        ? String(e?.message ?? e)
+                        : "Terjadi kesalahan di server chatbot.",
+            },
             { status: 502 }
         );
     }

@@ -93,8 +93,21 @@ export default function FaqChatWidget() {
                 body: JSON.stringify({ message: text }),
             });
 
-            const data = await res.json();
-            const reply = data.reply ?? "Maaf, terjadi error. Coba lagi.";
+            let data: { reply?: string; error?: string; detail?: string } | null = null;
+            try {
+                data = await res.json();
+            } catch {
+                throw new Error("Invalid JSON response from /api/chat");
+            }
+
+            if (!res.ok) {
+                const errorMsg =
+                    data?.detail || data?.error || "Server chatbot sedang bermasalah. Coba lagi.";
+                setMessages((m) => [...m, { role: "bot", content: errorMsg }]);
+                return;
+            }
+
+            const reply = data?.reply ?? "Maaf, terjadi error. Coba lagi.";
 
             setMessages((m) => [...m, { role: "bot", content: reply }]);
         } catch {
