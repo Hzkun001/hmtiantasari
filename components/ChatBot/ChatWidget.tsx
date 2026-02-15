@@ -82,7 +82,7 @@ export default function FaqChatWidget() {
         const text = input.trim();
         if (!text || loading) return;
 
-        setMessages((m) => [...m, { role: "user", content: text }]);
+        setMessages((m) => [...m, { role: "user", content: text }, { role: "bot", content: "" }]);
         setInput("");
         setLoading(true);
 
@@ -93,32 +93,51 @@ export default function FaqChatWidget() {
                 body: JSON.stringify({ message: text }),
             });
 
-            let data: { reply?: string; error?: string; detail?: string } | null = null;
-            try {
-                data = await res.json();
-            } catch {
-                throw new Error("Invalid JSON response from /api/chat");
+            if (!res.ok || !res.body) {
+                const errText = await res.text().catch(() => "");
+                throw new Error(errText || "Stream failed");
             }
 
-            if (!res.ok) {
-                const errorMsg =
-                    data?.detail || data?.error || "Server chatbot sedang bermasalah. Coba lagi.";
-                setMessages((m) => [...m, { role: "bot", content: errorMsg }]);
-                return;
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+
+            let acc = "";
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+
+                acc += decoder.decode(value, { stream: true });
+
+                // update pesan bot terakhir (yang kosong tadi)
+                setMessages((prev) => {
+                    const copy = [...prev];
+                    const last = copy[copy.length - 1];
+                    if (last?.role === "bot") copy[copy.length - 1] = { role: "bot", content: acc };
+                    return copy;
+                });
             }
 
-            const reply = data?.reply ?? "Maaf, terjadi error. Coba lagi.";
-
-            setMessages((m) => [...m, { role: "bot", content: reply }]);
+            // flush decoder
+            acc += decoder.decode();
+            setMessages((prev) => {
+                const copy = [...prev];
+                const last = copy[copy.length - 1];
+                if (last?.role === "bot") copy[copy.length - 1] = { role: "bot", content: acc.trim() || "Maaf, tidak ada respons." };
+                return copy;
+            });
         } catch {
-            setMessages((m) => [
-                ...m,
-                { role: "bot", content: "Koneksi bermasalah. Coba lagi." },
-            ]);
+            setMessages((prev) => {
+                const copy = [...prev];
+                const last = copy[copy.length - 1];
+                if (last?.role === "bot") copy[copy.length - 1] = { role: "bot", content: "Koneksi bermasalah. Coba lagi." };
+                return copy;
+            });
         } finally {
             setLoading(false);
         }
     }
+
 
     return (
         <>
