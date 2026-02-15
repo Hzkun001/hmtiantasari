@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { FAQ } from "@/lib/faq";
 
@@ -6,36 +5,37 @@ export const runtime = "nodejs";
 
 type FaqItem = { q: string; a: string };
 
-function pickRelevantFaq(message: string, k = 6): FaqItem[] {
-    const tokens = message
+const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
+const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+
+function tokenize(message: string) {
+    return message
         .toLowerCase()
         .split(/\W+/)
         .filter(Boolean)
         .filter((w) => w.length >= 3);
+}
 
-    const scoreText = (text: string) => {
-        const t = text.toLowerCase();
-        let s = 0;
-        for (const w of tokens) {
-            if (t.includes(w)) s += 1;
-        }
-        return s;
-    };
+function scoreText(tokens: string[], text: string) {
+    const t = text.toLowerCase();
+    let s = 0;
+    for (const w of tokens) if (t.includes(w)) s++;
+    return s;
+}
 
-    // skor berdasarkan kemiripan keyword sederhana (cepat, no DB)
-    const ranked = FAQ.map((item) => ({
+function pickRelevantFaq(message: string, k = 6): FaqItem[] {
+    const tokens = tokenize(message);
+
+    const scored = FAQ.map((item) => ({
         item,
-        s: scoreText(item.q + " " + item.a),
-    }))
-        .sort((a, b) => b.s - a.s)
-        .slice(0, k)
-        .map((x) => x.item);
+        s: scoreText(tokens, item.q + " " + item.a),
+    })).sort((a, b) => b.s - a.s);
 
-    // kalau semua skor 0 (pertanyaan jauh), tetap kirim beberapa FAQ inti (fallback)
-    const allZero = ranked.length > 0 && ranked.every((it) => scoreText(it.q + " " + it.a) === 0);
+    const top = scored.slice(0, k);
+    const allZero = top.length > 0 && top.every((x) => x.s === 0);
+
     if (allZero) return FAQ.slice(0, Math.min(k, FAQ.length));
-
-    return ranked;
+    return top.map((x) => x.item);
 }
 
 function buildContext(items: FaqItem[]) {
@@ -43,28 +43,21 @@ function buildContext(items: FaqItem[]) {
 }
 
 export async function POST(req: Request) {
-    const t0 = Date.now();
-    try {
-        const body = await req.json();
-        const message = body?.message;
-        if (!message || typeof message !== "string") {
-            return NextResponse.json({ error: "message required" }, { status: 400 });
-        }
+    if (!ai) {
+        return new Response("Server belum dikonfigurasi. GEMINI_API_KEY belum tersedia.", { status: 500 });
+    }
 
-        const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
-        if (!apiKey) {
-            return NextResponse.json(
-                { error: "Server belum dikonfigurasi. GEMINI_API_KEY belum tersedia." },
-                { status: 500 }
-            );
-        }
+    const body = await req.json();
+    const message = body?.message;
 
-        const ai = new GoogleGenAI({ apiKey });
+    if (!message || typeof message !== "string") {
+        return new Response("message required", { status: 400 });
+    }
 
-        const picked = pickRelevantFaq(message, 6);
-        const context = buildContext(picked);
+    const picked = pickRelevantFaq(message, 6);
+    const context = buildContext(picked);
 
-        const system = `
+    const system = `
 Kamu adalah chatbot FAQ HMTI.
 
 ATURAN KERAS:
@@ -74,39 +67,38 @@ ATURAN KERAS:
 - Jangan menambah info di luar context.
 - Bahasa Indonesia, ringkas (maks 5 kalimat).
 `.trim();
-        const userPrompt = `FAQ CONTEXT:\n${context}\n\nPertanyaan: ${message}`;
-        const t1 = Date.now();
 
-        const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
-            contents: [{ role: "user", parts: [{ text: system + "\n\n" + userPrompt }] }],
-            // kalau SDK kamu support: bisa tambahkan opsi output lebih ringkas (tergantung versi)
-        });
+    const userPrompt = `FAQ CONTEXT:\n${context}\n\nPertanyaan: ${message}`;
+    const fullPrompt = system + "\n\n" + userPrompt;
 
-        const t2 = Date.now();
+    const encoder = new TextEncoder();
 
-        const reply = (response.text ?? "").trim() || "Maaf, saya belum bisa menjawab saat ini.";
+    const stream = new ReadableStream<Uint8Array>({
+        async start(controller) {
+            try {
+                // Streaming chunks dari Gemini :contentReference[oaicite:1]{index=1}
+                const gen = await ai.models.generateContentStream({
+                    model: "gemini-3-flash-preview",
+                    contents: [{ role: "user", parts: [{ text: fullPrompt }] }],
+                });
 
-        // debug timing (hapus kalau tidak perlu)
-        return NextResponse.json({
-            reply,
-            debug: {
-                ms_total: t2 - t0,
-                ms_gemini: t2 - t1,
-                context_items: picked.length,
-                context_chars: (system + "\n\n" + userPrompt).length,
-            },
-        });
-    } catch (e: any) {
-        return NextResponse.json(
-            {
-                error: "Gemini call failed",
-                detail:
-                    process.env.NODE_ENV === "development"
-                        ? String(e?.message ?? e)
-                        : "Terjadi kesalahan di server chatbot.",
-            },
-            { status: 502 }
-        );
-    }
+                for await (const chunk of gen) {
+                    const text = chunk.text ?? "";
+                    if (text) controller.enqueue(encoder.encode(text));
+                }
+
+                controller.close();
+            } catch (e: any) {
+                controller.enqueue(encoder.encode("\n\n[Error: gagal menghasilkan jawaban]"));
+                controller.close();
+            }
+        },
+    });
+
+    return new Response(stream, {
+        headers: {
+            "Content-Type": "text/plain; charset=utf-8",
+            "Cache-Control": "no-store",
+        },
+    });
 }
