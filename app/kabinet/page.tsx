@@ -372,91 +372,96 @@ export default function KabinetPage() {
     return (
         <main className="kabinet-page">
             <Header onlyShowAtTop theme="light" />
-            <div className="kabinet-shell kabinet-shell--landing">
+            <div className="kabinet-shell--landing">
                 <KabinetLanding />
             </div>
 
-            <section className="kabinet-shell kabinet-section" aria-label="Profil tim inti">
-                <div className="kabinet-section-header">
-                    <h2>Profil Tim Inti</h2>
-                    <p>Struktur inti yang memastikan arah kabinet berjalan selaras dengan visi organisasi.</p>
-                </div>
+            <section className="kabinet-section" aria-label="Profil tim inti">
+                <div className="kabinet-shell">
+                    <div className="kabinet-section-header">
+                        <h2>Profil Tim Inti</h2>
+                        <p>Struktur inti yang memastikan arah kabinet berjalan selaras dengan visi organisasi.</p>
+                    </div>
 
-                <div className="kabinet-division-team-title-wrap">
-                    <p className="kabinet-division-team-title-label">Kabinet Title</p>
-                    <p className="kabinet-division-team-title">{BPH_KABINET_TITLE}</p>
-                </div>
+                    <div className="kabinet-division-team-title-wrap">
+                        <p className="kabinet-division-team-title-label">Kabinet Title</p>
+                        <p className="kabinet-division-team-title">{BPH_KABINET_TITLE}</p>
+                    </div>
 
+                    {loading ? (
+                        <p className="kabinet-team-state">Memuat data tim inti...</p>
+                    ) : groupedMembers.BPH.length > 0 ? (
+                        <DraggableCardRow className="kabinet-core-grid">
+                            {groupedMembers.BPH.map((member) => (
+                                <TeamMemberCard key={member.id} member={member} />
+                            ))}
+                        </DraggableCardRow>
+                    ) : (
+                        <p className="kabinet-team-state">Belum ada anggota BPH. Tambahkan dari dashboard admin.</p>
+                    )}
 
-                {loading ? (
-                    <p className="kabinet-team-state">Memuat data tim inti...</p>
-                ) : groupedMembers.BPH.length > 0 ? (
-                    <DraggableCardRow className="kabinet-core-grid">
-                        {groupedMembers.BPH.map((member) => (
-                            <TeamMemberCard key={member.id} member={member} />
-                        ))}
-                    </DraggableCardRow>
-                ) : (
-                    <p className="kabinet-team-state">Belum ada anggota BPH. Tambahkan dari dashboard admin.</p>
-                )}
-
-                <div className="kabinet-division-team-info">
-                    <p className="kabinet-division-team-jobdesk-label">Kabinet Jobdesk</p>
-                    <ul className="kabinet-division-team-jobdesk">
-                        {JOBDESK.map((item) => (
-                            <li key={item.title}>
-                                <strong>{item.title}</strong>: {item.text}
-                            </li>
-                        ))}
-                    </ul>
+                    <div className="kabinet-division-team-info">
+                        <p className="kabinet-division-team-jobdesk-label">Kabinet Jobdesk</p>
+                        <ul className="kabinet-division-team-jobdesk">
+                            {JOBDESK.map((item) => (
+                                <li key={item.title}>
+                                    <strong>{item.title}</strong>: {item.text}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </section>
 
-            <section className="kabinet-shell kabinet-section" aria-label="Profil departemen">
-                <div className="kabinet-section-header">
-                    <h2>Profil Departemen</h2>
-                </div>
+            <section className="kabinet-section" aria-label="Profil departemen">
+                <div className="kabinet-shell">
+                    <div className="kabinet-section-header">
+                        <h2>Profil Departemen</h2>
+                    </div>
 
-                <div className="kabinet-division-team-list">
-                    {DIVISION_TEAMS.map((division) => (
-                        <article key={division.name} className="kabinet-division-team-block">
-                            <div className="kabinet-division-team-head">
-                                <h3>{division.name}</h3>
-                                <p>{division.description}</p>
-                            </div>
-                            <div className="kabinet-division-team-title-wrap">
-                                <p className="kabinet-division-team-title-label">Kabinet Title</p>
-                                <p className="kabinet-division-team-title">{division.kabinetTitle}</p>
-                            </div>
-                            {loading ? (
-                                <p className="kabinet-team-state">Memuat anggota tim {division.name}...</p>
-                            ) : groupedMembers[division.key].length > 0 ? (
-                                <DraggableCardRow className="kabinet-division-team-grid">
-                                    {groupedMembers[division.key].map((member) => (
-                                        <TeamMemberCard key={member.id} member={member} />
-                                    ))}
-                                </DraggableCardRow>
-                            ) : (
-                                <p className="kabinet-team-state">
-                                    Belum ada anggota untuk tim {division.name}. Tambahkan dari dashboard admin.
-                                </p>
-                            )}
-                            <div className="kabinet-division-team-info">
-                                <p className="kabinet-division-team-jobdesk-label">Kabinet Jobdesk</p>
-                                <ul className="kabinet-division-team-jobdesk">
-                                    {division.jobdesk.map((item) => (
-                                        <li key={`${division.name}-${item}`}>{item}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </article>
-                    ))}
+                    <div className="kabinet-division-team-list">
+                        {DIVISION_TEAMS.map((division) => (
+                            <article key={division.name} className="kabinet-division-team-block">
+                                <div className="kabinet-division-team-head">
+                                    <h3>{division.name}</h3>
+                                    <p>{division.description}</p>
+                                </div>
+                                <div className="kabinet-division-team-title-wrap">
+                                    <p className="kabinet-division-team-title-label">Kabinet Title</p>
+                                    <p className="kabinet-division-team-title">{division.kabinetTitle}</p>
+                                </div>
+                                {loading ? (
+                                    <p className="kabinet-team-state">Memuat anggota tim {division.name}...</p>
+                                ) : groupedMembers[division.key].length > 0 ? (
+                                    <DraggableCardRow className="kabinet-division-team-grid">
+                                        {groupedMembers[division.key].map((member) => (
+                                            <TeamMemberCard key={member.id} member={member} />
+                                        ))}
+                                    </DraggableCardRow>
+                                ) : (
+                                    <p className="kabinet-team-state">
+                                        Belum ada anggota untuk tim {division.name}. Tambahkan dari dashboard admin.
+                                    </p>
+                                )}
+                                <div className="kabinet-division-team-info">
+                                    <p className="kabinet-division-team-jobdesk-label">Kabinet Jobdesk</p>
+                                    <ul className="kabinet-division-team-jobdesk">
+                                        {division.jobdesk.map((item) => (
+                                            <li key={`${division.name}-${item}`}>{item}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </article>
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {error && (
-                <section className="kabinet-shell kabinet-section" aria-label="Status data">
-                    <p className="kabinet-team-state kabinet-team-state--error">{error}</p>
+                <section className="kabinet-section" aria-label="Status data">
+                    <div className="kabinet-shell">
+                        <p className="kabinet-team-state kabinet-team-state--error">{error}</p>
+                    </div>
                 </section>
             )}
 

@@ -98,8 +98,11 @@
     background: var(--kabinet-surface);
     color: var(--kabinet-text);
     border: 1px solid var(--kabinet-border);
-    padding: clamp(1.3rem, 2.7vw, 2.4rem);
     margin-bottom: 1.5rem;
+}
+
+.kabinet-section .kabinet-shell {
+    padding: clamp(1.3rem, 2.7vw, 2.4rem);
 }
 
 .kabinet-section-header {
@@ -494,8 +497,11 @@
     }
 
     .kabinet-section {
-        padding: 0.95rem;
         margin-bottom: 1rem;
+    }
+
+    .kabinet-section .kabinet-shell {
+        padding: 0.95rem;
     }
 
     .kabinet-section-header {
