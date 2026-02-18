@@ -145,7 +145,7 @@ export default function FaqChatWidget() {
             {showWidget && open && (
                 <div
                     ref={panelRef}
-                    className="fixed bottom-24 right-6 z-9999 flex max-h-[calc(100dvh-7rem)] w-[92vw] max-w-[380px] flex-col overflow-hidden rounded-2xl border bg-white shadow-xl"
+                    className="fixed bottom-24 right-6 z-9999 flex max-h-[calc(100dvh-7rem)] w-[92vw] max-w-95 flex-col overflow-hidden rounded-2xl border bg-white shadow-xl"
                     role="dialog"
                     aria-label="Chatbot FAQ HMTI"
                 >

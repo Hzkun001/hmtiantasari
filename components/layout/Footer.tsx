@@ -267,8 +267,22 @@ export default function Footer() {
     const onLoad = () => ScrollTrigger.refresh();
     window.addEventListener('load', onLoad, { once: true });
 
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined') {
+      const scheduleRefresh = () => {
+        requestAnimationFrame(() => ScrollTrigger.refresh());
+      };
+
+      resizeObserver = new ResizeObserver(scheduleRefresh);
+      resizeObserver.observe(document.documentElement);
+      if (footerRef.current) {
+        resizeObserver.observe(footerRef.current);
+      }
+    }
+
     return () => {
       window.removeEventListener('load', onLoad);
+      resizeObserver?.disconnect();
       hoverCleanups.forEach((fn) => fn());
       ctx.revert();
     };
@@ -511,7 +525,7 @@ export default function Footer() {
           </div>
 
           {/* Large Logo Section */}
-          <div ref={logoRowRef} className="relative w-full overflow-hidden z-0">
+          <div ref={logoRowRef} className="relative w-full overflow-hidden z-20">
             <div className="flex flex-col sm:flex-row items-center sm:items-end gap-3 md:gap-4 lg:gap-6">
               <div className="shrink-0">
                 <a href="/">

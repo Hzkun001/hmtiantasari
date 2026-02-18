@@ -64,28 +64,30 @@ export default function Header({
                     return;
                 }
 
+                let nextIsScrolled = false;
+                let nextHideHeader = false;
+
                 if (showAfterElement) {
                     const passedShowAfterSection = showAfterElement.getBoundingClientRect().bottom <= 0;
-                    setIsScrolled(passedShowAfterSection);
-                    setHideHeader(!passedShowAfterSection);
-                    return;
-                }
-
-                if (heroSectionRef.current) {
+                    nextIsScrolled = passedShowAfterSection;
+                    nextHideHeader = !passedShowAfterSection;
+                } else if (heroSectionRef.current) {
                     const scrollY = window.scrollY;
                     const heroHeight = heroSectionRef.current.offsetHeight;
-                    setIsScrolled(scrollY >= heroHeight / 2);
+                    nextIsScrolled = scrollY >= heroHeight / 2;
                 } else {
-                    setIsScrolled(window.scrollY > 24);
+                    nextIsScrolled = window.scrollY > 24;
                 }
 
                 if (hideOnFooter && footer) {
                     const footerRect = footer.getBoundingClientRect();
                     const headerHeight = headerRef.current?.offsetHeight || 0;
-                    setHideHeader(footerRect.top <= window.innerHeight - headerHeight);
-                } else {
-                    setHideHeader(false);
+                    const shouldHideByFooter = footerRect.top <= window.innerHeight - headerHeight;
+                    nextHideHeader = nextHideHeader || shouldHideByFooter;
                 }
+
+                setIsScrolled(nextIsScrolled);
+                setHideHeader(nextHideHeader);
             });
         };
 
