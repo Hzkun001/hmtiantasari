@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { fetchPublicSiteSettings } from '@/lib/public-data-server';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
     const data = await fetchPublicSiteSettings();
 
@@ -8,7 +11,7 @@ export async function GET() {
         { data },
         {
             headers: {
-                'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
+                'Cache-Control': 'no-store, no-cache, must-revalidate',
             },
         },
     );

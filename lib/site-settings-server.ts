@@ -30,9 +30,10 @@ const SETTINGS_SELECT = [
 
 export async function getSiteSettingsServer(): Promise<SiteSettingsServerData | null> {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabaseReadKey =
+        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (!supabaseUrl || !supabaseAnonKey) {
+    if (!supabaseUrl || !supabaseReadKey) {
         return null;
     }
 
@@ -44,13 +45,14 @@ export async function getSiteSettingsServer(): Promise<SiteSettingsServerData | 
 
         const response = await fetch(url.toString(), {
             headers: {
-                apikey: supabaseAnonKey,
-                Authorization: `Bearer ${supabaseAnonKey}`,
+                apikey: supabaseReadKey,
+                Authorization: `Bearer ${supabaseReadKey}`,
             },
-            next: { revalidate: 300 },
+            cache: 'no-store',
         });
 
         if (!response.ok) {
+            console.error('Failed to fetch site settings on server:', response.status, response.statusText);
             return null;
         }
 

@@ -69,7 +69,7 @@ export default function Footer() {
 
     async function fetchFooterSettings() {
       try {
-        const response = await fetch('/api/public/site-settings');
+        const response = await fetch('/api/public/site-settings', { cache: 'no-store' });
         if (!response.ok) return;
 
         const payload = (await response.json()) as { data?: FooterSettings | null };
@@ -565,7 +565,7 @@ export default function Footer() {
             ref={copyRef}
             className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-sm md:text-base text-neutral-500 border-t border-neutral-800 pt-2 md:pt-4 text-center md:text-left"
           >
-            <p>Made with by HMTI UIN Antasari</p>
+            <p>Made with by {siteName}</p>
             <p>© {new Date().getFullYear()} {siteName} - All Rights Reserved</p>
           </div>
         </div>

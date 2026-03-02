@@ -1,0 +1,299 @@
+.page {
+    min-height: 100svh;
+    background: #1a1a1a;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.shell {
+    position: relative;
+    padding: clamp(6rem, 11vw, 8rem) 0 clamp(3.2rem, 8vw, 5rem);
+    overflow: hidden;
+}
+
+.shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at 18% 10%, rgba(255, 213, 108, 0.08), transparent 42%),
+        radial-gradient(circle at 82% 80%, rgba(255, 213, 108, 0.06), transparent 38%);
+    pointer-events: none;
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 1060px;
+}
+
+.hero {
+    text-align: center;
+    margin-bottom: 1.35rem;
+}
+
+.kicker {
+    margin: 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(255, 213, 108, 0.92);
+    font-family: var(--font-dm-sans);
+}
+
+.title {
+    margin: 0.6rem 0 0.45rem;
+    font-family: var(--font-bentham);
+    font-size: clamp(2.15rem, 6vw, 3.7rem);
+    line-height: 1.06;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+}
+
+.subtitle {
+    margin: 0 auto;
+    max-width: 62ch;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.65;
+}
+
+.badge {
+    margin-top: 0.9rem;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 0.46rem 0.75rem;
+    border-radius: 0;
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: var(--font-dm-sans);
+}
+
+.badgeDot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.stateOperational {
+    color: rgba(255, 213, 108, 0.96);
+    border-color: rgba(255, 213, 108, 0.55);
+    background: rgba(255, 213, 108, 0.14);
+}
+
+.stateDegraded {
+    color: rgba(255, 213, 108, 0.96);
+    border-color: rgba(255, 213, 108, 0.4);
+    background: rgba(255, 213, 108, 0.1);
+}
+
+.stateDown {
+    color: rgba(255, 163, 163, 0.96);
+    border-color: rgba(255, 143, 143, 0.45);
+    background: rgba(255, 121, 121, 0.14);
+}
+
+.metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.metricCard {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(11, 29, 38, 0.32);
+    border-radius: 0;
+    padding: 0.9rem 0.95rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.metricCard h2 {
+    margin: 0 0 0.45rem;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.58);
+    font-family: var(--font-dm-sans);
+    font-weight: 700;
+}
+
+.metricCard p {
+    margin: 0;
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    color: #ffffff;
+    font-family: var(--font-dm-sans);
+    font-weight: 800;
+}
+
+.metricCard small {
+    display: inline-block;
+    margin-top: 0.32rem;
+    color: rgba(255, 255, 255, 0.66);
+    font-size: 0.77rem;
+}
+
+.topGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.card {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(11, 29, 38, 0.32);
+    border-radius: 0;
+    padding: 0.95rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.card h2,
+.componentSection h2 {
+    margin: 0 0 0.65rem;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255, 213, 108, 0.92);
+    font-family: var(--font-dm-sans);
+    font-weight: 700;
+}
+
+.kv {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.kv div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.8rem;
+    align-items: baseline;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.18);
+    padding-bottom: 0.5rem;
+}
+
+.kv dt {
+    font-size: 0.79rem;
+    color: rgba(255, 255, 255, 0.62);
+}
+
+.kv dd {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.82rem;
+    font-family: var(--font-dm-sans);
+    text-align: right;
+}
+
+.infoText {
+    margin: 0 0 0.45rem;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.86rem;
+    line-height: 1.62;
+}
+
+.code {
+    display: inline-block;
+    margin-bottom: 0.55rem;
+    border: 1px solid rgba(255, 213, 108, 0.45);
+    background: rgba(255, 213, 108, 0.12);
+    color: rgba(255, 223, 148, 0.96);
+    border-radius: 0;
+    padding: 0.48rem 0.64rem;
+    font-size: 0.81rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.componentSection {
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(11, 29, 38, 0.32);
+    border-radius: 0;
+    padding: 0.95rem;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.componentList {
+    display: grid;
+    gap: 0.55rem;
+}
+
+.componentItem {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 0.78rem 0.8rem;
+    border-radius: 0;
+}
+
+.componentHead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.45rem;
+}
+
+.componentHead h3 {
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--font-dm-sans);
+    font-size: 0.92rem;
+}
+
+.componentItem p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.84rem;
+    line-height: 1.58;
+}
+
+.componentItem small {
+    display: inline-block;
+    margin-top: 0.3rem;
+    color: rgba(255, 213, 108, 0.88);
+    font-family: var(--font-dm-sans);
+    font-size: 0.76rem;
+}
+
+.badgeMini {
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.34rem 0.44rem;
+    border-radius: 0;
+    font-size: 0.66rem;
+    font-family: var(--font-dm-sans);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 800;
+}
+
+@media (max-width: 980px) {
+    .metrics {
+        grid-template-columns: 1fr;
+    }
+
+    .topGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .shell {
+        padding-top: 5.4rem;
+    }
+
+    .title {
+        font-size: clamp(1.9rem, 9.5vw, 2.5rem);
+    }
+}
