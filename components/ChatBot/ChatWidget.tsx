@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
 type Msg = { role: "user" | "bot"; content: string };
@@ -215,7 +216,13 @@ export default function FaqChatWidget() {
                     aria-label={open ? "Tutup chatbot" : "Buka chatbot"}
                     title={open ? "Tutup chatbot" : "Chat FAQ"}
                 >
-                    <img src="/images/yongkics.png" alt="" className="h-13 w-12" />
+                    <Image
+                        src="/images/yongkics.png"
+                        alt=""
+                        width={48}
+                        height={52}
+                        className="h-13 w-12"
+                    />
                 </button>
             )}
         </>
