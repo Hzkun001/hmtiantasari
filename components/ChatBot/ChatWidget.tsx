@@ -168,7 +168,7 @@ export default function FaqChatWidget() {
                                     <div
                                         className={[
                                             "inline-block max-w-[85%] rounded-2xl border px-3 py-2 text-sm leading-relaxed",
-                                            m.role === "user" ? "bg-gray-50" : "bg-white",
+                                            m.role === "user" ? "bg-gray-200" : "bg-white",
                                         ].join(" ")}
                                     >
                                         {m.content}
