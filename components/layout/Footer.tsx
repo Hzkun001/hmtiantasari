@@ -519,7 +519,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="hover:text-[#FFD56C] transition-colors whitespace-nowrap"
               >
-                Mastodon
+                Collaborator
               </a>
             </div>
           </div>
