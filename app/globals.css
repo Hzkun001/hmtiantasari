@@ -32,6 +32,30 @@
   animation: marquee 30s linear infinite;
 }
 
+/* Visible scrollbar for chat viewport (global scrollbars remain hidden elsewhere). */
+.chat-widget-scroll {
+  scrollbar-width: thin !important;
+  scrollbar-color: #a3a3a3 #f1f5f9 !important;
+}
+
+.chat-widget-scroll::-webkit-scrollbar {
+  display: block;
+  width: 8px;
+}
+
+.chat-widget-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.chat-widget-scroll::-webkit-scrollbar-thumb {
+  background: #a3a3a3;
+  border-radius: 9999px;
+}
+
+.chat-widget-scroll::-webkit-scrollbar-thumb:hover {
+  background: #737373;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 ::-webkit-scrollbar {
   display: none;

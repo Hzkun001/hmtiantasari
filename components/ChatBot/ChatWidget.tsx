@@ -146,7 +146,7 @@ export default function FaqChatWidget() {
             {showWidget && open && (
                 <div
                     ref={panelRef}
-                    className="fixed bottom-24 right-6 z-9999 flex max-h-[calc(100dvh-7rem)] w-[92vw] max-w-95 flex-col overflow-hidden rounded-2xl border bg-white shadow-xl"
+                    className="fixed bottom-24 right-6 z-9999 flex h-[32rem] max-h-[calc(100dvh-7rem)] w-[92vw] max-w-95 flex-col overflow-hidden rounded-2xl border bg-white shadow-xl"
                     role="dialog"
                     aria-label="Chatbot FAQ HMTI"
                 >
@@ -161,7 +161,7 @@ export default function FaqChatWidget() {
                         </button>
                     </div>
 
-                    <div className="min-h-0 flex-1 overflow-y-auto px-3 py-3">
+                    <div className="chat-widget-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3">
                         <div className="space-y-2">
                             {messages.map((m, i) => (
                                 <div key={i} className={m.role === "user" ? "text-right" : "text-left"}>
