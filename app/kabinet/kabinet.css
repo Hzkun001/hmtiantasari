@@ -408,26 +408,106 @@
     min-width: 0;
     scroll-snap-align: start;
 }
+.kabinet-row-container {
+    width: 100%;
+    position: relative;
+    margin-bottom: 0.5rem;
+    overscroll-behavior-x: contain; 
+}
 
 .kabinet-draggable-row {
-    cursor: grab;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding-bottom: 0.5rem;
 }
 
-.kabinet-draggable-row::-webkit-scrollbar {
-    display: none;
+.kabinet-draggable-row > * {
+    flex: 0 0 80% !important;
 }
 
-.kabinet-draggable-row.is-dragging {
-    cursor: grabbing;
-    scroll-snap-type: none;
+@media (min-width: 1024px) {
+    .kabinet-draggable-row > * {
+        flex: 0 0 calc(25% - 0.75rem) !important;
+    }
 }
 
-.kabinet-draggable-row.is-dragging .kabinet-core-card {
-    user-select: none;
+.hide-scrollbar::-webkit-scrollbar { 
+    display: none; 
+}
+
+.hide-scrollbar { 
+    -ms-overflow-style: none; 
+    scrollbar-width: none; 
+}
+
+.kabinet-nav-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: 0.25rem;
+}
+
+.nav-progress-section {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    max-width: 200px;
+}
+
+.nav-index {
+    font-size: 10px;
+    font-weight: 800;
+    color: #9ca3af;
+}
+
+.nav-bar-bg {
+    height: 2px;
+    background: #f3f4f6;
+    flex: 1;
+    border-radius: 99px;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-bar-fill {
+    position: absolute;
+    height: 100%;
+    background: #962222;
+    transition: width 0.3s ease-out;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.arrow-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4b5563;
+    transition: all 0.2s ease;
+}
+
+.arrow-btn:hover {
+    background: #962222;
+    color: white;
+    border-color: #962222;
+    transform: scale(1.05);
+}
+
+.arrow-btn:active {
+    transform: scale(0.95);
 }
 
 .kabinet-jobdesk {

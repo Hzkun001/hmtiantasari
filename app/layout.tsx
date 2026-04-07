@@ -63,8 +63,8 @@ export async function generateMetadata(): Promise<Metadata> {
         creator: siteName,
         publisher: siteName,
         icons: {
-            icon: '/images/kabinet.svg',
-            apple: '/images/kabinet.svg',
+            icon: '/images/logo_hmti.svg',
+            apple: '/images/logo_hmti.svg',
         },
         openGraph: {
             type: 'website',
@@ -75,7 +75,7 @@ export async function generateMetadata(): Promise<Metadata> {
             siteName,
             images: [
                 {
-                    url: '/kabinet.png',
+                    url: '/logo_hmti.png',
                     width: 1200,
                     height: 630,
                     alt: `Logo ${siteName}`,
@@ -86,7 +86,7 @@ export async function generateMetadata(): Promise<Metadata> {
             card: 'summary_large_image',
             title: siteName,
             description,
-            images: ['/kabinet.png'],
+            images: ['/logo_hmti.png'],
         },
         robots: {
             index: true,
