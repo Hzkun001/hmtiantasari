@@ -45,6 +45,8 @@ body {
         radial-gradient(circle at 80% 80%, rgba(255, 213, 108, 0.02), transparent 38%),
         var(--theme-web);
     min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
 }
 
 /* Ensure sidebar doesn't cover footer */

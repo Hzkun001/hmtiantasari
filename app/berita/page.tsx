@@ -144,7 +144,7 @@ export default function KegiatanPage() {
     }, [activities, activeCategory, searchQuery]);
 
     return (
-        <main className="min-h-screen bg-[#0f1014] text-white">
+        <main className="min-h-screen min-h-svh min-h-dvh bg-[#0f1014] text-white">
             <Header />
 
             <section className="pt-28 md:pt-32 pb-8 md:pb-10 border-b border-white/10">
