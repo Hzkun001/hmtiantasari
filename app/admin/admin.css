@@ -46,7 +46,7 @@ body {
         var(--theme-web);
     min-height: 100vh;
     min-height: 100svh;
-    min-height: 100dvh;
+    min-height: 100lvh;
 }
 
 /* Ensure sidebar doesn't cover footer */

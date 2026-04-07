@@ -111,7 +111,7 @@
     height: -webkit-fill-available;
     min-height: 100vh;
     min-height: 100svh;
-    min-height: 100dvh;
+    min-height: 100lvh;
   }
 
   body {
@@ -122,7 +122,7 @@
     height: -webkit-fill-available;
     min-height: 100vh;
     min-height: 100svh;
-    min-height: 100dvh;
+    min-height: 100lvh;
     color: #5e6282;
     background-color: #1a1a1a;
   }
@@ -256,7 +256,7 @@
   width: 280px;
   height: 100vh;
   height: 100svh;
-  height: 100dvh;
+  height: 100lvh;
   padding: 0;
   overflow: hidden;
   transition: transform 0.4s ease-in-out;
@@ -269,7 +269,7 @@
 .header-backdrop {
   height: 100vh;
   height: 100svh;
-  height: 100dvh;
+  height: 100lvh;
 }
 
 .menu-header {
@@ -394,7 +394,7 @@
   width: 100vw;
   height: 100vh;
   height: 100svh;
-  height: 100dvh;
+  height: 100lvh;
   background-color: #1a1a1a;
   visibility: hidden;
   opacity: 0;
@@ -1921,7 +1921,7 @@ footer {
   width: 100%;
   min-height: 100vh;
   min-height: 100svh;
-  min-height: 100dvh;
+  min-height: 100lvh;
   padding: 0 0 16px;
 }
 
@@ -1930,7 +1930,7 @@ footer {
   width: min(100%, 430px);
   height: calc(100vh - 16px);
   height: calc(100svh - 16px);
-  height: calc(100dvh - 16px);
+  height: calc(100lvh - 16px);
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -2152,7 +2152,7 @@ footer {
   .hero-section.hero-section-cinematic {
     min-height: 100vh !important;
     min-height: 100svh !important;
-    min-height: 100dvh !important;
+    min-height: 100lvh !important;
     max-height: none !important;
     padding-bottom: 0;
   }

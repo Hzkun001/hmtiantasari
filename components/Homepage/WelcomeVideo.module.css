@@ -3,7 +3,7 @@
     width: 100%;
     min-height: 100vh;
     min-height: 100svh;
-    min-height: 100dvh;
+    min-height: 100lvh;
     overflow: hidden;
     z-index: 5;
     background-color: #ffffff;
@@ -154,7 +154,7 @@
         padding: clamp(2.2rem, 5.2svh, 3.2rem) 0 clamp(1.6rem, 4svh, 2.2rem);
         height: auto;
         min-height: 100svh;
-        min-height: 100dvh;
+        min-height: 100lvh;
     }
 
     .hero :global(.container) {
@@ -202,7 +202,7 @@
         padding: clamp(1.9rem, 4.8svh, 2.8rem) 0 clamp(1.25rem, 3.4svh, 1.9rem);
         height: auto;
         min-height: 100svh;
-        min-height: 100dvh;
+        min-height: 100lvh;
     }
 }
 

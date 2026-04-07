@@ -3,10 +3,10 @@
     width: 100%;
     height: 100vh;
     height: 100svh;
-    height: 100dvh;
+    height: 100lvh;
     min-height: 100vh;
     min-height: 100svh;
-    min-height: 100dvh;
+    min-height: 100lvh;
     overflow: hidden;
     background-color: #ffffff;
     font-family: "PP Neue Montreal", sans-serif;
@@ -29,7 +29,7 @@
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100dvh;
+    height: 100lvh;
     padding: 2em;
     background-color: #000;
     color: #fff;
@@ -216,10 +216,10 @@
     .landingContainer {
         height: 100vh;
         height: 100svh;
-        height: 100dvh;
+        height: 100lvh;
         min-height: 100vh;
         min-height: 100svh;
-        min-height: 100dvh;
+        min-height: 100lvh;
     }
 
     .landingContainer :global(.overlay) {
