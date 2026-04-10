@@ -109,6 +109,9 @@
     box-sizing: inherit;
     scroll-behavior: auto;
     height: -webkit-fill-available;
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100lvh;
   }
 
   body {
@@ -117,6 +120,9 @@
     font-weight: 400;
     letter-spacing: 0.05em;
     height: -webkit-fill-available;
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100lvh;
     color: #5e6282;
     background-color: #1a1a1a;
   }
@@ -249,9 +255,11 @@
   left: 0;
   width: 280px;
   height: 100vh;
+  height: 100svh;
+  height: 100lvh;
   padding: 0;
   overflow: hidden;
-  transition: all 0.4s ease-in-out;
+  transition: transform 0.4s ease-in-out;
   transform: translateX(-150%);
   z-index: 10;
   background-color: #1a1a1a;
@@ -260,14 +268,8 @@
 .menu,
 .header-backdrop {
   height: 100vh;
-}
-
-@supports (height: 100svh) {
-
-  .menu,
-  .header-backdrop {
-    height: 100svh;
-  }
+  height: 100svh;
+  height: 100lvh;
 }
 
 .menu-header {
@@ -391,10 +393,12 @@
   z-index: 8;
   width: 100vw;
   height: 100vh;
+  height: 100svh;
+  height: 100lvh;
   background-color: #1a1a1a;
   visibility: hidden;
   opacity: 0;
-  transition: all 0.4s ease-in-out;
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
 }
 
 .menu-is-active .header-backdrop {
@@ -1915,14 +1919,18 @@ footer {
   position: relative;
   z-index: 8;
   width: 100%;
+  min-height: 100vh;
   min-height: 100svh;
+  min-height: 100lvh;
   padding: 0 0 16px;
 }
 
 .hero-mobile-cinematic-frame {
   position: relative;
   width: min(100%, 430px);
+  height: calc(100vh - 16px);
   height: calc(100svh - 16px);
+  height: calc(100lvh - 16px);
   margin: 0 auto;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -2142,7 +2150,9 @@ footer {
   }
 
   .hero-section.hero-section-cinematic {
+    min-height: 100vh !important;
     min-height: 100svh !important;
+    min-height: 100lvh !important;
     max-height: none !important;
     padding-bottom: 0;
   }

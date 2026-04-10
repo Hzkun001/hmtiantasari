@@ -15,7 +15,7 @@ export default function AdminLayout({
 }) {
     return (
         <SidebarProvider defaultOpen>
-            <div className="admin-page min-h-screen w-full flex-1 min-w-0 p-0 m-0 flex pb-0">
+            <div className="admin-page min-h-screen min-h-svh min-h-lvh w-full flex-1 min-w-0 p-0 m-0 flex pb-0">
                 <SidebarAdmin />
                 <SidebarInset className="min-w-0 pb-0 bg-transparent text-(--admin-text)">
                     {children}
