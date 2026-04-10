@@ -162,7 +162,8 @@
 }
 
 .kabinet-core-card {
-    border: 1px solid var(--kabinet-border);
+    border: 1px solid rgba(26, 26, 26, 0.22);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
     padding: 1rem 0.9rem;
     background: var(--kabinet-surface);
     display: grid;
@@ -422,6 +423,7 @@
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-x;
+    min-width: 0;
 }
 
 .kabinet-draggable-row::-webkit-scrollbar {
@@ -476,14 +478,6 @@
     color: rgba(255, 255, 255, 0.82);
 }
 
-@media (max-width: 1080px) {
-
-    .kabinet-core-grid,
-    .kabinet-division-team-grid {
-        --card-w: clamp(210px, 35vw, 280px);
-    }
-}
-
 @media (max-width: 860px) {
     .kabinet-stat-grid {
         grid-template-columns: 1fr;
@@ -491,6 +485,11 @@
 
     .kabinet-jobdesk-grid {
         grid-template-columns: 1fr;
+    }
+
+    .kabinet-core-grid,
+    .kabinet-division-team-grid {
+        --card-w: clamp(230px, 48vw, 260px);
     }
 }
 
@@ -528,7 +527,7 @@
     .kabinet-core-grid,
     .kabinet-division-team-grid {
         --team-card-gap: 0.65rem;
-        --card-w: clamp(200px, 55vw, 230px);
+        --card-w: clamp(215px, 52vw, 235px);
         scroll-snap-type: none;
     }
 
