@@ -151,7 +151,8 @@
     -ms-transform: translateY(-50%);
     -o-transform: translateY(-50%);
     width: 100%;
-    padding: 0 5em;
+    padding: 0 clamp(1rem, 5vw, 5rem);
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -186,7 +187,8 @@
     -ms-transform: translateX(-50%);
     -o-transform: translateX(-50%);
     width: 100%;
-    padding: 0 5em;
+    padding: 0 clamp(1rem, 5vw, 5rem);
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
