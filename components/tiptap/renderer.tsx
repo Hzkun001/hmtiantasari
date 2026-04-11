@@ -20,18 +20,18 @@ function renderNode(node: TiptapNode, index: number): React.ReactNode {
 
         case 'paragraph': {
             const children = content?.map((child, i) => renderNode(child, i));
-            let el = <p>{children}</p>;
+            let el = <p key={`p-${index}`}>{children}</p>;
 
             if (marks) {
                 marks.forEach((mark) => {
                     if (mark.type === 'bold') {
-                        el = <strong>{el}</strong>;
+                        el = <strong key={`strong-${index}`}>{el}</strong>;
                     }
                     if (mark.type === 'italic') {
-                        el = <em>{el}</em>;
+                        el = <em key={`em-${index}`}>{el}</em>;
                     }
                     if (mark.type === 'strike') {
-                        el = <s>{el}</s>;
+                        el = <s key={`s-${index}`}>{el}</s>;
                     }
                 });
             }
@@ -47,10 +47,10 @@ function renderNode(node: TiptapNode, index: number): React.ReactNode {
             if (marks) {
                 marks.forEach((mark) => {
                     if (mark.type === 'bold') {
-                        el = <strong>{el}</strong>;
+                        el = <strong key={`strong-h${level}-${index}`}>{el}</strong>;
                     }
                     if (mark.type === 'italic') {
-                        el = <em>{el}</em>;
+                        el = <em key={`em-h${level}-${index}`}>{el}</em>;
                     }
                 });
             }
@@ -68,13 +68,13 @@ function renderNode(node: TiptapNode, index: number): React.ReactNode {
             if (marks) {
                 marks.forEach((mark) => {
                     if (mark.type === 'bold') {
-                        el = <strong>{el}</strong>;
+                        el = <strong key={`strong-t-${index}`}>{el}</strong>;
                     }
                     if (mark.type === 'italic') {
-                        el = <em>{el}</em>;
+                        el = <em key={`em-t-${index}`}>{el}</em>;
                     }
                     if (mark.type === 'strike') {
-                        el = <s>{el}</s>;
+                        el = <s key={`s-t-${index}`}>{el}</s>;
                     }
                 });
             }
@@ -111,7 +111,6 @@ function renderNode(node: TiptapNode, index: number): React.ReactNode {
             const alt = attrs?.alt as string | undefined;
             if (!rawSrc) return null;
 
-            // Try Cloudinary transformation first
             const src = getCloudinaryFetchImageUrl(rawSrc, {
                 width: 1200,
                 height: 800,
