@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
-import { useCallback, useState, useEffect, useRef } from 'react';
+import { useCallback, useState } from 'react';
 import { uploadActivitiesImage } from '@/lib/uploadImage';
 
 interface TiptapEditorProps {
@@ -14,8 +14,6 @@ interface TiptapEditorProps {
 
 export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
     const [uploading, setUploading] = useState(false);
-    const contentRef = useRef(content);
-    const isInternalChange = useRef(false);
 
     const editor = useEditor({
         extensions: [
@@ -27,24 +25,11 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
             Placeholder.configure({ placeholder: 'Tulis berita di sini...' }),
         ],
         content: content && Object.keys(content).length > 0 ? content : undefined,
+        immediatelyRender: false,
         onUpdate: ({ editor }) => {
-            isInternalChange.current = true;
             onChange(editor.getJSON());
         },
     });
-
-    // Sync content from props to editor instance when it changes
-    useEffect(() => {
-        if (!editor) return;
-
-        const currentContent = JSON.stringify(editor.getJSON());
-        const newContent = JSON.stringify(content);
-
-        if (currentContent !== newContent) {
-            editor.commands.setContent(content);
-            contentRef.current = content;
-        }
-    }, [content, editor]);
 
     const handleImageUpload = useCallback(async () => {
         if (!editor) return;

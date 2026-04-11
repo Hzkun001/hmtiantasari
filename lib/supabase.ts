@@ -26,7 +26,13 @@ export interface Activity {
     author?: string;
     link?: string;
     slug?: string;
+    body?: Record<string, unknown> | null;
+    meta_title?: string;
+    meta_description?: string;
+    images?: string[];
     created_at?: string;
+    updated_at?: string;
+    [key: string]: unknown;
 }
 
 export interface NewsItem {

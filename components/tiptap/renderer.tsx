@@ -155,7 +155,7 @@ export function TiptapRenderer({ content }: TiptapRendererProps) {
             return null;
         }
     } else {
-        json = content as TiptapNode;
+        json = content as unknown as TiptapNode;
     }
 
     return <div className="space-y-4">{renderNode(json, 0)}</div>;

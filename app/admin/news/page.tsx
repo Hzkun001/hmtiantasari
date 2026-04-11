@@ -36,8 +36,9 @@ function extractTextFromTiptap(json: Record<string, unknown>): string {
 function extractImagesFromTiptap(json: Record<string, unknown>): string[] {
     const images: string[] = [];
     function walk(node: Record<string, unknown>) {
-        if (node.type === 'image' && node.attrs?.src) {
-            images.push(node.attrs.src as string);
+        const attrs = node.attrs as Record<string, unknown> | undefined;
+        if (node.type === 'image' && attrs?.src) {
+            images.push(attrs.src as string);
         }
         if (Array.isArray(node.content)) {
             node.content.forEach((child) => walk(child as Record<string, unknown>));
@@ -126,12 +127,8 @@ export default function AdminActivitiesPage() {
 
         // Parse body if exists
         let parsedBody: Record<string, unknown> = { type: 'doc', content: [{ type: 'paragraph' }] };
-        if ((activity as Record<string, unknown>).body) {
-            try {
-                parsedBody = (activity as Record<string, unknown>).body as Record<string, unknown>;
-            } catch {
-                // use default
-            }
+        if (activity.body) {
+            parsedBody = activity.body;
         }
 
         setFormData({
@@ -143,9 +140,9 @@ export default function AdminActivitiesPage() {
             link: activity.link || '',
         });
         setBodyJson(parsedBody);
-        setSlug((activity as Record<string, unknown>).slug as string || generateSlug(activity.title));
-        setMetaTitle((activity as Record<string, unknown>).meta_title as string || '');
-        setMetaDescription((activity as Record<string, unknown>).meta_description as string || '');
+        setSlug(activity.slug || generateSlug(activity.title));
+        setMetaTitle(activity.meta_title || '');
+        setMetaDescription(activity.meta_description || '');
         setImagePreview(activity.image_url);
         setSelectedImageFile(null);
         setShowForm(true);
@@ -347,7 +344,7 @@ export default function AdminActivitiesPage() {
                         {/* Body (Tiptap) */}
                         <div className="admin-form-group">
                             <label className="admin-form-label">Body (Rich Text) *</label>
-                            <TiptapEditor content={bodyJson} onChange={setBodyJson} />
+                            <TiptapEditor key={editingActivity?.id || 'new'} content={bodyJson} onChange={setBodyJson} />
                         </div>
 
                         {/* Slug */}
@@ -506,9 +503,9 @@ export default function AdminActivitiesPage() {
                                             className="object-cover"
                                             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                         />
-                                        {(activity as Record<string, unknown>).category && (
+                                        {activity.category && (
                                             <div className="admin-activity-badge">
-                                                {(activity as Record<string, unknown>).category as string}
+                                                {activity.category}
                                             </div>
                                         )}
                                     </>
@@ -533,9 +530,9 @@ export default function AdminActivitiesPage() {
                                 <p className="admin-activity-card-desc">{activity.content}</p>
 
                                 {/* Slug indicator */}
-                                {(activity as Record<string, unknown>).slug && (
+                                {activity.slug && (
                                     <p className="admin-upload-status text-xs text-neutral-400 mt-2">
-                                        /berita/{(activity as Record<string, unknown>).slug as string}
+                                        /berita/{activity.slug}
                                     </p>
                                 )}
 
