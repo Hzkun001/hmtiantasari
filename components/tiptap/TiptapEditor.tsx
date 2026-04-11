@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { uploadActivitiesImage } from '@/lib/uploadImage';
 
 interface TiptapEditorProps {
@@ -13,10 +13,15 @@ interface TiptapEditorProps {
 }
 
 export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
+    const [uploading, setUploading] = useState(false);
+
     const editor = useEditor({
         extensions: [
             StarterKit,
-            Image.configure({ inline: false, allowBase64: true }),
+            Image.configure({
+                inline: false,
+                allowBase64: false,
+            }),
             Placeholder.configure({ placeholder: 'Tulis berita di sini...' }),
         ],
         content: content && Object.keys(content).length > 0 ? content : undefined,
@@ -34,12 +39,16 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
         input.onchange = async (e) => {
             const file = (e.target as HTMLInputElement).files?.[0];
             if (!file) return;
+
+            setUploading(true);
             try {
                 const url = await uploadActivitiesImage(file);
                 editor.chain().focus().setImage({ src: url }).run();
             } catch (err) {
                 console.error('Upload failed:', err);
-                alert('Gagal upload gambar. Coba lagi.');
+                alert('Gagal upload gambar. Pastikan bucket "activity-images" sudah dibuat di Supabase Storage.');
+            } finally {
+                setUploading(false);
             }
         };
         input.click();
@@ -106,9 +115,10 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
                 <button
                     type="button"
                     onClick={handleImageUpload}
-                    className="px-3 py-1 rounded text-sm text-white hover:bg-white/10"
+                    disabled={uploading}
+                    className={`px-3 py-1 rounded text-sm ${uploading ? 'text-neutral-400 cursor-not-allowed' : 'text-white hover:bg-white/10'}`}
                 >
-                    📷 Image
+                    {uploading ? '↗ Uploading...' : '📷 Image'}
                 </button>
             </div>
 
