@@ -25,7 +25,26 @@ export interface Activity {
     category?: string;
     author?: string;
     link?: string;
+    slug?: string;
     created_at?: string;
+}
+
+export interface NewsItem {
+    id: number;
+    title: string;
+    content: string;
+    body: Record<string, unknown> | null;
+    image_url: string | null;
+    date: string;
+    category?: string;
+    author?: string;
+    link?: string;
+    slug?: string;
+    meta_title?: string;
+    meta_description?: string;
+    images?: string[];
+    created_at?: string;
+    updated_at?: string;
 }
 
 type FetchNewsResult = {

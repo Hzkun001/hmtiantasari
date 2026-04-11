@@ -1,12 +1,12 @@
 import 'server-only';
 
-import type { Activity, CalendarEvent } from '@/lib/supabase';
+import type { Activity, CalendarEvent, NewsItem } from '@/lib/supabase';
 import { getSiteSettingsServer, type SiteSettingsServerData } from '@/lib/site-settings-server';
 
 const NEWS_TABLE_CANDIDATES = ['Activities', 'News'] as const;
 type NewsTableName = (typeof NEWS_TABLE_CANDIDATES)[number];
 
-const NEWS_SELECT = 'id,title,content,image_url,date,category,author,link';
+const NEWS_SELECT = 'id,title,content,image_url,date,category,author,link,slug';
 const CALENDAR_SELECT = 'id,title,start_at,organizer_department';
 
 type FetchPublicNewsOptions = {
@@ -110,4 +110,32 @@ export async function fetchPublicCalendarEvents(
 
 export async function fetchPublicSiteSettings(): Promise<SiteSettingsServerData | null> {
     return getSiteSettingsServer();
+}
+
+const NEWS_DETAIL_SELECT = 'id,title,content,body,image_url,date,category,author,slug,meta_title,meta_description,images,created_at';
+
+export async function fetchPublicNewsBySlug(slug: string): Promise<NewsItem | null> {
+    const config = getSupabasePublicConfig();
+    if (!config) return null;
+
+    const { supabaseUrl, supabaseAnonKey } = config;
+
+    const url = new URL('/rest/v1/News', supabaseUrl);
+    url.searchParams.set('select', NEWS_DETAIL_SELECT);
+    url.searchParams.set('slug', `eq.${slug}`);
+    url.searchParams.set('limit', '1');
+
+    try {
+        const response = await fetch(url.toString(), {
+            headers: createRestHeaders(supabaseAnonKey),
+            next: { revalidate: 300 },
+        });
+
+        if (!response.ok) return null;
+
+        const rows = await response.json();
+        return Array.isArray(rows) && rows.length > 0 ? rows[0] : null;
+    } catch {
+        return null;
+    }
 }
