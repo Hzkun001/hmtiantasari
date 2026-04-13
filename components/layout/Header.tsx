@@ -153,7 +153,7 @@ export default function Header({
                 <div className="header-container">
                     <Link href="/" scroll className="brand">
                         <Image
-                            src="images/kabinet.svg"
+                            src="/images/kabinet.svg"
                             alt="HMTI Logo"
                             width={108}
                             height={24}
