@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default function LaporanKeuanganPage() {
     return (
-        <main className="min-h-screen bg-[#0f1014] text-white">
+        <main className="min-h-screen min-h-svh min-h-lvh bg-[#0f1014] text-white">
             <Header />
             <LaporanKeuanganSection />
             <Footer />

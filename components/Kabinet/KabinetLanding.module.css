@@ -28,6 +28,7 @@
     left: 0;
     width: 100vw;
     height: 100svh;
+    height: 100lvh;
     padding: 2em;
     background-color: #000;
     color: #fff;
@@ -215,7 +216,12 @@
 @media (max-width: 900px) {
     .landingContainer {
         height: 100lvh;
+        height: 100vh;
+        height: 100svh;
+        height: 100lvh;
+        min-height: 100vh;
         min-height: 100svh;
+        min-height: 100lvh;
     }
 
     .landingContainer :global(.overlay) {
