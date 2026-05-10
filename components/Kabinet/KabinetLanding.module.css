@@ -1,12 +1,10 @@
 .landingContainer {
     position: relative;
     width: 100%;
-    height: 100vh;
-    height: 100svh;
+    max-width: 100vw;
+    overflow-x: hidden;
     height: 100lvh;
-    min-height: 100vh;
     min-height: 100svh;
-    min-height: 100lvh;
     overflow: hidden;
     background-color: #ffffff;
     font-family: "PP Neue Montreal", sans-serif;
@@ -29,6 +27,7 @@
     top: 0;
     left: 0;
     width: 100vw;
+    height: 100svh;
     height: 100lvh;
     padding: 2em;
     background-color: #000;
@@ -151,7 +150,8 @@
     -ms-transform: translateY(-50%);
     -o-transform: translateY(-50%);
     width: 100%;
-    padding: 0 5em;
+    padding: 0 clamp(1rem, 5vw, 5rem);
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -186,7 +186,8 @@
     -ms-transform: translateX(-50%);
     -o-transform: translateX(-50%);
     width: 100%;
-    padding: 0 5em;
+    padding: 0 clamp(1rem, 5vw, 5rem);
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -214,6 +215,7 @@
 
 @media (max-width: 900px) {
     .landingContainer {
+        height: 100lvh;
         height: 100vh;
         height: 100svh;
         height: 100lvh;

@@ -145,49 +145,49 @@ export default function HeroSection() {
             const scrollTriggerInstance = gsap.timeline({
                 scrollTrigger: {
                     trigger: heroRef.current,
-                    start: 'top top',
-                    end: 'bottom top',
-                    scrub: 0.5,
-                    invalidateOnRefresh: true,
-                    onUpdate: (self) => {
-                        if (self.progress < 0.4 || autoScrollTriggeredRef.current) return;
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 0.5,
+                invalidateOnRefresh: true,
+                onUpdate: (self) => {
+                    if (self.progress < 0.4 || autoScrollTriggeredRef.current) return;
 
-                        autoScrollTriggeredRef.current = true;
-                        const heroRevealSection = document.querySelector('.hero-reveal-section');
+                    autoScrollTriggeredRef.current = true;
+                    const heroRevealSection = document.querySelector('.hero-reveal-section');
 
-                        if (!heroRevealSection || !window.lenis) return;
+                    if (!heroRevealSection || !(window as any).lenis) return;
 
-                        if (lenisRecoveryTimeoutRef.current) {
-                            clearTimeout(lenisRecoveryTimeoutRef.current);
-                        }
+                    if (lenisRecoveryTimeoutRef.current) {
+                        clearTimeout(lenisRecoveryTimeoutRef.current);
+                    }
 
-                        window.lenis.stop();
+                    (window as any).lenis.stop();
 
-                        lenisRecoveryTimeoutRef.current = setTimeout(() => {
-                            window.lenis?.start();
-                            lenisRecoveryTimeoutRef.current = null;
-                        }, 2200);
+                    lenisRecoveryTimeoutRef.current = setTimeout(() => {
+                        (window as any).lenis?.start();
+                        lenisRecoveryTimeoutRef.current = null;
+                    }, 2200);
 
-                        window.lenis.scrollTo(heroRevealSection as HTMLElement, {
-                            duration: 1.5,
-                            easing: (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
-                            offset: 0,
-                            lock: true,
-                            force: true,
-                            onComplete: () => {
-                                if (lenisRecoveryTimeoutRef.current) {
-                                    clearTimeout(lenisRecoveryTimeoutRef.current);
-                                    lenisRecoveryTimeoutRef.current = null;
-                                }
-                                window.lenis?.start();
-                            },
-                        });
-                    },
-                    onLeaveBack: () => {
-                        autoScrollTriggeredRef.current = false;
-                    },
+                    (window as any).lenis.scrollTo(heroRevealSection as HTMLElement, {
+                        duration: 1.5,
+                        easing: (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
+                        offset: 0,
+                        lock: true,
+                        force: true,
+                        onComplete: () => {
+                            if (lenisRecoveryTimeoutRef.current) {
+                                clearTimeout(lenisRecoveryTimeoutRef.current);
+                                lenisRecoveryTimeoutRef.current = null;
+                            }
+                            (window as any).lenis?.start();
+                        },
+                    });
                 },
-            });
+                onLeaveBack: () => {
+                    autoScrollTriggeredRef.current = false;
+                },
+            },
+        }); 
 
             scrollTriggerInstance
                 .to(skyRef.current, { y: parallaxValues.sky }, '0')
@@ -239,7 +239,7 @@ export default function HeroSection() {
                 clearTimeout(lenisRecoveryTimeoutRef.current);
                 lenisRecoveryTimeoutRef.current = null;
             }
-            window.lenis?.start();
+            (window as any).lenis?.start();
             ctx.revert();
         };
     }, [isDesktopViewport, prefersReducedMotion]);

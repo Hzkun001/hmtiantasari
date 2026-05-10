@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchPublicNews } from '@/lib/public-data-server';
 
+const NEWS_SELECT = 'id,title,content,image_url,date,category,author,link,slug';
+
 const DEFAULT_LIMIT = 20;
 const MAX_LIMIT = 100;
 
