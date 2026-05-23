@@ -19,6 +19,25 @@ const MOBILE_HERO_LINKS = [
 const MOBILE_HERO_STEPS = ['01', '02', '03', '04'] as const;
 const MOBILE_HERO_TIMELINE_DURATION_MS = 3600;
 
+type LenisLike = {
+    stop?: () => void;
+    start?: () => void;
+    scrollTo?: (
+        target: number | string | HTMLElement,
+        options?: {
+            duration?: number;
+            easing?: (t: number) => number;
+            offset?: number;
+            lock?: boolean;
+            force?: boolean;
+            immediate?: boolean;
+            onComplete?: () => void;
+        }
+    ) => void;
+};
+
+const getWindowLenis = () => (window as Window & { lenis?: LenisLike }).lenis;
+
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
@@ -155,20 +174,22 @@ export default function HeroSection() {
                         autoScrollTriggeredRef.current = true;
                         const heroRevealSection = document.querySelector('.hero-reveal-section');
 
-                        if (!heroRevealSection || !window.lenis) return;
+                        const lenis = getWindowLenis();
+
+                        if (!heroRevealSection || !lenis) return;
 
                         if (lenisRecoveryTimeoutRef.current) {
                             clearTimeout(lenisRecoveryTimeoutRef.current);
                         }
 
-                        window.lenis.stop();
+                        lenis.stop?.();
 
                         lenisRecoveryTimeoutRef.current = setTimeout(() => {
-                            window.lenis?.start();
+                            getWindowLenis()?.start?.();
                             lenisRecoveryTimeoutRef.current = null;
                         }, 2200);
 
-                        window.lenis.scrollTo(heroRevealSection as HTMLElement, {
+                        lenis.scrollTo?.(heroRevealSection as HTMLElement, {
                             duration: 1.5,
                             easing: (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
                             offset: 0,
@@ -179,7 +200,7 @@ export default function HeroSection() {
                                     clearTimeout(lenisRecoveryTimeoutRef.current);
                                     lenisRecoveryTimeoutRef.current = null;
                                 }
-                                window.lenis?.start();
+                                getWindowLenis()?.start?.();
                             },
                         });
                     },
@@ -239,7 +260,7 @@ export default function HeroSection() {
                 clearTimeout(lenisRecoveryTimeoutRef.current);
                 lenisRecoveryTimeoutRef.current = null;
             }
-            window.lenis?.start();
+            getWindowLenis()?.start?.();
             ctx.revert();
         };
     }, [isDesktopViewport, prefersReducedMotion]);
