@@ -23,6 +23,10 @@ export function getCloudinaryFetchImageUrl(
     if (!sourceUrl) return null;
     if (!isHttpUrl(sourceUrl)) return sourceUrl;
     if (isCloudinaryUrl(sourceUrl)) return sourceUrl;
+
+    // If it's a Supabase Storage URL, return as-is (don't transform via Cloudinary)
+    if (sourceUrl.includes('supabase.co/storage')) return sourceUrl;
+
     if (!CLOUDINARY_CLOUD_NAME) return sourceUrl;
 
     const {

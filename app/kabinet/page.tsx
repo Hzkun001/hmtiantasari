@@ -215,11 +215,15 @@ function TeamMemberCard({ member }: { member: MemberCard }) {
 function DraggableCardRow({
     className,
     children,
+    totalItems,
 }: {
     className: string;
     children: ReactNode;
+    totalItems: number;
 }) {
     const rowRef = useRef<HTMLDivElement | null>(null);
+    const [scrollProgress, setScrollProgress] = useState(0);
+
     const dragStateRef = useRef({
         isDragging: false,
         startX: 0,
@@ -227,79 +231,91 @@ function DraggableCardRow({
         hasMoved: false,
     });
 
+    const updateProgress = () => {
+        if (rowRef.current) {
+            const { scrollLeft, scrollWidth, clientWidth } = rowRef.current;
+            const maxScroll = scrollWidth - clientWidth;
+            setScrollProgress(maxScroll > 0 ? (scrollLeft / maxScroll) * 100 : 0);
+        }
+    };
+
+    const scroll = (direction: 'left' | 'right') => {
+        if (rowRef.current) {
+            const scrollAmount = rowRef.current.clientWidth * 0.7;
+            rowRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    };
+
     const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
         if (event.button !== 0) return;
-
         const row = rowRef.current;
         if (!row) return;
-
         dragStateRef.current.isDragging = true;
         dragStateRef.current.startX = event.pageX;
         dragStateRef.current.startScrollLeft = row.scrollLeft;
-        dragStateRef.current.hasMoved = false;
+        row.style.scrollBehavior = 'auto';
         row.classList.add('is-dragging');
     };
 
     const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
         if (!dragStateRef.current.isDragging) return;
-
         event.preventDefault();
-
         const row = rowRef.current;
         if (!row) return;
-
         const delta = event.pageX - dragStateRef.current.startX;
-        if (Math.abs(delta) > 3) {
-            dragStateRef.current.hasMoved = true;
-        }
-
         row.scrollLeft = dragStateRef.current.startScrollLeft - delta;
+        updateProgress();
     };
 
     const stopDragging = () => {
         if (!dragStateRef.current.isDragging) return;
-
         dragStateRef.current.isDragging = false;
-        rowRef.current?.classList.remove('is-dragging');
-    };
-
-    const handleClickCapture = (event: MouseEvent<HTMLDivElement>) => {
-        if (!dragStateRef.current.hasMoved) return;
-
-        event.preventDefault();
-        event.stopPropagation();
-        dragStateRef.current.hasMoved = false;
-    };
-
-    const handleTouchStart = (_event: TouchEvent<HTMLDivElement>) => {
-        dragStateRef.current.hasMoved = false;
-        rowRef.current?.classList.add('is-dragging');
-    };
-
-    const handleTouchMove = (_event: TouchEvent<HTMLDivElement>) => {
-        dragStateRef.current.hasMoved = true;
-    };
-
-    const handleTouchEnd = (_event: TouchEvent<HTMLDivElement>) => {
-        rowRef.current?.classList.remove('is-dragging');
+        if (rowRef.current) {
+            rowRef.current.style.scrollBehavior = 'smooth';
+            rowRef.current.classList.remove('is-dragging');
+        }
     };
 
     return (
-        <div
-            ref={rowRef}
-            className={`${className} kabinet-draggable-row`}
-            data-lenis-prevent-touch
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={stopDragging}
-            onMouseLeave={stopDragging}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
-            onTouchCancel={handleTouchEnd}
-            onClickCapture={handleClickCapture}
-        >
-            {children}
+        <div className="kabinet-row-container"> 
+            <div
+                ref={rowRef}
+                className={`${className} kabinet-draggable-row hide-scrollbar`}
+                onMouseDown={handleMouseDown}
+                onMouseMove={handleMouseMove}
+                onMouseUp={stopDragging}
+                onMouseLeave={stopDragging}
+                onScroll={updateProgress}
+            >
+                {children}
+            </div>
+
+            <div className="kabinet-nav-footer">
+                <div className="nav-progress-section">
+                    <span className="nav-index">01</span>
+                    <div className="nav-bar-bg">
+                        <div 
+                            className="nav-bar-fill"
+                            style={{ width: `${scrollProgress}%` }}
+                        />
+                    </div>
+                    <span className="nav-index">
+                        {totalItems < 10 ? `0${totalItems}` : totalItems}
+                    </span>
+                </div>
+
+                <div className="nav-buttons">
+                    <button onClick={() => scroll('left')} className="arrow-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M15 18l-6-6 6-6"/></svg>
+                    </button>
+                    <button onClick={() => scroll('right')} className="arrow-btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M9 18l6-6-6-6"/></svg>
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
@@ -391,7 +407,7 @@ export default function KabinetPage() {
                     {loading ? (
                         <p className="kabinet-team-state">Memuat data tim inti...</p>
                     ) : groupedMembers.BPH.length > 0 ? (
-                        <DraggableCardRow className="kabinet-core-grid">
+                        <DraggableCardRow className="kabinet-core-grid" totalItems={groupedMembers.BPH.length}>
                             {groupedMembers.BPH.map((member) => (
                                 <TeamMemberCard key={member.id} member={member} />
                             ))}
@@ -433,7 +449,7 @@ export default function KabinetPage() {
                                 {loading ? (
                                     <p className="kabinet-team-state">Memuat anggota tim {division.name}...</p>
                                 ) : groupedMembers[division.key].length > 0 ? (
-                                    <DraggableCardRow className="kabinet-division-team-grid">
+                                    <DraggableCardRow className="kabinet-division-team-grid" totalItems={groupedMembers[division.key].length}>
                                         {groupedMembers[division.key].map((member) => (
                                             <TeamMemberCard key={member.id} member={member} />
                                         ))}

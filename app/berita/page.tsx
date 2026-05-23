@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import type { Activity } from '@/lib/supabase';
@@ -229,7 +230,6 @@ export default function KegiatanPage() {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {filteredActivities.map((activity) => {
-                                    const activityLink = normalizeExternalLink(activity.link);
                                     const optimizedImageUrl = getCloudinaryFetchImageUrl(activity.image_url, {
                                         width: 1280,
                                         height: 800,
@@ -237,6 +237,10 @@ export default function KegiatanPage() {
                                         gravity: 'auto',
                                         quality: 'auto:good',
                                     });
+
+                                    const hasSlug = !!activity.slug;
+                                    const hasExternalLink = !!activity.link;
+                                    const cardHref = hasSlug ? `/berita/${activity.slug}` : (hasExternalLink ? activity.link : null);
 
                                     return (
                                         <article
@@ -281,22 +285,30 @@ export default function KegiatanPage() {
                                                         Oleh {activity.author}
                                                     </p>
                                                 ) : null}
-                                                {activityLink ? (
+                                                {cardHref && (
                                                     <p className="mt-3 text-xs md:text-sm text-[#FFD56C]">
                                                         Baca selengkapnya →
                                                     </p>
-                                                ) : null}
+                                                )}
                                             </div>
                                         </div>
 
-                                        {activityLink ? (
-                                            <a
-                                                href={activityLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                aria-label={`Buka berita: ${activity.title}`}
-                                                className="absolute inset-0 z-20"
-                                            />
+                                        {cardHref ? (
+                                            hasSlug ? (
+                                                <Link
+                                                    href={cardHref}
+                                                    aria-label={`Baca berita: ${activity.title}`}
+                                                    className="absolute inset-0 z-20"
+                                                />
+                                            ) : (
+                                                <a
+                                                    href={activity.link!}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    aria-label={`Buka berita: ${activity.title}`}
+                                                    className="absolute inset-0 z-20"
+                                                />
+                                            )
                                         ) : null}
                                     </article>
                                     );
