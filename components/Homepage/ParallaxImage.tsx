@@ -154,7 +154,7 @@ export default function ParallaxImage() {
     }, { scope: stickyContainerRef });
 
     return (
-        <section id="section-02" ref={stickyContainerRef} className="relative h-[260vh] sm:h-[320vh] lg:h-[400vh]">
+        <section id="section-02" ref={stickyContainerRef} className="home-parallax-section relative">
             <div className="sticky top-0 h-svh overflow-hidden bg-white">
                 <div data-scale className="relative h-svh w-screen will-change-transform bg-white">
                     <div data-section="top" className="absolute bottom-full h-svh w-screen">

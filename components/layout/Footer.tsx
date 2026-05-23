@@ -498,8 +498,8 @@ export default function Footer() {
               <a data-hover="underline" href="/privacy" className="hover:text-[#FFD56C] transition-colors whitespace-nowrap">
                 Privacy Policy
               </a>
-              <a data-hover="underline" href="/terms" className="hover:text-[#FFD56C] transition-colors whitespace-nowrap">
-                Terms of Service
+              <a data-hover="underline" href="/contributor" className="hover:text-[#FFD56C] transition-colors whitespace-nowrap">
+                Contributor
               </a>
             </div>
             <div className="flex items-center gap-3 sm:gap-4 md:gap-5">

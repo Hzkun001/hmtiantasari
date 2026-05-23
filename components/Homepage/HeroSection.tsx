@@ -160,7 +160,7 @@ export default function HeroSection() {
 
             if (!heroRef.current) return;
 
-            const parallaxValues = { sky: 300, mountains: -300, man: -100, content: 450 };
+            const parallaxValues = { sky: 220, mountains: -70, man: -45, content: 420 };
             const scrollTriggerInstance = gsap.timeline({
                 scrollTrigger: {
                     trigger: heroRef.current,

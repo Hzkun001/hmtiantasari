@@ -1,0 +1,290 @@
+.contributor-page {
+  min-height: 100vh;
+  min-height: 100svh;
+  background: #140f0a;
+  color: #fff8e7;
+}
+
+.contributor-hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(7rem, 14vw, 11rem) 0 clamp(4.5rem, 10vw, 8rem);
+  background:
+    radial-gradient(circle at 14% 16%, rgba(255, 213, 108, 0.2), transparent 28rem),
+    radial-gradient(circle at 88% 12%, rgba(176, 33, 26, 0.18), transparent 25rem),
+    linear-gradient(135deg, #150f0a 0%, #26180f 48%, #0e0b08 100%);
+}
+
+.contributor-hero::before,
+.contributor-hero::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+}
+
+.contributor-hero::before {
+  inset: 1.2rem;
+  border: 1px solid rgba(255, 213, 108, 0.12);
+  border-radius: clamp(1.35rem, 3vw, 2.5rem);
+}
+
+.contributor-hero::after {
+  right: -13rem;
+  bottom: -16rem;
+  width: clamp(22rem, 44vw, 42rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 213, 108, 0.1);
+  border-radius: 48% 52% 43% 57%;
+  background: rgba(255, 213, 108, 0.045);
+  transform: rotate(-18deg);
+}
+
+.contributor-shell {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, 1160px);
+  margin: 0 auto;
+}
+
+.contributor-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: #ffd56c;
+  font-family: var(--font-manrope);
+  font-size: clamp(0.72rem, 1.3vw, 0.86rem);
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.contributor-kicker::before {
+  width: 2.75rem;
+  height: 1px;
+  background: currentColor;
+  content: "";
+}
+
+.contributor-heading-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(1rem, 2.5vw, 1.5rem);
+  margin-top: clamp(1rem, 3vw, 1.75rem);
+}
+
+.contributor-heading-row h1 {
+  color: #fff8e7;
+  font-family: var(--font-bentham);
+  font-size: clamp(4.4rem, 12vw, 9rem);
+  font-weight: 500;
+  letter-spacing: -0.065em;
+  line-height: 0.82;
+}
+
+.contributor-heading-row p {
+  max-width: 44rem;
+  color: rgba(255, 248, 231, 0.68);
+  font-family: var(--font-manrope);
+  font-size: clamp(0.96rem, 1.35vw, 1.08rem);
+  line-height: 1.8;
+}
+
+.contributor-stage {
+  position: relative;
+  display: grid;
+  gap: clamp(1rem, 2.5vw, 1.7rem);
+  margin-top: clamp(2.5rem, 6vw, 5rem);
+  padding-bottom: 2rem;
+}
+
+.contributor-stage::before {
+  position: absolute;
+  left: 4.5rem;
+  top: 2rem;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(255, 213, 108, 0), rgba(255, 213, 108, 0.28), rgba(255, 213, 108, 0));
+  content: "";
+}
+
+
+
+.contributor-credit {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(1.1rem, 3vw, 2rem);
+  min-height: clamp(10rem, 17vw, 15rem);
+  border: 1px solid rgba(255, 213, 108, 0.14);
+  background:
+    linear-gradient(130deg, rgba(255, 248, 231, 0.11), rgba(255, 248, 231, 0.035)),
+    repeating-linear-gradient(135deg, rgba(255, 213, 108, 0.05) 0 1px, transparent 1px 16px);
+  box-shadow: 0 1.2rem 3.2rem rgba(0, 0, 0, 0.18);
+  padding: clamp(1.15rem, 3vw, 1.8rem);
+}
+
+.contributor-credit::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: radial-gradient(circle at 80% 20%, rgba(255, 213, 108, 0.13), transparent 6rem);
+  content: "";
+}
+
+.contributor-credit::after {
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(255, 213, 108, 0.12);
+  content: "";
+}
+
+.contributor-credit-1 {
+  width: min(100%, 58rem);
+  border-radius: 999px 8rem 8rem 999px;
+}
+
+
+.contributor-credit-2 {
+  width: min(88%, 47rem);
+  justify-self: end;
+  border-radius: 4rem 999px 999px 4rem;
+}
+
+.contributor-credit-3 {
+  width: min(92%, 54rem);
+  margin-left: clamp(1.5rem, 10vw, 8rem);
+  border-radius: 999px 999px 4rem 999px;
+}
+
+.contributor-credit-count {
+  display: grid;
+  width: clamp(4.9rem, 10vw, 8rem);
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid rgba(255, 213, 108, 0.18);
+  border-radius: 999px;
+  color: rgba(255, 213, 108, 0.72);
+  font-family: var(--font-bentham);
+  font-size: clamp(2.3rem, 5vw, 4.75rem);
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+
+.contributor-credit-copy {
+  min-width: 0;
+}
+
+.contributor-credit-label {
+  display: inline-flex;
+  color: #ffd56c;
+  font-family: var(--font-manrope);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.contributor-credit h2 {
+  margin-top: 0.5rem;
+  color: #fff8e7;
+  font-family: var(--font-bentham);
+  font-size: clamp(2rem, 5.1vw, 4.85rem);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 0.92;
+}
+
+.contributor-credit p {
+  max-width: 33rem;
+  margin-top: 0.8rem;
+  color: rgba(255, 248, 231, 0.62);
+  font-family: var(--font-manrope);
+  font-size: clamp(0.88rem, 1.15vw, 0.98rem);
+  line-height: 1.7;
+}
+
+@media (max-width: 820px) {
+  .contributor-stage {
+    gap: 1rem;
+  }
+
+  .contributor-stage::before,
+  .contributor-stage-orbit {
+    display: none;
+  }
+
+  .contributor-credit,
+  .contributor-credit-1,
+  .contributor-credit-2,
+  .contributor-credit-3 {
+    width: 100%;
+    margin-left: 0;
+    border-radius: 2rem 999px 2rem 2rem;
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .contributor-hero {
+    padding-top: 6rem;
+  }
+
+  .contributor-hero::before {
+    inset: 0.75rem;
+    border-radius: 1.25rem;
+  }
+
+  .contributor-stage {
+    gap: 0;
+    margin-top: 2rem;
+  }
+
+  .contributor-credit,
+  .contributor-credit-1,
+  .contributor-credit-2,
+  .contributor-credit-3 {
+    display: block;
+    min-height: auto;
+    border-width: 1px 0 0;
+    border-radius: 0;
+    background:
+      linear-gradient(90deg, rgba(255, 213, 108, 0.07), transparent 82%),
+      repeating-linear-gradient(135deg, rgba(255, 213, 108, 0.04) 0 1px, transparent 1px 14px);
+    box-shadow: none;
+    padding: 1.5rem 0 1.7rem 4.7rem;
+  }
+
+  .contributor-credit:last-child {
+    border-bottom: 1px solid rgba(255, 213, 108, 0.14);
+  }
+
+  .contributor-credit::before {
+    display: none;
+  }
+
+  .contributor-credit::after {
+    right: auto;
+    left: 0.25rem;
+    top: 1.15rem;
+    width: 3.55rem;
+    height: 3.55rem;
+    border-radius: 999px;
+    transform: none;
+  }
+
+  .contributor-credit-count {
+    position: absolute;
+    left: 0;
+    top: 1rem;
+    width: 4rem;
+    z-index: 1;
+    background: rgba(20, 15, 10, 0.7);
+  }
+
+  .contributor-credit h2 {
+    font-size: clamp(2rem, 11vw, 3rem);
+  }
+}

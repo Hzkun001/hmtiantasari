@@ -92,6 +92,26 @@
   }
 }
 
+.home-parallax-section {
+  --home-parallax-overlap: 128px;
+  height: calc(260vh + var(--home-parallax-overlap));
+  margin-top: calc(var(--home-parallax-overlap) * -1);
+}
+
+@media (min-width: 640px) {
+  .home-parallax-section {
+    --home-parallax-overlap: 148px;
+    height: calc(320vh + var(--home-parallax-overlap));
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-parallax-section {
+    --home-parallax-overlap: 176px;
+    height: calc(400vh + var(--home-parallax-overlap));
+  }
+}
+
 @layer base {
 
   *,
@@ -722,14 +742,13 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 100px;
-  /* Lebih tinggi di mobile */
+  height: clamp(64px, 12svh, 104px);
   z-index: 5;
   background-image: linear-gradient(180deg,
       rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.62) 40%,
-      rgba(255, 255, 255, 0.9) 80%,
-      #ffffff 100%);
+      rgba(245, 247, 246, 0.28) 64%,
+      rgba(255, 255, 255, 0.5) 88%,
+      rgba(255, 255, 255, 0.62) 100%);
 }
 
 @media (min-width: 768px) {
@@ -740,12 +759,11 @@
   }
 
   .hero-section::after {
-    height: 120px;
-    /* Kembali normal di desktop */
+    height: clamp(72px, 12svh, 128px);
     background-image: linear-gradient(180deg,
-        rgba(255, 255, 255, 0),
-        #ffffff,
-        #ffffff);
+        rgba(255, 255, 255, 0) 0%,
+        rgba(245, 247, 246, 0.3) 68%,
+        rgba(255, 255, 255, 0.62) 100%);
   }
 }
 
@@ -996,7 +1014,7 @@
   }
 
   .hero-section::after {
-    height: 220px;
+    height: clamp(72px, 12svh, 132px);
   }
 
   .hero-image-wrapper img.man-standing {
@@ -1046,7 +1064,7 @@
   }
 
   .hero-section::after {
-    height: 380px;
+    height: clamp(72px, 12svh, 132px);
   }
 
   .hero-image-wrapper img.man-standing {
@@ -1633,7 +1651,7 @@ footer {
   }
 
   .hero-section::after {
-    height: min(450px, 60%);
+    height: clamp(72px, 12svh, 132px);
   }
 
   .hero-content {
