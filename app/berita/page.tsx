@@ -245,7 +245,7 @@ export default function KegiatanPage() {
                                     return (
                                         <article
                                             key={activity.id}
-                                            className="group relative min-h-90 overflow-hidden rounded-2xl border border-white/20 bg-[#11131a]"
+                                            className="group relative h-[280px] overflow-hidden rounded-2xl border border-white/20 bg-[#11131a] sm:h-90"
                                         >
                                         <div className="absolute inset-0">
                                             {activity.image_url ? (
@@ -263,7 +263,7 @@ export default function KegiatanPage() {
                                             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,213,108,0.25),transparent_35%)]" />
                                         </div>
 
-                                        <div className="relative z-10 flex h-full flex-col justify-between p-6 pointer-events-none">
+                                        <div className="relative z-10 flex h-full flex-col justify-between p-5 pointer-events-none sm:p-6">
                                             <div className="flex items-start justify-between gap-3">
                                                 <span className="inline-block rounded-full border border-white/20 bg-black/40 px-3 py-1 text-xs tracking-wide text-neutral-100">
                                                     {activity.categoryLabel}
@@ -272,21 +272,21 @@ export default function KegiatanPage() {
                                             </div>
                                             <div>
                                                 <h2
-                                                    className="text-2xl md:text-3xl text-white"
+                                                    className="line-clamp-2 break-words text-[1.25rem] leading-[1.16] text-white sm:text-2xl md:text-[1.55rem] md:leading-[1.14] xl:text-[1.7rem]"
                                                     style={{ fontFamily: 'var(--font-bentham)' }}
                                                 >
                                                     {activity.title}
                                                 </h2>
-                                                <p className="mt-2 text-sm md:text-base text-neutral-200 leading-relaxed">
+                                                <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-neutral-200 sm:text-sm md:text-sm md:leading-6">
                                                     {activity.content}
                                                 </p>
                                                 {activity.author ? (
-                                                    <p className="mt-3 text-xs md:text-sm text-neutral-300">
+                                                    <p className="mt-2.5 line-clamp-1 text-xs text-neutral-300 md:text-sm">
                                                         Oleh {activity.author}
                                                     </p>
                                                 ) : null}
                                                 {cardHref && (
-                                                    <p className="mt-3 text-xs md:text-sm text-[#FFD56C]">
+                                                    <p className="mt-2.5 text-xs text-[#FFD56C] md:text-sm">
                                                         Baca selengkapnya →
                                                     </p>
                                                 )}

@@ -71,6 +71,7 @@ export default function CalendarSection() {
     const [error, setError] = useState<string | null>(null);
     const [selectedEvent, setSelectedEvent] = useState<CalendarEventWithMeta | null>(null);
     const [viewDate, setViewDate] = useState<Date>(todayMonthStart);
+    const todayKey = useMemo(() => toDateKey(new Date()), []);
 
     useEffect(() => {
         async function fetchCalendarEvents() {
@@ -288,12 +289,13 @@ export default function CalendarSection() {
                             const dayEvents = eventsByDate.get(key) ?? [];
                             const hasEvents = dayEvents.length > 0;
                             const isCurrentMonth = day.getMonth() === calendarMonth;
+                            const isToday = key === todayKey;
                             const isLastColumn = (index + 1) % 7 === 0;
 
                             return (
                                 <div
                                     key={key}
-                                    className={`min-h-24 sm:min-h-28 md:min-h-32 px-2 py-2 sm:px-3 sm:py-3 border-b border-neutral-300 ${
+                                    className={`relative min-h-24 sm:min-h-28 md:min-h-32 px-2 py-2 sm:px-3 sm:py-3 border-b border-neutral-300 ${
                                         isLastColumn ? '' : 'border-r border-neutral-300'
                                     } ${
                                         isCurrentMonth
@@ -301,11 +303,28 @@ export default function CalendarSection() {
                                                 ? 'bg-[#fbd784]'
                                                 : 'bg-white'
                                             : 'bg-neutral-50'
+                                    } ${
+                                        isToday ? 'ring-2 ring-inset ring-neutral-900' : ''
                                     }`}
                                 >
-                                    <p className={`text-sm sm:text-base font-semibold ${isCurrentMonth ? 'text-neutral-900' : 'text-neutral-300'}`}>
-                                        {day.getDate()}
-                                    </p>
+                                    <div className="flex min-h-7 items-start justify-between gap-1">
+                                        <p
+                                            className={`flex h-7 min-w-7 items-center justify-center rounded-full px-1 text-sm sm:text-base font-semibold ${
+                                                isToday
+                                                    ? 'bg-neutral-900 text-white'
+                                                    : isCurrentMonth
+                                                        ? 'text-neutral-900'
+                                                        : 'text-neutral-300'
+                                            }`}
+                                        >
+                                            {day.getDate()}
+                                        </p>
+                                        {isToday && (
+                                            <span className="hidden sm:inline-flex shrink-0 border border-neutral-900 bg-white px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-neutral-900">
+                                                Hari ini
+                                            </span>
+                                        )}
+                                    </div>
                                     <div className="mt-2 space-y-1">
                                         {dayEvents.slice(0, 2).map((event) => (
                                             <button
