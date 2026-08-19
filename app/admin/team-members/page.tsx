@@ -34,6 +34,7 @@ const TEAM_CATEGORIES = [
     { value: 'KEMHAS', label: 'KEMHAS (Kemahasiswaan)' },
     { value: 'KEWISHAN', label: 'KEWISHAN (Kewirausahaan)' },
     { value: 'RISTEK', label: 'RISTEK (Riset dan Teknologi)' },
+    { value: 'MINBAT', label: 'MINBAT (Minat dan Bakat)' },
 ];
 
 function inferCategoryFromDepartment(department?: string) {
@@ -44,6 +45,7 @@ function inferCategoryFromDepartment(department?: string) {
     if (normalized.includes('KEMHAS') || normalized.includes('KEMAHASISWAAN')) return 'KEMHAS';
     if (normalized.includes('KEWISHAN') || normalized.includes('KEWIRAUSAHAAN')) return 'KEWISHAN';
     if (normalized.includes('RISTEK') || normalized.includes('RISET')) return 'RISTEK';
+    if (normalized.includes('MINBAT') || normalized.includes('MINAT') || normalized.includes('BAKAT')) return 'MINBAT';
     if (normalized.includes('BPH')) return 'BPH';
 
     return 'BPH';

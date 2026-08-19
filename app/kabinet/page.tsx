@@ -9,7 +9,7 @@ import { supabase, TeamMember as DbTeamMember } from '@/lib/supabase';
 import './kabinet.css';
 import KabinetLanding from '@/components/Kabinet/KabinetLanding';
 
-type TeamKey = 'BPH' | 'BDK' | 'HUKES' | 'KEMHAS' | 'KEWISHAN' | 'RISTEK';
+type TeamKey = 'BPH' | 'BDK' | 'HUKES' | 'KEMHAS' | 'KEWISHAN' | 'RISTEK' | 'MINBAT';
 
 type MemberCard = {
     id: number;
@@ -92,6 +92,17 @@ const DIVISION_TEAMS: DivisionTeam[] = [
             'Mengelola dokumentasi output teknologi sebagai portofolio divisi.',
         ],
     },
+    {
+        key: 'MINBAT',
+        name: 'MINBAT',
+        description: 'Tim pengembangan minat dan bakat anggota serta wadah apresiasi prestasi non-akademik.',
+        kabinetTitle: 'Minat dan Bakat',
+        jobdesk: [
+            'Menampung, memfasilitasi, dan mengembangkan minat bakat anggota.',
+            'Menyelenggarakan kegiatan, pelatihan, dan kompetisi untuk mengasah potensi.',
+            'Mengapresiasi dan mempublikasikan prestasi anggota di bidang non-akademik.',
+        ],
+    },
 ];
 
 const JOBDESK = [
@@ -149,6 +160,7 @@ function inferTeamKey(member: DbTeamMember): TeamKey {
     if (hasKeyword(fromDepartment, ['KEMHAS', 'KEMAHASISWAAN'])) return 'KEMHAS';
     if (hasKeyword(fromDepartment, ['KEWISHAN', 'KEWIRAUSAHAAN'])) return 'KEWISHAN';
     if (hasKeyword(fromDepartment, ['RISTEK', 'RISETDANTEKNOLOGI', 'RISETTEKNOLOGI'])) return 'RISTEK';
+    if (hasKeyword(fromDepartment, ['MINBAT', 'MINATDANBAKAT', 'MINATBAKAT'])) return 'MINBAT';
 
     const fromRoleAndBio = normalizeText(`${member.role ?? ''} ${member.bio ?? ''}`);
     if (hasKeyword(fromRoleAndBio, ['KETUAHIMPUNAN', 'WAKILKETUAHIMPUNAN', 'SEKRETARIS', 'BENDAHARA'])) return 'BPH';
@@ -157,6 +169,7 @@ function inferTeamKey(member: DbTeamMember): TeamKey {
     if (hasKeyword(fromRoleAndBio, ['KEMHAS', 'KEMAHASISWAAN'])) return 'KEMHAS';
     if (hasKeyword(fromRoleAndBio, ['KEWISHAN', 'KEWIRAUSAHAAN'])) return 'KEWISHAN';
     if (hasKeyword(fromRoleAndBio, ['RISTEK', 'RISETDANTEKNOLOGI', 'RISETTEKNOLOGI'])) return 'RISTEK';
+    if (hasKeyword(fromRoleAndBio, ['MINBAT', 'MINATDANBAKAT', 'MINATBAKAT'])) return 'MINBAT';
 
     return 'BPH';
 }
@@ -370,6 +383,7 @@ export default function KabinetPage() {
             KEMHAS: [],
             KEWISHAN: [],
             RISTEK: [],
+            MINBAT: [],
         };
 
         for (const member of members) {

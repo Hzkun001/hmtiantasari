@@ -213,6 +213,15 @@ export default function AdminActivitiesPage() {
 
                 if (error) throw error;
                 setSuccess('News updated successfully!');
+
+                // Revalidate cache so website shows the update instantly
+                if (finalSlug) {
+                    await fetch('/api/revalidate/news', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ slug: finalSlug }),
+                    }).catch(console.error);
+                }
             } else {
                 // Create new
                 const { error } = await supabase
@@ -221,6 +230,15 @@ export default function AdminActivitiesPage() {
 
                 if (error) throw error;
                 setSuccess('News created successfully!');
+
+                // Revalidate cache so website shows the new news instantly
+                if (finalSlug) {
+                    await fetch('/api/revalidate/news', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ slug: finalSlug }),
+                    }).catch(console.error);
+                }
             }
 
             await fetchActivities();
@@ -254,6 +272,16 @@ export default function AdminActivitiesPage() {
             }
 
             setSuccess('News deleted successfully!');
+
+            // Revalidate cache so website removes the deleted news instantly
+            if (activity.slug) {
+                await fetch('/api/revalidate/news', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ slug: activity.slug }),
+                }).catch(console.error);
+            }
+
             await fetchActivities();
             setTimeout(() => setSuccess(null), 3000);
         } catch (err: any) {
@@ -276,6 +304,14 @@ export default function AdminActivitiesPage() {
             if (error) throw error;
 
             setSuccess('Image uploaded successfully!');
+
+            // Revalidate cache so website shows the new image instantly
+            await fetch('/api/revalidate/news', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({}),
+            }).catch(console.error);
+
             await fetchActivities();
             setTimeout(() => setSuccess(null), 3000);
         } catch (err: any) {
