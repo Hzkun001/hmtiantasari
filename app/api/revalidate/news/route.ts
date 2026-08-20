@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
 
         // Always revalidate news tags
         for (const tag of PUBLIC_NEWS_TAGS) {
-            revalidateTag(tag);
+            revalidateTag(tag, { expire: 0 });
             if (!revalidated.tags.includes(tag)) {
                 revalidated.tags.push(tag);
             }

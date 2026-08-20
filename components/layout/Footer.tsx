@@ -60,7 +60,6 @@ export default function Footer() {
   const bottomLinksRef = useRef<HTMLDivElement | null>(null);
   const logoRowRef = useRef<HTMLDivElement | null>(null);
   const copyRef = useRef<HTMLDivElement | null>(null);
-  const wordmarkWrapRef = useRef<HTMLDivElement | null>(null); // masih dipakai sebagai wrapper SVG
   const svgStrokeRef = useRef<SVGSVGElement | null>(null);
   const [settings, setSettings] = useState<FooterSettings | null>(null);
 

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-// @ts-ignore: Allow importing CSS as a side-effect in this Next.js page
 import './contributor.css';
 
 const contributors = [

@@ -5,12 +5,7 @@ export const runtime = "nodejs";
 
 type FaqItem = { q: string; a: string };
 
-const client = new OpenAI({
-    apiKey: process.env.GROQ_API_KEY,
-    baseURL: "https://api.groq.com/openai/v1",
-});
-
-const MODEL = "llama-3.3-70b-versatile";
+const MODEL = "openai/gpt-oss-120b";
 
 function tokenize(message: string) {
     return message
@@ -51,13 +46,18 @@ function buildContext(items: FaqItem[]) {
 }
 
 export async function POST(req: Request) {
-    if (!process.env.GROQ_API_KEY) {
+    const apiKey = process.env.GROQ_API_KEY;
+    if (!apiKey) {
         return new Response("Server belum dikonfigurasi. GROQ_API_KEY belum tersedia.", {
             status: 500,
         });
     }
 
     try {
+        const client = new OpenAI({
+            apiKey,
+            baseURL: "https://api.groq.com/openai/v1",
+        });
         const body = await req.json();
         const message = body?.message;
 
@@ -81,21 +81,20 @@ ATURAN KERAS:
 
         const userPrompt = `FAQ CONTEXT:\n${context}\n\nPertanyaan: ${message}`;
 
-        const encoder = new TextEncoder();
+        const completion = await client.chat.completions.create({
+            model: MODEL,
+            stream: true,
+            temperature: 0.2,
+            messages: [
+                { role: "system", content: system },
+                { role: "user", content: userPrompt },
+            ],
+        });
 
+        const encoder = new TextEncoder();
         const stream = new ReadableStream<Uint8Array>({
             async start(controller) {
                 try {
-                    const completion = await client.chat.completions.create({
-                        model: MODEL,
-                        stream: true,
-                        temperature: 0.2,
-                        messages: [
-                            { role: "system", content: system },
-                            { role: "user", content: userPrompt },
-                        ],
-                    });
-
                     for await (const chunk of completion) {
                         const text = chunk.choices?.[0]?.delta?.content ?? "";
                         if (text) {
@@ -106,10 +105,7 @@ ATURAN KERAS:
                     controller.close();
                 } catch (error) {
                     console.error("GROQ STREAM ERROR:", error);
-                    controller.enqueue(
-                        encoder.encode("\n\n[Error: gagal menghasilkan jawaban]")
-                    );
-                    controller.close();
+                    controller.error(error);
                 }
             },
         });
@@ -123,8 +119,8 @@ ATURAN KERAS:
     } catch (error) {
         console.error("SERVER ERROR:", error);
 
-        return new Response("Terjadi kesalahan pada server.", {
-            status: 500,
+        return new Response("Layanan chatbot sedang bermasalah. Coba lagi sebentar.", {
+            status: 502,
         });
     }
 }

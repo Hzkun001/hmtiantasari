@@ -202,7 +202,7 @@ export default function VideoGallery() {
         }
 
         function calculatePosition(row: number, col: number) {
-            let x = (col - (p.columns - 1) / 2) * p.spacing
+            const x = (col - (p.columns - 1) / 2) * p.spacing
             let y = (row - (p.rows - 1) / 2) * p.spacing
             let z = (x * x) / (p.depth * p.curvature)
 

@@ -1,4 +1,3 @@
-import { Manrope } from 'next/font/google';
 import type { Config } from 'tailwindcss';
 import typography from '@tailwindcss/typography';
 

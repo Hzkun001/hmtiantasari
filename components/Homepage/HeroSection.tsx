@@ -277,22 +277,6 @@ export default function HeroSection() {
         };
     }, [shouldAnimateMobileTimeline]);
 
-    const toggleMobileVideo = async () => {
-        const video = mobileVideoRef.current;
-        if (!video) return;
-
-        if (video.paused) {
-            try {
-                await video.play();
-            } catch (error) {
-                console.error('Unable to play mobile hero video:', error);
-            }
-            return;
-        }
-
-        video.pause();
-    };
-
     return (
         <section ref={heroRef} className="hero-section hero-section-cinematic section" id="section-00">
             <div className="hero-mobile-cinematic" aria-label="Cinematic mobile hero">

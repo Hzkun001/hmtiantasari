@@ -123,7 +123,10 @@ hmti/
    ```env
    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   GROQ_API_KEY=your_groq_api_key
    ```
+
+   Setelah mengubah `.env.local`, restart development server agar Next.js memuat ulang environment variables.
 
 4. **Setup Supabase Database**
    

@@ -127,11 +127,14 @@ export default function FaqChatWidget() {
                 if (last?.role === "bot") copy[copy.length - 1] = { role: "bot", content: acc.trim() || "Maaf, tidak ada respons." };
                 return copy;
             });
-        } catch {
+        } catch (error) {
+            const message = error instanceof Error && error.message
+                ? error.message
+                : "Koneksi bermasalah. Coba lagi.";
             setMessages((prev) => {
                 const copy = [...prev];
                 const last = copy[copy.length - 1];
-                if (last?.role === "bot") copy[copy.length - 1] = { role: "bot", content: "Koneksi bermasalah. Coba lagi." };
+                if (last?.role === "bot") copy[copy.length - 1] = { role: "bot", content: message };
                 return copy;
             });
         } finally {
