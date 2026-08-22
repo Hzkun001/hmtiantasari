@@ -8,3 +8,5 @@
 - [x] Run checks, search for stale targets, and validate desktop/mobile UI.
 - [x] Align certificate checker border radii with existing UI conventions.
 - [x] Validate certificate checker checks and responsive appearance.
+- [x] Align cabinet card and admin preview image geometry with the SVG frame.
+- [ ] Validate cabinet cards with representative portrait and composed-card assets when Supabase data is available.

@@ -175,7 +175,7 @@
 .kabinet-core-id-card {
     width: 100%;
     position: relative;
-    aspect-ratio: 141.75 / 240.75;
+    aspect-ratio: 153 / 243.75;
     isolation: isolate;
 }
 
@@ -191,10 +191,10 @@
 
 .kabinet-core-photo-wrap {
     position: absolute;
-    left: 6.35%;
-    right: 0.18%;
-    top: 2.08%;
-    bottom: 17.5%;
+    left: 5.9%;
+    right: 6.5%;
+    top: 18.8%;
+    bottom: 28.9%;
     overflow: hidden;
     z-index: 2;
 }

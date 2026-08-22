@@ -400,6 +400,9 @@ export default function TeamMembersPage() {
                                 }}
                                 className="admin-form-file"
                             />
+                            <p className="admin-form-hint">
+                                Gunakan foto portrait dengan subjek berada di tengah agar hasil crop di halaman Kabinet tetap proporsional.
+                            </p>
                             {imagePreview && (
                                 <div className="admin-image-preview">
                                     <Image

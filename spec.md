@@ -12,6 +12,7 @@ Fix verified navigation, accessibility, wording, image, footer, and admin-auth i
 - Missing Supabase auth configuration blocks `/admin` and `/login` by redirecting to the existing `/health` page.
 - Chatbot avatar preserves its aspect ratio; mobile footer secondary text is readable.
 - Certificate checker uses the repository's rounded visual language for panels, controls, badges, metadata, and previews.
+- Cabinet member photos align with the SVG frame geometry and the admin preview reflects the public portrait crop.
 - Existing desktop behavior and data flows remain unchanged.
 
 ## Validation
@@ -20,6 +21,7 @@ Fix verified navigation, accessibility, wording, image, footer, and admin-auth i
 - Repository search finds no `#section-01`, `/kegiatan`, or `/privacy` links.
 - Desktop/mobile browser checks show valid headings, links, and no chatbot image-ratio warning.
 - Certificate checker remains functional and visually coherent at desktop and mobile widths.
+- Cabinet cards preserve the frame, member labels, fallback initials, and responsive card ratio at desktop and mobile widths.
 
 ## Out of scope
 
