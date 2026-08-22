@@ -63,7 +63,7 @@ export default function AdminDashboard() {
 
         let totalNewsPostsCount = 0;
         try {
-            const { data } = await fetchNewsRecords();
+            const data = await fetchNewsRecords();
             totalNewsPostsCount = data.length;
         } catch (error) {
             console.error('Error fetching news stats:', error);

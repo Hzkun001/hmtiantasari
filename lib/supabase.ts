@@ -1,5 +1,4 @@
 import { createBrowserClient } from '@supabase/ssr';
-import type { PostgrestError } from '@supabase/supabase-js';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'http://127.0.0.1:54321';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'missing-anon-key';
@@ -12,9 +11,6 @@ export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey, {
         flowType: 'pkce',
     },
 });
-
-export const NEWS_TABLE_CANDIDATES = ['Activities', 'News'] as const;
-export type NewsTableName = (typeof NEWS_TABLE_CANDIDATES)[number];
 
 export interface Activity {
     id: number;
@@ -53,56 +49,14 @@ export interface NewsItem {
     updated_at?: string;
 }
 
-type FetchNewsResult = {
-    table: NewsTableName;
-    data: Activity[];
-};
+export async function fetchNewsRecords(): Promise<Activity[]> {
+    const { data, error } = await supabase
+        .from('News')
+        .select('*')
+        .order('date', { ascending: false });
 
-type FetchNewsOptions = {
-    limit?: number;
-    columns?: string;
-};
-
-/**
- * Fetches news records with table fallback support.
- * Primary table is "Activities"; falls back to "News" for backward compatibility.
- */
-export async function fetchNewsRecords(options: FetchNewsOptions = {}): Promise<FetchNewsResult> {
-    const { limit, columns = '*' } = options;
-    let firstSuccessful: FetchNewsResult | null = null;
-    let lastError: PostgrestError | null = null;
-
-    for (const table of NEWS_TABLE_CANDIDATES) {
-        let query = supabase
-            .from(table)
-            .select(columns)
-            .order('date', { ascending: false });
-        if (typeof limit === 'number') {
-            query = query.limit(limit);
-        }
-
-        const { data, error } = await query;
-
-        if (error) {
-            lastError = error;
-            continue;
-        }
-
-        const rows = (data ?? []) as unknown as Activity[];
-
-        if (rows.length > 0) {
-            return { table, data: rows };
-        }
-
-        if (!firstSuccessful) {
-            firstSuccessful = { table, data: rows };
-        }
-    }
-
-    if (firstSuccessful) return firstSuccessful;
-    if (lastError) throw lastError;
-
-    throw new Error('No available news table found');
+    if (error) throw error;
+    return (data ?? []) as Activity[];
 }
 
 export interface CalendarEvent {

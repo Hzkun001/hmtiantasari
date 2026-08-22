@@ -30,8 +30,7 @@ const SETTINGS_SELECT = [
 
 export async function getSiteSettingsServer(): Promise<SiteSettingsServerData | null> {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseReadKey =
-        process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const supabaseReadKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseReadKey) {
         return null;
@@ -48,7 +47,7 @@ export async function getSiteSettingsServer(): Promise<SiteSettingsServerData | 
                 apikey: supabaseReadKey,
                 Authorization: `Bearer ${supabaseReadKey}`,
             },
-            cache: 'no-store',
+            next: { revalidate: 300, tags: ['site-settings'] },
         });
 
         if (!response.ok) {

@@ -11,13 +11,9 @@ export async function GET(request: NextRequest) {
         ? Math.min(Math.max(Math.trunc(parsedLimit), 1), MAX_LIMIT)
         : DEFAULT_LIMIT;
 
-    const result = await fetchPublicNews({ limit });
-    const payload = {
-        table: result?.table ?? null,
-        data: result?.data ?? [],
-    };
+    const data = await fetchPublicNews({ limit });
 
-    return NextResponse.json(payload, {
+    return NextResponse.json({ data }, {
         headers: {
             'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
         },

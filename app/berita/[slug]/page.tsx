@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { fetchPublicNewsBySlug } from '@/lib/public-data-server';
-import { getCloudinaryFetchImageUrl } from '@/lib/cloudinary';
 import { TiptapRenderer } from '@/components/tiptap/renderer';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
@@ -29,13 +28,6 @@ export default async function BeritaDetailPage({ params }: { params: Promise<{ s
         notFound();
     }
 
-    const optimizedImage = getCloudinaryFetchImageUrl(news.image_url, {
-        width: 1600,
-        height: 900,
-        crop: 'fill',
-        gravity: 'auto',
-    });
-
     const formattedDate = new Date(news.date).toLocaleDateString('id-ID', {
         day: 'numeric',
         month: 'long',
@@ -48,9 +40,9 @@ export default async function BeritaDetailPage({ params }: { params: Promise<{ s
 
             {/* Hero */}
             <section className="relative flex min-h-[400px] items-end pt-28 md:min-h-[520px]">
-                {optimizedImage ? (
+                {news.image_url ? (
                     <Image
-                        src={optimizedImage}
+                        src={news.image_url}
                         alt={news.title}
                         fill
                         className="object-cover"

@@ -3,19 +3,11 @@ import 'server-only';
 import type { Activity, CalendarEvent, NewsItem } from '@/lib/supabase';
 import { getSiteSettingsServer, type SiteSettingsServerData } from '@/lib/site-settings-server';
 
-const NEWS_TABLE_CANDIDATES = ['Activities', 'News'] as const;
-type NewsTableName = (typeof NEWS_TABLE_CANDIDATES)[number];
-
 const NEWS_SELECT = 'id,title,content,image_url,date,category,author,link,slug';
 const CALENDAR_SELECT = 'id,title,start_at,organizer_department';
 
 type FetchPublicNewsOptions = {
     limit?: number;
-};
-
-type PublicNewsResult = {
-    table: NewsTableName;
-    data: Activity[];
 };
 
 type FetchPublicCalendarOptions = {
@@ -43,43 +35,27 @@ function createRestHeaders(apiKey: string): HeadersInit {
 
 export async function fetchPublicNews(
     options: FetchPublicNewsOptions = {},
-): Promise<PublicNewsResult | null> {
+): Promise<Activity[]> {
     const config = getSupabasePublicConfig();
-    if (!config) return null;
+    if (!config) return [];
 
     const { supabaseUrl, supabaseAnonKey } = config;
     const limit = options.limit ?? 20;
+    const url = new URL('/rest/v1/News', supabaseUrl);
+    url.searchParams.set('select', NEWS_SELECT);
+    url.searchParams.set('order', 'date.desc.nullslast,id.desc');
+    url.searchParams.set('limit', String(limit));
 
-    let firstSuccessful: PublicNewsResult | null = null;
+    try {
+        const response = await fetch(url.toString(), {
+            headers: createRestHeaders(supabaseAnonKey),
+            next: { revalidate: 300, tags: ['news'] },
+        });
 
-    for (const table of NEWS_TABLE_CANDIDATES) {
-        const url = new URL(`/rest/v1/${table}`, supabaseUrl);
-        url.searchParams.set('select', NEWS_SELECT);
-        url.searchParams.set('order', 'date.desc.nullslast,id.desc');
-        url.searchParams.set('limit', String(limit));
-
-        try {
-            const response = await fetch(url.toString(), {
-                headers: createRestHeaders(supabaseAnonKey),
-                next: { revalidate: 300 },
-            });
-
-            if (!response.ok) continue;
-
-            const rows = (await response.json()) as Activity[];
-            if (rows.length > 0) {
-                return { table, data: rows };
-            }
-
-            if (!firstSuccessful) {
-                firstSuccessful = { table, data: rows };
-            }
-        } catch {
-            continue;
-        }
+        return response.ok ? (await response.json()) as Activity[] : [];
+    } catch {
+        return [];
     }
-
-    return firstSuccessful;
 }
 
 export async function fetchPublicCalendarEvents(
