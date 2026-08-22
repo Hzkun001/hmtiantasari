@@ -197,6 +197,7 @@ export default function FaqChatWidget() {
                                         focus:border-neutral-700"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
+                            aria-label="Pertanyaan untuk chatbot HMTI"
                             placeholder="Tanya seputar HMTI..."
                             onKeyDown={(e) => (e.key === "Enter" ? send() : null)}
                         />
@@ -224,7 +225,7 @@ export default function FaqChatWidget() {
                         alt=""
                         width={48}
                         height={52}
-                        className="h-13 w-12"
+                        className="h-full w-full object-cover"
                     />
                 </button>
             )}

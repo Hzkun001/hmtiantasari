@@ -47,7 +47,7 @@ export default function ActivitiesSection() {
             <section className="relative pt-20 sm:pt-24 md:pt-48 lg:pt-64 pb-24 md:pb-40 bg-white">
                 <div className="container">
                     <div className="text-center">
-                        <p className="text-neutral-600">Memuat aktivitas...</p>
+                        <p className="text-neutral-600">Memuat berita...</p>
                     </div>
                 </div>
             </section>
@@ -59,7 +59,7 @@ export default function ActivitiesSection() {
             <section className="relative pt-20 sm:pt-24 md:pt-48 lg:pt-64 pb-24 md:pb-40 bg-white">
                 <div className="container">
                     <div className="text-center">
-                        <p className="text-red-600">Error: {error}</p>
+                        <p className="text-red-600">Berita belum dapat dimuat. Silakan coba lagi.</p>
                     </div>
                 </div>
             </section>
@@ -149,7 +149,7 @@ export default function ActivitiesSection() {
                                                 rel="noopener noreferrer"
                                                 className="text-sm font-semibold text-neutral-900 hover:text-neutral-600 inline-flex items-center gap-2 transition-colors"
                                             >
-                                                Read More
+                                                Baca Selengkapnya
                                                 <svg
                                                     className="w-4 h-4 group-hover:translate-x-1 transition-transform"
                                                     fill="none"
@@ -161,7 +161,7 @@ export default function ActivitiesSection() {
                                             </a>
                                         ) : (
                                             <span className="text-sm font-semibold text-neutral-400 inline-flex items-center gap-2">
-                                                No Link Available
+                                                Tautan tidak tersedia
                                             </span>
                                         )}
                                     </div>
@@ -174,7 +174,7 @@ export default function ActivitiesSection() {
                     {/* Empty State */}
                     {activities.length === 0 && (
                         <div className="text-center py-20">
-                            <p className="text-neutral-500 text-lg">Belum ada aktivitas yang ditampilkan</p>
+                            <p className="text-neutral-500 text-lg">Belum ada berita yang ditampilkan</p>
                         </div>
                     )}
                 </div>

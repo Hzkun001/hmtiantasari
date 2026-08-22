@@ -82,7 +82,7 @@ export default function SliderNavigation() {
                             if (el) listItemsRef.current[1] = el;
                         }}
                     >
-                        <a href="#section-01">01</a>
+                        <a href="#section-02">01</a>
                     </li>
                     <li
                         className="slider-list-item"
@@ -90,7 +90,7 @@ export default function SliderNavigation() {
                             if (el) listItemsRef.current[2] = el;
                         }}
                     >
-                        <a href="#section-02">02</a>
+                        <a href="#calendar">02</a>
                     </li>
                     <li
                         className="slider-list-item"
@@ -98,15 +98,7 @@ export default function SliderNavigation() {
                             if (el) listItemsRef.current[3] = el;
                         }}
                     >
-                        <a href="#calendar">03</a>
-                    </li>
-                    <li
-                        className="slider-list-item"
-                        ref={(el) => {
-                            if (el) listItemsRef.current[4] = el;
-                        }}
-                    >
-                        <a href="#activities">04</a>
+                        <a href="#activities">03</a>
                     </li>
                 </ul>
                 <div ref={progressRef} className="slider-progress">

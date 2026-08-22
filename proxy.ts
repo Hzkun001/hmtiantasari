@@ -1,16 +1,20 @@
 import { createServerClient } from '@supabase/ssr';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { isAdmin } from '@/lib/auth';
+import { getSupabaseAuthConfig, isAdmin } from '@/lib/auth';
 
 export async function proxy(req: NextRequest) {
     let res = NextResponse.next({ request: req });
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!supabaseUrl || !supabaseAnonKey) return res;
+    const authConfig = getSupabaseAuthConfig(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    );
+    if (!authConfig) {
+        return NextResponse.redirect(new URL('/health', req.url));
+    }
 
-    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+    const supabase = createServerClient(authConfig.supabaseUrl, authConfig.supabaseAnonKey, {
         cookies: {
             getAll: () => req.cookies.getAll(),
             setAll(cookies) {

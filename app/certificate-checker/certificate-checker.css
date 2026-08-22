@@ -50,7 +50,7 @@
 .certificate-checker-card {
     border: 1px solid rgba(255, 255, 255, 0.14);
     background: rgba(11, 29, 38, 0.32);
-    border-radius: 0;
+    border-radius: 1rem;
     padding: clamp(1rem, 3vw, 1.35rem);
     box-shadow: 0 30px 90px rgba(0, 0, 0, 0.38);
     backdrop-filter: blur(14px);
@@ -85,7 +85,7 @@
 .certificate-checker-input {
     width: 100%;
     padding: 0.9rem 1rem;
-    border-radius: 0;
+    border-radius: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.16);
     background: rgba(0, 0, 0, 0.28);
     color: rgba(255, 255, 255, 0.92);
@@ -118,7 +118,7 @@
     justify-content: center;
     gap: 0.55rem;
     padding: 0.9rem 1.1rem;
-    border-radius: 0;
+    border-radius: 0.75rem;
     font-weight: 800;
     letter-spacing: 0.02em;
     border: 1px solid rgba(255, 255, 255, 0.14);
@@ -212,7 +212,7 @@
     gap: 0.4rem;
     width: fit-content;
     padding: 0.4rem 0.7rem;
-    border-radius: 0;
+    border-radius: 999px;
     font-size: 0.8rem;
     font-weight: 900;
     letter-spacing: 0.06em;
@@ -269,7 +269,7 @@
 .certificate-checker-meta-item {
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(255, 255, 255, 0.04);
-    border-radius: 0;
+    border-radius: 0.75rem;
     padding: 0.85rem 0.95rem;
 }
 
@@ -298,7 +298,7 @@
     position: relative;
     width: 100%;
     aspect-ratio: 4 / 3;
-    border-radius: 0;
+    border-radius: 1rem;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(0, 0, 0, 0.22);

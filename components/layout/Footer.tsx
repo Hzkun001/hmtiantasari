@@ -296,7 +296,7 @@ export default function Footer() {
           {/* Main Footer Content */}
           <div className="grid grid-cols-2 gap-3 md:hidden relative z-20">
             <div className="text-left">
-              <p className="text-[11px] font-sans text-neutral-500 mb-2 tracking-[0.2em]">NAVIGASI</p>
+              <p className="text-[11px] font-sans text-neutral-400 mb-2 tracking-[0.2em]">NAVIGASI</p>
               <nav className="space-y-1.5 flex flex-col items-start">
                 <a
                   href="/sejarah-kami"
@@ -330,7 +330,7 @@ export default function Footer() {
                 </a>
               </nav>
 
-              <p className="text-[11px] font-sans text-neutral-500 mt-3 mb-2 tracking-[0.2em]">CONNECT</p>
+              <p className="text-[11px] font-sans text-neutral-400 mt-3 mb-2 tracking-[0.2em]">CONNECT</p>
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                 {socialLinks.slice(0, 4).map((link) => (
                   <a
@@ -347,10 +347,10 @@ export default function Footer() {
             </div>
 
             <div className="font-sans text-left">
-              <p className="text-[11px] text-neutral-500 mb-2 tracking-[0.2em]">KAMPUS</p>
+              <p className="text-[11px] text-neutral-400 mb-2 tracking-[0.2em]">KAMPUS</p>
               <p className="text-xs leading-snug text-neutral-300">{campusCompactText}</p>
 
-              <p className="text-[11px] text-neutral-500 mt-3 mb-2 tracking-[0.2em]">EMAIL</p>
+              <p className="text-[11px] text-neutral-400 mt-3 mb-2 tracking-[0.2em]">EMAIL</p>
               <a
                 href={`mailto:${contactEmail}`}
                 className="block text-xs text-neutral-300 hover:text-[#FFD56C] transition-colors break-all leading-snug"
@@ -392,10 +392,10 @@ export default function Footer() {
                   Kalender
                 </a>
                 <a
-                  href="/kegiatan"
+                  href="/berita"
                   className="block text-lg md:text-xl font-medium text-[#FFD56C] hover:text-neutral-400 transition-colors"
                 >
-                  Kegiatan
+                  Berita
                 </a>
                 <a
                   href="/certificate-checker"
@@ -491,12 +491,9 @@ export default function Footer() {
           {/* Bottom Links (PAKAI underline effect) */}
           <div
             ref={bottomLinksRef}
-            className="flex flex-wrap justify-center md:justify-between items-center gap-x-3 gap-y-1 text-[11px] sm:text-xs md:text-base text-neutral-500 relative z-20"
+            className="flex flex-wrap justify-center md:justify-between items-center gap-x-3 gap-y-1 text-xs md:text-base text-neutral-400 relative z-20"
           >
             <div className="flex items-center gap-3 sm:gap-4 md:gap-5">
-              <a data-hover="underline" href="/privacy" className="hover:text-[#FFD56C] transition-colors whitespace-nowrap">
-                Privacy Policy
-              </a>
               <a data-hover="underline" href="/contributor" className="hover:text-[#FFD56C] transition-colors whitespace-nowrap">
                 Contributor
               </a>
@@ -562,7 +559,7 @@ export default function Footer() {
           {/* Copyright */}
           <div
             ref={copyRef}
-            className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-sm md:text-base text-neutral-500 border-t border-neutral-800 pt-2 md:pt-4 text-center md:text-left"
+            className="flex flex-col md:flex-row justify-between items-center gap-2 md:gap-4 text-sm md:text-base text-neutral-400 border-t border-neutral-800 pt-2 md:pt-4 text-center md:text-left"
           >
             <p>Made with by {siteName}</p>
             <p>© {new Date().getFullYear()} {siteName} - All Rights Reserved</p>

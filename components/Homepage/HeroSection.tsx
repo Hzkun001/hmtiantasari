@@ -255,7 +255,7 @@ export default function HeroSection() {
                     <div className="hero-mobile-cinematic-scrim" aria-hidden="true" />
 
                     <div className="hero-mobile-cinematic-top">
-                        <h2 className="hero-mobile-cinematic-brand">HMTI ANTASARI</h2>
+                        <h1 className="hero-mobile-cinematic-brand">HMTI ANTASARI</h1>
                         <div className="hero-mobile-cinematic-links" aria-label="Quick links mobile hero">
                             {MOBILE_HERO_LINKS.map((item) => (
                                 <a key={item.label} href={item.href} className="hero-mobile-cinematic-chip">
@@ -348,14 +348,14 @@ export default function HeroSection() {
                             Wadah belajar, berkarya, dan bertumbuh bersama mahasiswa Teknologi Informasi UIN Antasari.
                         </p>
                         <div ref={ctaRowRef} className="hero-cta-row" aria-label="Quick links">
-                            <a href="#section-01" className="hero-cta hero-cta-primary">
+                            <a href="#section-02" className="hero-cta hero-cta-primary">
                                 Jelajahi
                             </a>
-                            <a href="/kegiatan" className="hero-cta hero-cta-secondary">
-                                Kegiatan
+                            <a href="/berita" className="hero-cta hero-cta-secondary">
+                                Berita
                             </a>
                         </div>
-                        <a ref={actionRef} href="#section-01" className="hero-action">
+                        <a ref={actionRef} href="#section-02" className="hero-action">
                             Scroll down
                             <svg width="20" height="12" viewBox="0 0 16 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16 16L14.59 14.59L9 20.17V0H7V20.17L1.42 14.58L0 16L8 24L16 16Z" fill="currentColor"></path>

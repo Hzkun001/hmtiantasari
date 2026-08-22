@@ -48,8 +48,8 @@ function inferActivityCategory(activity: Activity): string {
     return DEFAULT_CATEGORY;
 }
 
-function formatTotalActivities(count: number): string {
-    return `${count} kegiatan`;
+function formatTotalNews(count: number): string {
+    return `${count} berita`;
 }
 
 function formatDate(dateString: string): string {
@@ -92,8 +92,8 @@ export default function KegiatanPage() {
                 setError(null);
             } catch (fetchError) {
                 if (!mounted) return;
-                console.error('Error fetching activities for kegiatan page:', fetchError);
-                setError('Kegiatan belum dapat dimuat. Silakan coba lagi.');
+                console.error('Error fetching news page:', fetchError);
+                setError('Berita belum dapat dimuat. Silakan coba lagi.');
                 setActivities([]);
             } finally {
                 if (mounted) setLoading(false);
@@ -167,7 +167,8 @@ export default function KegiatanPage() {
                                 type="text"
                                 value={searchQuery}
                                 onChange={(event) => setSearchQuery(event.target.value)}
-                                placeholder="Search news..."
+                                aria-label="Cari berita"
+                                placeholder="Cari berita..."
                                 className="w-full rounded-xl border border-white/15 bg-white/10 py-4 pl-12 pr-4 text-base text-white placeholder:text-neutral-400 outline-none transition focus:border-[#FFD56C] focus:bg-white/15"
                             />
                         </div>
@@ -189,7 +190,7 @@ export default function KegiatanPage() {
                         </div>
 
                         <p className="mt-6 text-sm md:text-base text-neutral-300">
-                            Menampilkan {formatTotalActivities(filteredActivities.length)} berita
+                            Menampilkan {formatTotalNews(filteredActivities.length)}
                         </p>
                     </div>
                 </div>
@@ -213,7 +214,7 @@ export default function KegiatanPage() {
                             </div>
                         ) : filteredActivities.length === 0 ? (
                             <div className="rounded-2xl border border-white/10 bg-white/5 p-10 text-center">
-                                <p className="text-lg md:text-xl text-neutral-100">Kegiatan tidak ditemukan.</p>
+                                <p className="text-lg md:text-xl text-neutral-100">Berita tidak ditemukan.</p>
                                 <p className="mt-2 text-sm md:text-base text-neutral-400">
                                     Coba kata kunci lain atau pilih kategori berbeda.
                                 </p>
