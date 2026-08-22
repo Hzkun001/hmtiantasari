@@ -2,6 +2,10 @@
 
 Website resmi Himpunan Mahasiswa Teknologi Informasi (HMTI) yang dibangun menggunakan Next.js. menampilkan profil organisasi, kegiatan, berita, kalender kegiatan, dan sistem manajemen admin.
 
+## Lisensi
+
+Proyek ini bersifat publik dengan **All Rights Reserved**. Kode sumber dan aset proyek tidak boleh digunakan, disalin, dimodifikasi, didistribusikan, atau dijual tanpa izin tertulis dari pemegang hak cipta. Lihat [LICENSE](LICENSE) untuk ketentuan lengkap.
+
 ## 🚀 Fitur Utama
 
 ### Public Features
