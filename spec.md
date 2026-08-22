@@ -13,6 +13,7 @@ Fix verified navigation, accessibility, wording, image, footer, and admin-auth i
 - Chatbot avatar preserves its aspect ratio; mobile footer secondary text is readable.
 - Certificate checker uses the repository's rounded visual language for panels, controls, badges, metadata, and previews.
 - Cabinet member cards retain the preferred legacy frame composition; the admin preview remains portrait-oriented for upload guidance.
+- Client-side navigation away from Kabinet must not destroy homepage or footer ScrollTriggers.
 - Existing desktop behavior and data flows remain unchanged.
 
 ## Validation
@@ -22,6 +23,7 @@ Fix verified navigation, accessibility, wording, image, footer, and admin-auth i
 - Desktop/mobile browser checks show valid headings, links, and no chatbot image-ratio warning.
 - Certificate checker remains functional and visually coherent at desktop and mobile widths.
 - Cabinet cards preserve the legacy frame, member labels, fallback initials, and responsive behavior at desktop and mobile widths.
+- Returning to the homepage through client navigation restores the footer entrance and SVG draw animations without a browser refresh.
 
 ## Out of scope
 

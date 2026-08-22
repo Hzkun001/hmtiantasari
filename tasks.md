@@ -11,3 +11,5 @@
 - [x] Restore the preferred legacy cabinet card frame geometry.
 - [x] Keep the admin portrait preview and upload guidance.
 - [ ] Validate cabinet cards with representative portrait and composed-card assets when Supabase data is available.
+- [x] Stop Kabinet teardown from killing global ScrollTriggers.
+- [x] Validate Kabinet → homepage navigation and footer animation lifecycle.

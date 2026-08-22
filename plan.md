@@ -6,6 +6,7 @@
 4. Run static checks and focused searches, then verify desktop/mobile UI in the local app.
 5. Replace only the certificate checker's explicit square corners with existing panel, control, and pill radius conventions; validate the scoped visual change.
 6. Preserve the preferred legacy cabinet frame composition while keeping the admin preview portrait-oriented.
+7. Remove KabinetLanding's unused global ScrollTrigger cleanup so route teardown cannot kill newly mounted homepage/footer triggers.
 
 ## Risks
 
@@ -14,3 +15,4 @@
 - Footer privacy link is removed because no route or policy content exists.
 - Certificate checker radius changes are isolated to its page stylesheet and do not alter layout or verification behavior.
 - Cabinet changes avoid URL heuristics, schema changes, and shared upload utility changes because production image format cannot be inspected locally; the legacy public composition is retained by request.
+- KabinetLanding does not own any ScrollTriggers, so removing its global kill has no local trigger-cleanup regression.

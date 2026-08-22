@@ -3,7 +3,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { CustomEase, ScrollTrigger } from "gsap/all";
+import { CustomEase } from "gsap/all";
 import SplitType from "split-type";
 import styles from "./KabinetLanding.module.css";
 import { projectsData } from "@/lib/projectsData";
@@ -67,7 +67,7 @@ const LandingHero: React.FC<LandingHeroProps> = ({
         window.scrollTo({ top: 0, behavior: "auto" });
 
         // Register GSAP plugins
-        gsap.registerPlugin(CustomEase, ScrollTrigger);
+        gsap.registerPlugin(CustomEase);
         CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
         const projectsContainer = projectsContainerRef.current;
@@ -324,7 +324,6 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             window.clearTimeout(scrollUnlockFallback);
             introCopy.revert();
             bottomCopy.revert();
-            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
             unlockScroll();
         };
     }, [projects]);
