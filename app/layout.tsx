@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Bentham, DM_Sans, Lobster, Manrope } from 'next/font/google';
-import 'lenis/dist/lenis.css';
 import './globals.css';
-import ConditionalSmoothScroll from '@/components/providers/ConditionalSmoothScroll';
 import { getSiteSettingsServer } from '@/lib/site-settings-server';
 
 const bentham = Bentham({
@@ -110,11 +109,16 @@ export default function RootLayout({
     return (
         <html lang="id">
             <head>
+                {process.env.NODE_ENV === 'development' && (
+                    <Script
+                        src="//unpkg.com/react-grab/dist/index.global.js"
+                        crossOrigin="anonymous"
+                        strategy="beforeInteractive"
+                    />
+                )}
             </head>
             <body className={`${bentham.variable} ${manrope.variable} ${dmSans.variable} ${lobster.variable} antialiased`}>
-                <ConditionalSmoothScroll>
-                    {children}
-                </ConditionalSmoothScroll>
+                {children}
             </body>
         </html>
     );

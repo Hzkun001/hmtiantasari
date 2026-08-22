@@ -40,7 +40,6 @@ export default function Header({
     useEffect(() => {
         return () => {
             document.body.classList.remove('overflow-hidden');
-            document.body.removeAttribute('data-lenis-prevent');
         };
     }, []);
 
@@ -131,17 +130,11 @@ export default function Header({
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
         document.body.classList.toggle('overflow-hidden', !isMenuOpen);
-        if (!isMenuOpen) {
-            document.body.setAttribute('data-lenis-prevent', '');
-        } else {
-            document.body.removeAttribute('data-lenis-prevent');
-        }
     };
 
     const closeMenu = () => {
         setIsMenuOpen(false);
         document.body.classList.remove('overflow-hidden');
-        document.body.removeAttribute('data-lenis-prevent');
     };
 
     return (

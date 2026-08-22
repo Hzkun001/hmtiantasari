@@ -200,10 +200,25 @@ export default function CalendarSection() {
 
     if (loading) {
         return (
-            <section className="relative mb-20 pt-32 md:pt-48 lg:pt-64 pb-20 md:pb-32 bg-white">
+            <section id="calendar" className="relative bg-white py-16 md:py-24">
                 <div className="container">
-                    <div className="text-center">
-                        <p className="text-neutral-600">Loading calendar...</p>
+                    <div className="mx-auto mb-10 max-w-3xl text-center md:mb-14">
+                        <p className="text-xs font-semibold uppercase tracking-[0.34em] text-neutral-700">Agenda HMTI</p>
+                        <h2
+                            className="mt-4 text-4xl leading-tight text-neutral-900 sm:text-5xl md:text-6xl"
+                            style={{ fontFamily: 'var(--font-bentham)' }}
+                        >
+                            Langkah berikutnya dimulai di sini
+                        </h2>
+                        <p className="mt-4 text-sm text-neutral-600 md:text-base">Kalender Kegiatan</p>
+                    </div>
+                    <div className="calendar-panel mx-auto max-w-7xl border border-neutral-300 bg-white" aria-label="Memuat kalender kegiatan">
+                        <div className="h-24 animate-pulse border-b border-neutral-300 bg-neutral-100" />
+                        <div className="grid grid-cols-7">
+                            {Array.from({ length: 14 }, (_, index) => (
+                                <div key={index} className="h-24 animate-pulse border-b border-r border-neutral-200 bg-white md:h-32" />
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
@@ -212,10 +227,17 @@ export default function CalendarSection() {
 
     if (error) {
         return (
-            <section className="relative mb-20 pt-32 md:pt-48 lg:pt-64 pb-20 md:pb-32 bg-white">
+            <section id="calendar" className="relative bg-white py-16 md:py-24">
                 <div className="container">
-                    <div className="text-center">
-                        <p className="text-red-600">Error: {error}</p>
+                    <div className="mx-auto max-w-3xl text-center">
+                        <p className="text-xs font-semibold uppercase tracking-[0.34em] text-neutral-700">Agenda HMTI</p>
+                        <h2
+                            className="mt-4 text-4xl text-neutral-900 sm:text-5xl md:text-6xl"
+                            style={{ fontFamily: 'var(--font-bentham)' }}
+                        >
+                            Kalender Kegiatan
+                        </h2>
+                        <p className="mt-5 text-red-700">Kalender belum dapat dimuat. {error}</p>
                     </div>
                 </div>
             </section>
@@ -223,18 +245,20 @@ export default function CalendarSection() {
     }
 
     return (
-        <section id="calendar" className="relative pt-10 sm:pt-15 md:pt-20 lg:pt-20 pb-10 md:pb-15 bg-white border-t border-b border-black">
+        <section id="calendar" className="relative bg-white py-16 md:py-24 border-b border-black">
             <div className="container">
-                <div className="text-center mb-10 md:mb-14">
+                <div className="mx-auto mb-10 max-w-3xl text-center md:mb-14">
+                    <p className="text-xs font-semibold uppercase tracking-[0.34em] text-neutral-700">Agenda HMTI</p>
                     <h2
-                        className="text-4xl sm:text-5xl md:text-6xl font-bold text-neutral-900"
+                        className="mt-4 text-4xl leading-tight text-neutral-900 sm:text-5xl md:text-6xl"
                         style={{ fontFamily: 'var(--font-bentham)' }}
                     >
-                        Kalender Kegiatan
+                        Langkah berikutnya dimulai di sini
                     </h2>
+                    <p className="mt-4 text-sm text-neutral-600 md:text-base">Kalender Kegiatan</p>
                 </div>
 
-                <div className="max-w-7xl mx-auto border border-neutral-300 bg-white">
+                <div className="calendar-panel max-w-7xl mx-auto border border-neutral-300 bg-white">
                     <div className="flex items-end justify-between gap-4 px-4 sm:px-8 md:px-12 py-6 md:py-8 border-b border-neutral-300">
                         <div className="flex items-end gap-4">
                             <h3

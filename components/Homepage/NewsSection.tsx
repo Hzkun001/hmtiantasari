@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import type { Activity } from '@/lib/supabase';
-import { getCloudinaryFetchImageUrl } from '@/lib/cloudinary';
 
 const HOMEPAGE_NEWS_LIMIT = 6;
 const NEWS_IMAGE_SIZES = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px';
@@ -73,7 +72,7 @@ export default function ActivitiesSection() {
                 {/* Main Title - Always visible at top center */}
                 <div className="text-center mb-12 md:mb-16 lg:mb-20">
                     <h2
-                        className="text-3xl md:text-4xl lg:text-6xl font-bold text-neutral-900 text-center mt-2 mb-3"
+                        className="text-3xl md:text-4xl lg:text-6xl text-neutral-900 text-center mt-2 mb-3"
                         style={{ fontFamily: 'var(--font-bentham)' }}
                     >
                         Berita Terkini
@@ -84,14 +83,6 @@ export default function ActivitiesSection() {
                 <div className="max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         {activities.map((activity) => {
-                            const optimizedImageUrl = getCloudinaryFetchImageUrl(activity.image_url, {
-                                width: 960,
-                                height: 640,
-                                crop: 'fill',
-                                gravity: 'auto',
-                                quality: 'auto:good',
-                            });
-
                             return (
                             <article
                                 key={activity.id}
@@ -101,7 +92,7 @@ export default function ActivitiesSection() {
                                 <div className="relative w-full h-64 overflow-hidden">
                                     {activity.image_url ? (
                                         <Image
-                                            src={optimizedImageUrl || activity.image_url}
+                                            src={activity.image_url}
                                             alt={activity.title}
                                             fill
                                             className="object-cover"

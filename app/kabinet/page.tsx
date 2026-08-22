@@ -26,16 +26,6 @@ type DivisionTeam = {
     jobdesk: string[];
 };
 
-type LenisLike = {
-    scrollTo?: (
-        target: number | string | HTMLElement,
-        options?: {
-            immediate?: boolean;
-            force?: boolean;
-        }
-    ) => void;
-};
-
 const DIVISION_TEAMS: DivisionTeam[] = [
     {
         key: 'BDK',
@@ -339,8 +329,6 @@ export default function KabinetPage() {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const lenis = (window as Window & { lenis?: LenisLike }).lenis;
-        lenis?.scrollTo?.(0, { immediate: true, force: true });
         window.scrollTo({ top: 0, behavior: 'auto' });
     }, []);
 

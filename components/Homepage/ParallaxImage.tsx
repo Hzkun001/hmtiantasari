@@ -106,6 +106,8 @@ export default function ParallaxImage() {
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReducedMotion) return;
 
+        gsap.set([...text1Chars, ...text2Chars], { opacity: 0 });
+
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: stickyContainerRef.current,
@@ -131,8 +133,8 @@ export default function ParallaxImage() {
             duration: 10,
         }, 0);
 
-        tl.from(text1Chars, {
-            opacity: 0,
+        tl.to(text1Chars, {
+            opacity: 1,
             stagger: 0.03,
             duration: 1,
         }, 0);
@@ -141,8 +143,8 @@ export default function ParallaxImage() {
             stagger: 0.03,
             duration: 1,
         }, '>0.3');
-        tl.from(text2Chars, {
-            opacity: 0,
+        tl.to(text2Chars, {
+            opacity: 1,
             stagger: 0.03,
             duration: 1,
         }, '>0.3');

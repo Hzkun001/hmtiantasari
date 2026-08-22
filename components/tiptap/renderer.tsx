@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { getCloudinaryFetchImageUrl } from '@/lib/cloudinary';
 
 interface TiptapNode {
     type: string;
@@ -111,16 +110,10 @@ function renderNode(node: TiptapNode, index: number): React.ReactNode {
             const alt = attrs?.alt as string | undefined;
             if (!rawSrc) return null;
 
-            const src = getCloudinaryFetchImageUrl(rawSrc, {
-                width: 1200,
-                height: 800,
-                crop: 'fill',
-            }) || rawSrc;
-
             return (
                 <div key={`img-${index}`} className="relative w-full h-64 my-6 rounded-xl overflow-hidden">
                     <Image
-                        src={src}
+                        src={rawSrc}
                         alt={alt || 'Image'}
                         fill
                         className="object-cover"

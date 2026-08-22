@@ -19,25 +19,6 @@ const MOBILE_HERO_LINKS = [
 const MOBILE_HERO_STEPS = ['01', '02', '03', '04'] as const;
 const MOBILE_HERO_TIMELINE_DURATION_MS = 3600;
 
-type LenisLike = {
-    stop?: () => void;
-    start?: () => void;
-    scrollTo?: (
-        target: number | string | HTMLElement,
-        options?: {
-            duration?: number;
-            easing?: (t: number) => number;
-            offset?: number;
-            lock?: boolean;
-            force?: boolean;
-            immediate?: boolean;
-            onComplete?: () => void;
-        }
-    ) => void;
-};
-
-const getWindowLenis = () => (window as Window & { lenis?: LenisLike }).lenis;
-
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 }
@@ -62,7 +43,6 @@ export default function HeroSection() {
     const [activeMobileStep, setActiveMobileStep] = useState(0);
 
     const autoScrollTriggeredRef = useRef(false);
-    const lenisRecoveryTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const hasMobileVideo = MOBILE_HERO_VIDEO_URL.trim().length > 0;
     const shouldAnimateMobileTimeline =
@@ -127,7 +107,6 @@ export default function HeroSection() {
         return () => {
             motionQuery.removeEventListener('change', handleChange);
             document.body.classList.remove('overflow-hidden');
-            document.body.removeAttribute('data-lenis-prevent');
         };
     }, []);
 
@@ -160,7 +139,7 @@ export default function HeroSection() {
 
             if (!heroRef.current) return;
 
-            const parallaxValues = { sky: 220, mountains: -70, man: -45, content: 420 };
+            const parallaxValues = { sky: 220, mountains: -70, man: 0, content: 420 };
             const scrollTriggerInstance = gsap.timeline({
                 scrollTrigger: {
                     trigger: heroRef.current,
@@ -174,35 +153,7 @@ export default function HeroSection() {
                         autoScrollTriggeredRef.current = true;
                         const heroRevealSection = document.querySelector('.hero-reveal-section');
 
-                        const lenis = getWindowLenis();
-
-                        if (!heroRevealSection || !lenis) return;
-
-                        if (lenisRecoveryTimeoutRef.current) {
-                            clearTimeout(lenisRecoveryTimeoutRef.current);
-                        }
-
-                        lenis.stop?.();
-
-                        lenisRecoveryTimeoutRef.current = setTimeout(() => {
-                            getWindowLenis()?.start?.();
-                            lenisRecoveryTimeoutRef.current = null;
-                        }, 2200);
-
-                        lenis.scrollTo?.(heroRevealSection as HTMLElement, {
-                            duration: 1.5,
-                            easing: (t: number) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
-                            offset: 0,
-                            lock: true,
-                            force: true,
-                            onComplete: () => {
-                                if (lenisRecoveryTimeoutRef.current) {
-                                    clearTimeout(lenisRecoveryTimeoutRef.current);
-                                    lenisRecoveryTimeoutRef.current = null;
-                                }
-                                getWindowLenis()?.start?.();
-                            },
-                        });
+                        heroRevealSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     },
                     onLeaveBack: () => {
                         autoScrollTriggeredRef.current = false;
@@ -256,11 +207,6 @@ export default function HeroSection() {
         });
 
         return () => {
-            if (lenisRecoveryTimeoutRef.current) {
-                clearTimeout(lenisRecoveryTimeoutRef.current);
-                lenisRecoveryTimeoutRef.current = null;
-            }
-            getWindowLenis()?.start?.();
             ctx.revert();
         };
     }, [isDesktopViewport, prefersReducedMotion]);
@@ -318,16 +264,6 @@ export default function HeroSection() {
                             ))}
                         </div>
                     </div>
-
-                    {/* <button
-                        type="button"
-                        className="hero-mobile-cinematic-play"
-                        onClick={toggleMobileVideo}
-                        disabled={!hasMobileVideo || mobileVideoError}
-                        aria-label={isMobileVideoPlaying ? 'Pause video hero' : 'Play video hero'}
-                    >
-                        {isMobileVideoPlaying ? 'PAUSE' : 'PLAY'}
-                    </button> */}
 
                     <div className="hero-mobile-cinematic-timeline" aria-hidden="true">
                         <span

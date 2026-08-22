@@ -15,7 +15,6 @@ export default function AboutContent() {
     const header3Ref = useRef<HTMLDivElement>(null);
     const textRef = useRef<HTMLHeadingElement>(null);
     const text2Ref = useRef<HTMLHeadingElement>(null);
-    const text3Ref = useRef<HTMLHeadingElement>(null);
 
     useEffect(() => {
         if (!sectionRef.current || !header1Ref.current || !header2Ref.current || !header3Ref.current) return;
@@ -112,7 +111,7 @@ export default function AboutContent() {
     }, []);
 
     useEffect(() => {
-        const textElements = [textRef.current, text2Ref.current, text3Ref.current];
+        const textElements = [textRef.current, text2Ref.current];
         const triggers: ScrollTrigger[] = [];
 
         textElements.forEach((textElement) => {
@@ -173,13 +172,6 @@ export default function AboutContent() {
                     </h1>
                 </div>
             </section>
-
-            {/* section baru jika diperlukan */}
-            {/* <section className={`${styles.servicesCopy} ${styles.servicesCopySecond}`}>
-                <h1 ref={text3Ref} className={styles.animateText}>
-                    Tujuan HMTI dibangun adalah sebagai jembatan profesional dan akademik, menyatukan potensi mahasiswa TI untuk bersaing secara kompeten di era disrupsi teknologi.
-                </h1>
-            </section> */}
         </>
     );
 }

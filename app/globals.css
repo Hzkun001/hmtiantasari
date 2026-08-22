@@ -71,7 +71,7 @@
   color: #ffffff;
   font-family: "Bentham", serif;
   font-size: max(54px, min(3.472vw, 66.5px));
-  letter-spacing: -0.06em;
+  letter-spacing: -0.02em;
   line-height: 1.05;
   text-wrap: balance;
 }
@@ -93,21 +93,74 @@
 }
 
 .home-parallax-section {
-  --home-parallax-overlap: 128px;
+  --home-parallax-overlap: 16px;
+  position: relative;
+  z-index: 5;
   height: calc(260vh + var(--home-parallax-overlap));
   margin-top: calc(var(--home-parallax-overlap) * -1);
 }
 
+.home-parallax-section::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 30;
+  height: clamp(160px, 30svh, 320px);
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #fff 100%);
+}
+
+@keyframes calendar-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .calendar-panel {
+      animation: calendar-panel-enter linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 40%;
+    }
+  }
+}
+
 @media (min-width: 640px) {
   .home-parallax-section {
-    --home-parallax-overlap: 148px;
+    --home-parallax-overlap: 24px;
     height: calc(320vh + var(--home-parallax-overlap));
+  }
+}
+
+@media (min-width: 768px) {
+  .home-parallax-section::before {
+    content: "";
+    position: absolute;
+    top: -24px;
+    right: 0;
+    left: 0;
+    z-index: 30;
+    height: 48px;
+    pointer-events: none;
+    background: linear-gradient(180deg,
+        rgba(7, 14, 18, 0) 0%,
+        rgba(7, 14, 18, 0.68) 52%,
+        rgba(7, 14, 18, 0) 100%);
   }
 }
 
 @media (min-width: 1024px) {
   .home-parallax-section {
-    --home-parallax-overlap: 176px;
+    --home-parallax-overlap: 32px;
     height: calc(400vh + var(--home-parallax-overlap));
   }
 }
@@ -743,7 +796,7 @@
   left: 0;
   width: 100%;
   height: clamp(64px, 12svh, 104px);
-  z-index: 5;
+  z-index: 1;
   background-image: linear-gradient(180deg,
       rgba(255, 255, 255, 0) 0%,
       rgba(245, 247, 246, 0.28) 64%,

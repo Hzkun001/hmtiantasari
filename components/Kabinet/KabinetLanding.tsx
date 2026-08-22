@@ -19,18 +19,6 @@ interface LandingHeroProps {
     projects?: Project[];
 }
 
-type LenisLike = {
-    stop?: () => void;
-    start?: () => void;
-    scrollTo?: (
-        target: number | string | HTMLElement,
-        options?: {
-            immediate?: boolean;
-            force?: boolean;
-        }
-    ) => void;
-};
-
 const LandingHero: React.FC<LandingHeroProps> = ({
     projects = projectsData
 }) => {
@@ -61,7 +49,6 @@ const LandingHero: React.FC<LandingHeroProps> = ({
         const previousHtmlOverflow = html.style.overflow;
         const previousBodyOverflow = body.style.overflow;
         const previousBodyTouchAction = body.style.touchAction;
-        const lenis = (window as Window & { lenis?: LenisLike }).lenis;
         let hasUnlockedScroll = false;
 
         const unlockScroll = () => {
@@ -71,15 +58,12 @@ const LandingHero: React.FC<LandingHeroProps> = ({
             html.style.overflow = previousHtmlOverflow;
             body.style.overflow = previousBodyOverflow;
             body.style.touchAction = previousBodyTouchAction;
-            lenis?.start?.();
         };
 
-        lenis?.stop?.();
         body.classList.add("overflow-hidden");
         html.style.overflow = "hidden";
         body.style.overflow = "hidden";
         body.style.touchAction = "none";
-        lenis?.scrollTo?.(0, { immediate: true, force: true });
         window.scrollTo({ top: 0, behavior: "auto" });
 
         // Register GSAP plugins
