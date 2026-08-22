@@ -1,186 +1,48 @@
 import { supabase } from './supabase';
 
-const isDev = process.env.NODE_ENV === 'development';
-const logDebug = (...args: unknown[]) => {
-    if (isDev) {
-        console.log(...args);
+const ACTIVITY_BUCKET = 'activity-images';
+const TEAM_BUCKET = 'team-images';
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+
+function uploadError(message: string, bucket: string): never {
+    if (message.includes('not found') || message.includes('does not exist')) {
+        throw new Error(`Bucket "${bucket}" tidak ditemukan.`);
     }
-};
-
-/**
- * Upload image ke Supabase Storage dan return public URL
- * @param file - File object dari input
- * @param bucket - Nama bucket di Supabase Storage (default: 'activity-images')
- * @returns Public URL dari image yang diupload
- */
-export async function uploadActivitiesImage(file: File, bucket: string = 'activity-images'): Promise<string> {
-    logDebug('[uploadImage] Starting upload...');
-    logDebug('[uploadImage] File:', file.name, 'Size:', file.size);
-    logDebug('[uploadImage] Bucket:', bucket);
-
-    try {
-        // Generate unique filename
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
-        const filePath = `${fileName}`;
-
-        logDebug('[uploadImage] Generated filename:', filePath);
-
-        // Upload file directly (bucket existence check removed as anon role can't list buckets)
-        logDebug('[uploadImage] Uploading to Supabase Storage...');
-        const { data, error } = await supabase.storage
-            .from(bucket)
-            .upload(filePath, file, {
-                cacheControl: '3600',
-                upsert: false
-            });
-
-        logDebug('[uploadImage] Upload response - data:', data);
-        logDebug('[uploadImage] Upload response - error:', error);
-
-        if (error) {
-            if (isDev) {
-                console.error('[uploadImage] Upload error details:', JSON.stringify(error, null, 2));
-            }
-
-            // More helpful error messages
-            if (error.message.includes('not found') || error.message.includes('does not exist')) {
-                throw new Error(`Bucket "${bucket}" tidak ditemukan. Pastikan bucket sudah dibuat di Supabase Dashboard → Storage`);
-            }
-            if (error.message.includes('policy') || error.message.includes('permission')) {
-                throw new Error(`Permission denied. Pastikan RLS policy untuk upload sudah diset di bucket "${bucket}"`);
-            }
-            throw new Error(`Upload gagal: ${error.message}`);
-        }
-
-        // Get public URL
-        logDebug('[uploadImage] Getting public URL...');
-        const { data: { publicUrl } } = supabase.storage
-            .from(bucket)
-            .getPublicUrl(filePath);
-
-        logDebug('[uploadImage] Public URL:', publicUrl);
-
-        return publicUrl;
-    } catch (error) {
-        if (isDev) {
-            console.error('[uploadImage] Caught error:', error);
-        }
-        throw error;
+    if (message.includes('policy') || message.includes('permission')) {
+        throw new Error(`Upload ke bucket "${bucket}" tidak diizinkan oleh policy.`);
     }
+    throw new Error(`Upload gagal: ${message}`);
 }
 
-/**
- * Delete image dari Supabase Storage
- * @param imageUrl - Public URL dari image yang akan dihapus
- * @param bucket - Nama bucket di Supabase Storage (default: 'activity-images')
- */
-export async function deleteActivitiesImage(imageUrl: string, bucket: string = 'activity-images'): Promise<void> {
-    try {
-        // Extract file path from URL
-        const url = new URL(imageUrl);
-        const pathParts = url.pathname.split('/');
-        const filePath = pathParts[pathParts.length - 1];
+async function uploadImage(file: File, bucket: string, folder?: string) {
+    if (!ALLOWED_IMAGE_TYPES.has(file.type)) throw new Error('Format gambar harus JPG, PNG, WebP, atau GIF.');
+    if (file.size > MAX_IMAGE_BYTES) throw new Error('Ukuran gambar maksimal 5 MB.');
 
-        const { error } = await supabase.storage
-            .from(bucket)
-            .remove([filePath]);
+    const extension = file.name.includes('.') ? `.${file.name.split('.').pop()}` : '';
+    const filename = `${crypto.randomUUID()}${extension}`;
+    const path = folder ? `${folder}/${filename}` : filename;
+    const { error } = await supabase.storage.from(bucket).upload(path, file, {
+        cacheControl: '3600',
+        upsert: false,
+    });
 
-        if (error) {
-            throw error;
-        }
-    } catch (error) {
-        if (isDev) {
-            console.error('Error deleting image:', error);
-        }
-        throw error;
-    }
+    if (error) uploadError(error.message, bucket);
+    return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
 }
 
-/**
- * Upload team member image ke folder tertentu di bucket team-images
- * @param file - File object dari input
- * @param folderName - Nama folder kategori (e.g., 'humas', 'teknis', 'acara')
- * @returns Public URL dari image yang diupload
- */
-export async function uploadTeamImage(file: File, folderName: string): Promise<string> {
-    logDebug('[uploadTeamImage] Starting upload to folder:', folderName);
-    logDebug('[uploadTeamImage] File:', file.name, 'Size:', file.size);
+async function deleteImage(imageUrl: string, bucket: string) {
+    const marker = `/object/public/${bucket}/`;
+    const pathname = new URL(imageUrl).pathname;
+    const markerIndex = pathname.indexOf(marker);
+    if (markerIndex < 0) throw new Error(`URL bukan berasal dari bucket "${bucket}".`);
 
-    try {
-        // Generate unique filename
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
-        const filePath = `${folderName}/${fileName}`;
-
-        logDebug('[uploadTeamImage] Generated file path:', filePath);
-
-        // Upload file to team-images bucket
-        logDebug('[uploadTeamImage] Uploading to Supabase Storage...');
-        const { data, error } = await supabase.storage
-            .from('team-images')
-            .upload(filePath, file, {
-                cacheControl: '3600',
-                upsert: false
-            });
-
-        logDebug('[uploadTeamImage] Upload response - data:', data);
-        logDebug('[uploadTeamImage] Upload response - error:', error);
-
-        if (error) {
-            if (isDev) {
-                console.error('[uploadTeamImage] Upload error details:', JSON.stringify(error, null, 2));
-            }
-
-            if (error.message.includes('not found') || error.message.includes('does not exist')) {
-                throw new Error('Bucket "team-images" tidak ditemukan. Pastikan bucket sudah dibuat di Supabase Dashboard → Storage');
-            }
-            if (error.message.includes('policy') || error.message.includes('permission')) {
-                throw new Error('Permission denied. Pastikan RLS policy untuk upload sudah diset di bucket "team-images"');
-            }
-            throw new Error(`Upload gagal: ${error.message}`);
-        }
-
-        // Get public URL
-        logDebug('[uploadTeamImage] Getting public URL...');
-        const { data: { publicUrl } } = supabase.storage
-            .from('team-images')
-            .getPublicUrl(filePath);
-
-        logDebug('[uploadTeamImage] Public URL:', publicUrl);
-
-        return publicUrl;
-    } catch (error) {
-        if (isDev) {
-            console.error('[uploadTeamImage] Caught error:', error);
-        }
-        throw error;
-    }
+    const path = decodeURIComponent(pathname.slice(markerIndex + marker.length));
+    const { error } = await supabase.storage.from(bucket).remove([path]);
+    if (error) throw error;
 }
 
-/**
- * Delete team image dari Supabase Storage
- * @param imageUrl - Public URL dari image yang akan dihapus
- */
-export async function deleteTeamImage(imageUrl: string): Promise<void> {
-    try {
-        // Extract file path from URL (includes folder name)
-        const url = new URL(imageUrl);
-        const pathParts = url.pathname.split('/');
-        // Get last 2 parts: folder/filename
-        const filePath = pathParts.slice(-2).join('/');
-
-        const { error } = await supabase.storage
-            .from('team-images')
-            .remove([filePath]);
-
-        if (error) {
-            throw error;
-        }
-    } catch (error) {
-        if (isDev) {
-            console.error('Error deleting team image:', error);
-        }
-        throw error;
-    }
-}
+export const uploadActivitiesImage = (file: File) => uploadImage(file, ACTIVITY_BUCKET);
+export const deleteActivitiesImage = (url: string) => deleteImage(url, ACTIVITY_BUCKET);
+export const uploadTeamImage = (file: File, folder: string) => uploadImage(file, TEAM_BUCKET, folder);
+export const deleteTeamImage = (url: string) => deleteImage(url, TEAM_BUCKET);

@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import { allowRequest } from '@/lib/rate-limit';
 import { FAQ } from "@/lib/faq";
 
 export const runtime = "nodejs";
@@ -27,6 +28,7 @@ function scoreText(tokens: string[], text: string) {
 }
 
 function pickRelevantFaq(message: string, k = 6): FaqItem[] {
+    // ponytail: keyword scoring is enough for this small FAQ; use embeddings only if relevance degrades.
     const tokens = tokenize(message);
 
     const scored = FAQ.map((item) => ({
@@ -46,6 +48,14 @@ function buildContext(items: FaqItem[]) {
 }
 
 export async function POST(req: Request) {
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
+    if (!allowRequest(clientIp)) {
+        return new Response('Terlalu banyak permintaan. Coba lagi sebentar.', {
+            status: 429,
+            headers: { 'Retry-After': '60' },
+        });
+    }
+
     const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
         return new Response("Server belum dikonfigurasi. GROQ_API_KEY belum tersedia.", {
@@ -58,11 +68,19 @@ export async function POST(req: Request) {
             apiKey,
             baseURL: "https://api.groq.com/openai/v1",
         });
+        if (!req.headers.get('content-type')?.includes('application/json')) {
+            return new Response('Content-Type must be application/json', { status: 415 });
+        }
+
         const body = await req.json();
         const message = body?.message;
 
         if (!message || typeof message !== "string") {
             return new Response("message required", { status: 400 });
+        }
+
+        if (message.length > 500) {
+            return new Response('message too long', { status: 413 });
         }
 
         const picked = pickRelevantFaq(message, 6);

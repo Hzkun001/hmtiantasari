@@ -122,21 +122,21 @@ async function checkSupabase(): Promise<HealthCheck> {
     }
 }
 
-function checkGemini(): HealthCheck {
-    if (process.env.GEMINI_API_KEY) {
+function checkGroq(): HealthCheck {
+    if (process.env.GROQ_API_KEY) {
         return {
-            id: 'gemini',
-            name: 'Gemini API',
+            id: 'groq',
+            name: 'Groq API',
             state: 'operational',
             detail: 'API key tersedia.',
         };
     }
 
     return {
-        id: 'gemini',
-        name: 'Gemini API',
+        id: 'groq',
+        name: 'Groq API',
         state: 'degraded',
-        detail: 'GEMINI_API_KEY belum diset.',
+        detail: 'GROQ_API_KEY belum diset.',
     };
 }
 
@@ -150,7 +150,7 @@ function checkWebService(): HealthCheck {
 }
 
 export async function buildHealthPayload(): Promise<HealthPayload> {
-    const checks = [checkWebService(), await checkSupabase(), checkGemini()];
+    const checks = [checkWebService(), await checkSupabase(), checkGroq()];
     const overallState = summarizeState(checks.map((item) => item.state));
 
     return {

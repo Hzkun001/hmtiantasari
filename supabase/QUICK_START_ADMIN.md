@@ -1,59 +1,29 @@
-## 📝 Cara Set Admin (3 Langkah)
+# Menetapkan admin
 
-### Step 1: Apply Helper Functions
-Buka **Supabase Dashboard → SQL Editor**, paste & run:
+Role admin disimpan di `app_metadata`, bukan `user_metadata`, agar user tidak dapat mengubah role miliknya sendiri.
+
+Jalankan di Supabase Dashboard → SQL Editor setelah user mendaftar:
+
 ```sql
--- File: 20260213_admin_management_helpers.sql
--- Copy paste semua isi file ini dan run
+update auth.users
+set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) || '{"role":"admin"}'::jsonb
+where email = 'admin@example.com';
 ```
 
-### Step 2: Login ke Aplikasi
-Login ke aplikasi Anda via `/login` dengan email/password seperti biasa.
+Hapus akses admin:
 
-### Step 3: Set sebagai Admin
-Kembali ke **Supabase SQL Editor**, run:
 ```sql
-SELECT * FROM set_user_as_admin('email-yang-baru-login@gmail.com');
+update auth.users
+set raw_app_meta_data = coalesce(raw_app_meta_data, '{}'::jsonb) - 'role'
+where email = 'admin@example.com';
 ```
 
-**Done!** ✅ User tersebut sekarang admin.
+Verifikasi:
 
----
-
-## 🔄 Ganti Admin Nanti
-
-### Add Admin Baru
 ```sql
-SELECT * FROM set_user_as_admin('admin-baru@gmail.com');
+select email, raw_app_meta_data->>'role' as role
+from auth.users
+order by email;
 ```
 
-### Remove Admin
-```sql
-SELECT * FROM remove_admin_role('admin-lama@gmail.com');
-```
-
-### Cek Siapa Admin Sekarang
-```sql
-SELECT * FROM list_all_admins();
-```
-
----
-
-## ✅ Verification
-
-### Di SQL Editor:
-```sql
--- Cek email dan role user
-SELECT 
-  email, 
-  raw_user_meta_data->>'role' as role 
-FROM auth.users 
-WHERE email = 'your-email@gmail.com';
-```
-
-### Di Browser Console (setelah login):
-```javascript
-const { data: { user } } = await supabase.auth.getUser();
-console.log('Role:', user.user_metadata.role);
-// Output: "admin"
-```
+User perlu logout dan login kembali setelah role berubah agar JWT berisi claim terbaru.

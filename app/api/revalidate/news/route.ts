@@ -1,13 +1,10 @@
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath, revalidateTag } from 'next/cache';
-
-// Secret token untuk keamanan (bisa dipindah ke env)
-const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET ?? 'hmti-admin-secret';
+import { isAdmin } from '@/lib/auth';
 
 type RevalidateRequest = {
-    secret?: string;
-    paths?: string[];
-    tags?: string[];
     slug?: string;
 };
 
@@ -20,34 +17,34 @@ const PUBLIC_NEWS_TAGS = ['news'];
 
 export async function POST(request: NextRequest) {
     try {
-        const body = (await request.json()) as RevalidateRequest;
-
-        // Basic security check
-        if (body.secret && body.secret !== REVALIDATE_SECRET) {
-            return NextResponse.json(
-                { error: 'Invalid secret' },
-                { status: 401 }
-            );
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+        if (!supabaseUrl || !supabaseAnonKey) {
+            return NextResponse.json({ error: 'Server configuration missing' }, { status: 500 });
         }
+
+        const cookieStore = await cookies();
+        const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+            cookies: {
+                getAll: () => cookieStore.getAll(),
+                setAll: () => {},
+            },
+        });
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!isAdmin(user?.app_metadata)) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const body = (await request.json()) as RevalidateRequest;
 
         const revalidated: { paths: string[], tags: string[] } = {
             paths: [],
             tags: [],
         };
 
-        // Revalidate specific paths if provided
-        if (body.paths && Array.isArray(body.paths)) {
-            for (const path of body.paths) {
-                if (typeof path === 'string') {
-                    revalidatePath(path);
-                    revalidated.paths.push(path);
-                }
-            }
-        }
-
         // Revalidate by slug (revalidates the detail page)
         if (body.slug && typeof body.slug === 'string') {
-            const detailPath = `/berita/${body.slug}`;
+            const detailPath = `/berita/${encodeURIComponent(body.slug)}`;
             revalidatePath(detailPath);
             revalidated.paths.push(detailPath);
         }
