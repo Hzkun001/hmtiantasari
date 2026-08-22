@@ -179,8 +179,8 @@ function TeamMemberCard({ member }: { member: MemberCard }) {
                     src="/images/team-member-frame.svg"
                     alt=""
                     aria-hidden="true"
-                    width={204}
-                    height={325}
+                    width={162}
+                    height={241}
                     className="kabinet-core-frame"
                 />
                 <div className="kabinet-core-photo-wrap">
